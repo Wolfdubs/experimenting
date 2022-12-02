@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-
+/*
 
         //create an array and make each element random
         int[] numArray = new int[20];
@@ -26,6 +26,8 @@ public class Main {
         System.out.println("\nThe recursive fibonacci number at the entered index is " + fibonacciRecursive(11));
         System.out.println("The memoized fibonacci number at the entered index is " + fibonacciMemoization(90));  //long limit at 92
         printFibonacci(20);
+*/
+
 
     }
 }

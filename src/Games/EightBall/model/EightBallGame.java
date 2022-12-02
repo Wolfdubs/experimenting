@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class EightBallGame {
 
     public static void playEightBallGame(){
-        System.out.println("How many questions would you like to ask? Enter as a number.");
+        System.out.println("How many questions would you like to ask?");
         Scanner scanner = new Scanner(System.in);
         int questionCount;
         String questionCountStr;
@@ -32,6 +32,12 @@ public class EightBallGame {
                     attempts--;
                 }
             } catch (NoSuchElementException e){
+                /*
+                //convert string input to int
+                questionCountStr = scanner.nextLine();
+                questionCountStr = questionCountStr.strip();
+                int questionConverted = Integer.parseInt(questionCountStr);
+                 */
                     questionCountStr = scanner.nextLine();
                     int questionConverted = ConvertStringToInt.convertStringToInt(questionCountStr.strip());
                     if (questionConverted!=0) {
