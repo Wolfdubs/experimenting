@@ -20,6 +20,8 @@ public class LocalVariableTypeInference {
     }
 
 }
+
+
 /*  requires later version of java
 class enhancedSwitch{
     //ability to use switch as an expression

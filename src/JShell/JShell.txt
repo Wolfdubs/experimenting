@@ -1,0 +1,31 @@
+REPL - Read Evaluate Print Loop
+    an interactive console, for testing individual snippets of code inside Jshell
+    Jshell = interactive console accessible via cmd. is the REPL for java
+    so don’t have to create whole classes & methods just to test few lines of code
+
+
+    		exit via /exit
+    		2+3 $ shows the variable to output is assigned to
+    		println($4)
+    		8>9 || 6>5
+    		int i = 9
+    		i++
+    		multi line statements
+    			define methods just like in IDE, lines here require ;
+            edit methods via /edit (and then the line number (without $) of your method retrieved from /list
+
+Typing a keyword e.g. String and tab will give you suggestions for autocomplete
+                2 tabs will give full java documentation for the keyword
+
+/vars prints all variables you have created
+/methods prints all your methods
+/history
+/types prints all classes and interfaces you made
+/import
+/set feedback
+/list
+/edit
+/help
+/save anyCustomFileToSaveJShellLinesAs.jsh   will save everything you've written as a JShell file
+/open savedJShellFile.jsh                    will reopen the saved JShell file
+/drop variableName        delete variable/class/method

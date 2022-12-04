@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//Implementing Comparable interface lets you customize how your classes can be sorted
+// 1. Normal:
+//      a) by overriding compareTo in the class
+//      b) pass collection of the objects into Collections.sort()
+// 2. Call Collections.sort() and pass in your objects collection and lambda compareTo implementation
+
 class Student implements Comparable<Student>{   //to be able to compare any custom objects, the class must implement Comparable interface
     int rollNo, marks;
     String name;
@@ -44,10 +50,8 @@ public class ComparableInterfaceClass {
         Collections.sort(studentsList, (i,j) -> i.name.length() > j.name.length() ? 1 : -1 );
         for (Student s : studentsList) {
             System.out.println(s);}
-
-
-
-
     }
 }
+
+
 

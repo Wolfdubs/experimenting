@@ -58,6 +58,7 @@ public class Variables {
         return i;
     }
 
+
     /*by default all decimals are double
     could also store whole numbers in doubles, but will add a .0
     cast to int will truncate the decimal
@@ -66,5 +67,10 @@ public class Variables {
     byte; store values from -128 - 127
     long; 8 bytes
     char: can assign to a letter e.g. 'A' or directly to an ASCII character
-    so can do a++ to increment to next letter in ASCII*/
+    so can do a++ to increment to next letter in ASCII
+
+    static means don't need an object to operate on
+    */
+
+
 }

@@ -67,3 +67,15 @@ public class LinkedList {
     // n finishes pointing to the last existing node
     // node is the newly created node
 }
+
+
+/*Advantage vs array & ArrayList
+    LL can dynamically resize
+    LL very fast for insert/remove
+    LL more memory/space efficient than ArrayList as only ever has exactly as much capacity as it needs for number of elements
+
+  Drawbacks
+    LL is slow for retrieval as must traverse LL
+
+ */
+

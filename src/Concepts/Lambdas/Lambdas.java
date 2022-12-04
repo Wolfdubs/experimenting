@@ -69,6 +69,13 @@ public class Lambdas {
         });
         java.util.function.IntBinaryOperator preLambda3 = Integer::sum; //alternatively can replace lambda with method reference
         lambda5(preLambda2);
+
+
+        //Lambda in an enhanced for loop
+        List<Integer> integerList = Arrays.asList(4,1,9,3,7,5,6);
+        integerList.forEach(i -> System.out.println(i));
+        //replacing same lambda with a method reference
+        integerList.forEach(System.out::println);
     }
 
     static void methodThatAcceptsObjectOfInterface(myInterface ds){

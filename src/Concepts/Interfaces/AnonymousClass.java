@@ -1,5 +1,6 @@
 package Concepts.Interfaces;
-
+//you override the method or variable as the object is created, rather than going into the class and changing it
+//so for the new object, java will use the implementation you anonymously define immediately after instantiation, rather than going into the class method
 public class AnonymousClass {
 
     public static void main(String[] args) {

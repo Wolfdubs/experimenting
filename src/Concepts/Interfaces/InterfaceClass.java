@@ -21,10 +21,11 @@ class Pen implements Writer, Product{    //can also still extend a super class a
 
 public class InterfaceClass {
     //useful for generalization, like abstract super classes; both can declare & define methods
-    //    Interface: can define methods via anonymous classes, lambdas, and default keyword
+    //    Interface: can define methods via anonymous classes, lambdas, and default keyword. inside interface can define public & private helper methods
     //to permit concrete classes having more than 1 specification (to extend/implement). as no multiple inheritance of super classes
     // when you want to ensure classes must have certain methods that they implement
     //    e.g. APIs require you to implement all the interfaces they provide
+    //Only 2 ways to create object reference of interface; via lambda, or by creating new object of class that implements interface; InterfaceName obj = new ClassImplementing();
 
     public static void main(String[] args) {
         Writer pen = new Pen();        // can still create references of the interface, but object must be of implementing class
