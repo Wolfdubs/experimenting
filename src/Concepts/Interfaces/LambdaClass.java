@@ -7,6 +7,8 @@ package Concepts.Interfaces;
 
 //can use lambda expressions for Functional Interfaces
 //simpler way to achieve same thing as anonymous class
+//exactly the same as anonymous class, but removing boilerplate of specifying inputs and method name and new interface(), just proving the implementation of the
+    //interface's SAM so you can create an object of the interface
 // a way to quickly & low memory create an interface object which defines implementation for the interface methods
 
 public class LambdaClass {

@@ -41,6 +41,17 @@ public class Operations {
                 System.out.println("No match");
         }
     }
+/*   enhanced switch not supported by java 11
+        doesn't require break statements
+    public static void enhancedSwitch(String day){
+        switch (day) {
+            case "Monday" -> System.out.println("It's Monday");
+            case "Tuesday" -> System.out.println("It's Tuesday");
+            default -> System.out.println("It's the weekend");
+        }
+    }
+
+ */
 
     public static void doWhile(int num){
         do{                                //will always get executed at least once. continuous looping decided by the while at bottom

@@ -1,8 +1,8 @@
 package Games;
 //  need to add the jar files qrgen and zxing-core to the project in intellij
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
-
+//import net.glxn.qrgen.QRCode;
+//import net.glxn.qrgen.image.ImageType;
+/*
 import java.io.*;
 
 public class QRCodeGenerator {
@@ -25,3 +25,4 @@ public class QRCodeGenerator {
 
     }
 }
+*/

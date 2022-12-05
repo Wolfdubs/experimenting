@@ -1,6 +1,6 @@
 package Concepts.Basics;
 
-class myClass {
+class Encapsulation {
 
     private int myInt;
     private String myString;
@@ -28,5 +28,4 @@ class myClass {
 
 }
 
-public class Encapsulation {
-}
+

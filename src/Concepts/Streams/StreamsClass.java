@@ -1,11 +1,11 @@
-package Concepts;
+package Concepts.Streams;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
+//Streams help for data processing; supports functional programming
 public class StreamsClass {
     public static void main(String[] args) {
         List<Integer> integerList = Arrays.asList(4, 7, 2, 4, 0, 1, 5, 3, 6, 9, 6);
