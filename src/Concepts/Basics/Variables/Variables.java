@@ -1,5 +1,8 @@
 package Concepts.Basics.Variables;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Variables {
 
     //multiple overloading constructors need different signatures; polymorphism
@@ -22,6 +25,9 @@ public class Variables {
         int[] array2DValue2 = array2D[2];
         System.out.println(array2DValue);
 
+        //can create ArrayList using Arrays.asList(3,6,2,8,6,0)
+        List<Integer> funny = Arrays.asList(23,4,2,6);
+
     //2 ways to iterate over 2D array
         for (byte i = 0; i<array2D.length; i++){       //iterates over rows
             for (byte j=0; j<array2D[i].length; j++){  //iterates over columns
@@ -36,6 +42,19 @@ public class Variables {
             }
             System.out.println();
         }
+
+        //STRING IMMUTABILITY
+      //  Strings are immutable; changing a variable value doesn't change the String object in memory it creates a new String object and just
+      //  changes the reference in the variable
+        // 3 benefits:
+            // memory optimization
+            // security: methods cannot change string values of objects they access
+            // Strings completely thread safe as threads cannot change it
+        String name = "Cody";
+        String anotherName = "Cody";   //both these variables actually point to the same string object inside Java's string pool (used to save memory avoiding duplication)
+        System.out.println(name == anotherName);  //returns true as the same object
+        String thirdName = new String("Cody");  //creates a new string object
+        System.out.println(name == thirdName);   //returns false as fifferet objects
 
     }
 

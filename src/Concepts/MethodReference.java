@@ -71,6 +71,17 @@ public class MethodReference {
         String myString5 = "Mung";
         String reveredString5 = stringReverser.reverseString(myString5, new StringParser()::convert2);
         System.out.println(reveredString5);
+
+
+        //calling simple static & non-static custom methods via method reference
+        List<Integer> integerList = Arrays.asList(4,7,2,9,4,0,6,1);
+        //Static calls without objects
+        integerList.forEach(i -> DoubleInput.doubleInputStatic(i));   //calling custom static method via lambda
+        integerList.forEach(DoubleInput::doubleInputStatic);   //calling static method directly on each list value
+        //Non-static calls with objects
+        DoubleInput di = new DoubleInput();
+        integerList.forEach(i -> di.doubleInput(i));
+        integerList.forEach(di::doubleInput);    //calling method from te instantiated object
     }
 }
 
@@ -111,3 +122,14 @@ class StringParser{
 //StringParser class provides logic for MyParser interface to follow
 //want the MyParser to implement logic of StringParser
 //to create object of MyParser, pass in as anonymous/lambda
+
+
+//for calling static & non-static methods via method reference
+class DoubleInput{
+    public static int doubleInputStatic(int i){
+        return i * 2;
+    }
+    public int doubleInput(int i){
+        return i*2;
+    }
+}

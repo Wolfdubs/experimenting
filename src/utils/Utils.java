@@ -10,7 +10,17 @@ public class Utils {
         return true;
     }
 
-    public static int swap(int a, int b){
-        return a;
+    public static <T> void swap(T a, T b){
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+}
+
+class GenericSwap<T>{
+    public <T> void swap(T a, T b){
+        T temp = a;
+        a = b;
+        b = temp;
     }
 }

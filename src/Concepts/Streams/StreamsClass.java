@@ -1,11 +1,17 @@
 package Concepts.Streams;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-//Streams help for data processing; supports functional programming
+//Streams help for data processing; supports functional programming.
+// Has many inbuilt methods for data operations. 2 types;
+//     Intermediate methods = can keep passing values; lazy evaluation e.g. filter, map
+        //lazy = they are process the data required by later methods. e.g. findFirst() ending means map & filter will stop processing once got a suitable value to pass it
+//     Terminate methods = once you can used the stream values, you cannot reuse it. e.g. findFirst, forEach
+//Is a default method for Collection interface, so can be applied to any collection to convert it into an object of Stream interface
+// Much more time efficient than modifying collections with for loop, as each loop must mutate the result to return every time, whereas lazy methods stop nce got the value required by a terminal method on the stream e.g. findFirst()
 public class StreamsClass {
     public static void main(String[] args) {
         List<Integer> integerList = Arrays.asList(4, 7, 2, 4, 0, 1, 5, 3, 6, 9, 6);
@@ -30,7 +36,7 @@ public class StreamsClass {
 /*    Filter: takes a Predicate
         predicate is a functional interface with a method test() that returns boolean. which is what we filter using
               so can create object of Predicate interface via anonymous/lambda */
-
+        //predicate is a method that returns a boolean
         Predicate<Integer> myPredicate = new Predicate<Integer>() {
             @Override
             public boolean test(Integer i) {    //SAM to override
@@ -52,14 +58,43 @@ public class StreamsClass {
 
         int result = integerList.stream()   //reduce returns a stream with same type that was passed, so can save as a variable
                 .filter(myPredicate)  //can pass filter an explicit object of Predicate you manually defined
-                .map(myFunction)  //pass map the explicit object of Function you manually defined
-                .reduce(0, (a,b) -> a+b);  //takes 2 parameters; the value to start with, and a BinaryOperator accummulator which itself takes 2 values and operation to perform on them to combine
+                .map(myFunction)  //pass map the explicit object of Function you manually defined. map accepts object of Function interface
+                .reduce(0, (a,b) -> a+b);  //takes 2 parameters; the value to start with, and an object of BinaryOperator accummulator which itself takes 2 values and operation to perform on them to combine
                 System.out.println(result);       //a is the accumulated value, b is the next value in the stream
 
 
 
-        Stream parallelResult = integerList.parallelStream(); //will split stream across multiple threads for faster processing. java auto creates the threads
+        Stream<Integer> parallelResult = integerList.parallelStream(); //will split stream across multiple threads for faster processing. java auto creates the threads
                                         //don't use if some values are dependant on earlier values
+
+        //can use forEach + method references & lambdas on streams & parrellstreams
+        List<String> iGottaList = Arrays.asList("wer", "bug", "lll", "nom", "rev");
+        iGottaList.parallelStream().forEach(System.out::println);   //use: splits the operation across many threads if a giant list
+
+        Set<Double> iGottaSet = new HashSet<>(Arrays.asList(4.5, 8.0, 3.9, 2.8, 7.1, 4.5));
+        iGottaSet.parallelStream().forEach(System.out::println);
+
+
+        //Manually defining BinaryOperator Interface to manually pass into reduce() to accept
+        BinaryOperator<Double> bo = new BinaryOperator<Double>() {
+            @Override
+            public Double apply(Double double1, Double double2) {
+                return double1 * double2;
+            }
+        };
+
+        double setProduct = iGottaSet.stream().reduce(1.0, bo);
+        System.out.println("SetProduct = " + setProduct);
+
+        //passing inbuilt wrapper methods into stream methods, so don't have to define logic yourself
+        double sumSet = iGottaSet.stream().reduce(0.0, (a,b) -> Double.sum(a,b));
+        double sumSet2 = iGottaSet.stream().reduce(0.0, Double::sum);
+
+
+        //findFirst = returns first value that passed the filter
+        // returns an 'Optional' whereby java doesn't want to return 0 if your list doesnt contain any matches for the search. can use orElse to say what t return if list doesnt' have
+        Stream<Double> filteredSet = iGottaSet.stream().filter(i -> i/2==0);
+        Optional<Double> firstDouble = Optional.of(filteredSet.findFirst().orElse(0.0));   //orElse is called if findFirst doesnt find any matches
     }
 }
 

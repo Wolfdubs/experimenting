@@ -18,8 +18,20 @@ class Generics<T> {
         System.out.println(thingToPrint);
     }
 
-    public static <T, V> void printGenericWithGenericParameter(T input, V input2){
+    //the <T,V> is just the generic type parameter declaration, telling the method it will work with some generics
+    public static <T, V> void printGenericWithGenericParameter(T input, V input2){    //The <T,V> has nothing to do with return type, it just preps the method to work with 2 generics
         System.out.println(input + " is " + input.getClass() + " and " + input2 + " is " + input2.getClass());
+    }
+
+    //Returning a generic type
+    public static <T, V> T printGenericWithGenericParameter2(T input, V input2){    //Specifies the lone T as the return type
+        System.out.println(input + " is " + input.getClass() + " and " + input2 + " is " + input2.getClass());
+        return input;     //returns the object of the generic T, as the method signature return type
+    }
+
+    //specifying a generic must extends/implements something
+    public static <G extends Object> void myMethod(G g){
+        System.out.println(g);
     }
 
     public static void printList(List<?> list){

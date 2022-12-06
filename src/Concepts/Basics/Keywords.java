@@ -1,5 +1,5 @@
 package Concepts.Basics;
-
+//POJO = plain old java object. is just a regular java class/interface
 public class Keywords {
 
     //STATIC

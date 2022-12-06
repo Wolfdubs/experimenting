@@ -28,6 +28,8 @@ public class InterfaceClass {
     //    e.g. APIs require you to implement all the interfaces they provide
     //Only 3 ways to create object reference of interface; via lambda, or by creating new object of class that implements interface; InterfaceName obj = new ClassImplementing(), or calling a method that returns instance of interface;
     //Marker Interface = interfaces with no methods inside
+    //interface methods are by default public abstract, so don't need to specify that.
+    // Can only define methods in interface if it has keywords 'default' or 'static'. must do this if you modify the interface to add more methods, that currently using classes won't have had their own implementation for, else those classes will break as not implementing the new method
 
     public static void main(String[] args) {
         Writer pen = new Pen();        // can still create references of the interface, but object must be of implementing class
