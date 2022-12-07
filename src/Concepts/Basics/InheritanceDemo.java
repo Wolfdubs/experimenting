@@ -73,7 +73,7 @@ public final class InheritanceDemo extends InheritanceSub{    //final class mean
         icp.overrideMethod();
 
         //2 polymorphism types; compile time & runtime. Objects created during runtime, so decision of implementation is at runtime
-        InheritanceSuper superObject = new InheritanceSub();   //can create an object of sub with a reference of super
+        InheritanceSuper superObject = new InheritanceSub();   //can create an object of sub with a reference type of super
         superObject.overrideMethod();    //the method will still call the implementation of the sub,
         // superObject.subOnly();        // but cannot call any sub only methods not in super because super doesnt know about that class
         superObject = new InheritanceDemo();

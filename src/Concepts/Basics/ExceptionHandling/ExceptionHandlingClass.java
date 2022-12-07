@@ -5,8 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 //2 Exception types
-// - Checked exception: compiler throws error before it runs.
+// - Checked exception: checked for at compile time; compiler throws error before it compiles it. so cannot even compile the code.
 // - Unchecked exception: compiler has not checked it, could throw error while running; compiler won't prompt you. Only exception subclasses of RunTime exception are unchecked
+//Exception extends Throwable (exceptions & errors).
+    //As a Throwable, the exception is thrown up the call stack to the method that called it
+    //throwing an exception doesn't resolve it, it just passes it up the class stack to the method that caused it, until main, where if not caught, the program will fail
+            // so somewhere in the course of throwing exceptions, you want some logic to catch it
+    // Never try to catch errors; they generally refer to unrecoverable problems e.g. OutOfMemory, StackOverflow
+
 public class ExceptionHandlingClass {
 
     public static void main(String[] args) throws IOException {  //throws required for calling buffered reader method
@@ -26,11 +32,12 @@ public class ExceptionHandlingClass {
         catch (Exception e) {   //best practice to end with this. all exceptions inherit from this superclass. dont put at front as then wont ever use the specific exception catches
             System.out.println("something else went wrong");
         }
-        finally {       //finally block will order to execute some code irrespective of an exception occurs or not, so always executes
-            System.out.println("will execute regardless of exception or not");
+        finally {       //finally block will order to execute some code irrespective of an exception occurs or not, so always executes, even if the try contains a return;
+            System.out.println("will execute regardless of exception or not");  //finally is mainly used to close resources/connections
         }
         useBufferedReader();
         tryWithResources();
+        System.out.println(printInt());
     }
 
     public static int useBufferedReader() throws IOException{   //throws Exception is alternative to try-catch. is mandatory, else get compile time error
@@ -73,6 +80,16 @@ public class ExceptionHandlingClass {
         return n;
     }
 
+    private static int printInt(){
+        try{
+            return 3;
+        } catch (Exception e){
+            return 4;
+        } finally {
+            return 5;    //this method will return 5, even though there is nothing wrong with the try. so returns in finally will always override a return in try/catc
+        }
+    }
+
 }
 
 class myException extends Exception{
@@ -83,5 +100,18 @@ class myException extends Exception{
     }
 }
 
+//Unchecked exceptions; you can still add try/catch or throws for these if you want
+class UncheckedExceptionDemo{
+    public static void main(String[] args) {
+        String word = "Echolocation";
+        printLength(word); //no exceptions here
+        String nullWord = null;
+        printLength(nullWord);   // unchecked NullPointerException, thrown at runtime. Java doesn't give any compilation errors.
+    }
+    private static void printLength(String s){
+        System.out.println(s.length());
+    }
+}
 
-//Scanner does exact name as buffered reader, but is cleaner code, has many methods, handles IO exceptions itself, and closes its own resources itself
+
+//Scanner does exact same as buffered reader, but is cleaner code, has many methods, handles IO exceptions itself, and closes its own resources itself
