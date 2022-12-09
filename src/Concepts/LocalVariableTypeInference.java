@@ -22,14 +22,13 @@ public class LocalVariableTypeInference {
 }
 
 
-/*  requires later version of java
-class enhancedSwitch{
+class enhancedSwitch {
     //ability to use switch as an expression
-    public void enhancedSwitch(){
+    public void enhancedSwitch() {
 
         //Usage 1
         String day = "Monday";
-        switch(day){
+        switch (day) {
             case "Saturday", "Sunday" -> System.out.println("Wake up at 1000");   //can include multiple conditions for 1 case
             case "Monday" -> System.out.println("Wake up at 0800");  //don't need break; to prevent execution continuing on to later cases
             default -> System.out.println("Wake up at 0900");
@@ -38,7 +37,7 @@ class enhancedSwitch{
         //Usage 2
         String color = "red";
         String result = "";
-        switch(color){
+        switch (color) {
             case "blue" -> result = "you have chosen sapphire";
             case "green" -> result = "you have chosen jade";
             case "red" -> result = "you have chosen ruby";
@@ -48,7 +47,7 @@ class enhancedSwitch{
         //Usage 3
         String sport = "Swimming";
         String myResult = "";
-        myResult = switch(sport){
+        myResult = switch (sport) {
             case "Hockey" -> "Buy stick";    //directly returns the value "Buy stock" to myResult
             case "Swimming" -> "Buy goggles";
             case "Climbing" -> "Buy chalk";
@@ -58,14 +57,18 @@ class enhancedSwitch{
         //Usage 4 = just like Usage 3, but replace -> with : yield
         String sports = "Swimming";
         String myResult2 = "";
-        myResult = switch(sport){
-            case "Hockey" : yield "Buy stick";    //directly returns the value "Buy stock" to myResult
-            case "Swimming" : yield "Buy goggles";
-            case "Climbing" : yield "Buy chalk";
-            default : yield "Buy shoes";
+        myResult = switch (sport) {
+            case "Hockey":
+                yield "Buy stick";    //directly returns the value "Buy stock" to myResult
+            case "Swimming":
+                yield "Buy goggles";
+            case "Climbing":
+                yield "Buy chalk";
+            default:
+                yield "Buy shoes";
         };
 
     }
+}
 
 
- */

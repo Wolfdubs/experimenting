@@ -59,7 +59,62 @@ public class Keywords {
         Keywords.sharedForAllObjects = "thanks";  //as its a static variable, you can set it directly on the class
         System.out.println(kw2.sharedForAllObjects);
         System.out.println(kw1.assignOnceViaStaticBlock);
+
+
+        //super keyword lessons
+        SuperDemo sd = new SuperDemo("do", 3, 1.1);
+        sd.show();
+        sd.showParent();
+        sd.writeCode(); //subclass can directly call super classes methods (not related to super keyword, just inheritance)
     }
 
+}
+//super = to access items in the super class of the class you're currently working in
+    //2 uses:
+    // To call methods in the superclass that the child class has overridden
+    // To call superclasses constructors (can only do this in subclasses constructors)
+//can only use it inside the subclass implementation, not with objects created of the subclass e.g. while in main()
+//super cannot access any private properties of the superclass
+class SuperDemo extends SuperDemoParent{
+    double trouble;
 
+    public SuperDemo(String name, int id, double trouble) {
+        super(name, id);     //calling the super's constructor to set the fields for the sub (that it inherited from super).
+                            // calls the constructor matching the parameter types passed
+                            //must be done in the 1st statement of the subclasses constructor
+                            //without this, java will still automatically call super's default no args constructor, so as if doing super()
+                                //only have a default no-args constructor if you haven't added one of your own, so must define it if also using others and still want to be able to call super()
+        this.trouble = trouble;}   //normal assignment for the sub's unique field
+
+
+    @Override
+    public void show(){
+        System.out.println("inside sub class");
+        super.show();   //calling the method implementation from the superclass. can do this from any non-static method in the subclass, not just one with the same name
+    }
+    public void showParent(){
+        super.show();
+        writeCode();   //can also call super methods the sub does not override at all. don't need to reference super for this
+       //denyAccess();   private method of super, so sub cannot call it
+    }
+}
+
+class SuperDemoParent{
+    String name;
+    int id;
+
+    public SuperDemoParent(String name, int id) {    //sub can invoke the super's constructors
+        this.name = name;
+        this.id = id;}
+
+
+    public void show(){
+        System.out.println("inside super class");
+    }
+    public void writeCode(){
+        System.out.println("Super is writing code: sub will not overwrite this method");
+    }
+    private void denyAccess(){
+        System.out.println("private method so sub cannot call super on this");
+    }
 }

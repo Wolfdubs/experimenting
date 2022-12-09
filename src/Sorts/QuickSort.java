@@ -6,7 +6,7 @@ import java.util.Random;
 
 /*3 steps;
     1. Chose any number in the array to be the pivot.
-            best implementation is to chose a pivot at random
+            best implementation is to choose a pivot at random
                 then just swap that element with the last element, and partition from there
     2. Partitioning: Move all numbers in the array that are less than the pivot, to the left of the pivot, and rightwards for numbers higher
             means pivot will now be at its final correct index in the array

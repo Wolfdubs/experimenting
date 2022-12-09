@@ -47,14 +47,13 @@ public class AnnotationsDemo {
 
         //using the field annotations of a class
         Field[] fields = nokia.getClass().getDeclaredFields();
-        for (Field f : fields){
-            if(f.isAnnotationPresent(FieldAnnotation.class)){
+        for (Field f : fields) {
+            if (f.isAnnotationPresent(FieldAnnotation.class)) {
                 //get the value of the field with that annotation, in the nokia object
                 Object objFieldValue = f.get(nokia);  //because the field could be of any type, not necessarily a string, must wrap as an object
-               // if (objFieldValue instanceof String stringFieldValue){ //then cast the object to a string; 1st check if the object is already an instance String, and if so, cast it to a string with the name stringFieldValue
-                        //java 11 doesn't support this code above, so instead use the simple casting line below
-                String stringFieldValue = (String) objFieldValue;
-                System.out.println(stringFieldValue.toUpperCase());
+                if (objFieldValue instanceof String stringFieldValue) { //then cast the object to a string; 1st check if the object is already an instance String, and if so, cast it to a string with the name stringFieldValue
+                    System.out.println(stringFieldValue.toUpperCase());
+                }
             }
         }
 

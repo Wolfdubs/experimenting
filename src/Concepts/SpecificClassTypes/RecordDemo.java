@@ -43,7 +43,6 @@ class EmployeeClass {  //replaces having data carrying class; doesn't do any pro
     }
 }
 
-/* records only supported from Java 17+
 //massively simplifies need of creating entire Employee class with so many overridden methods, just to hold 2 variables
 //record is a type of class, like an enum is
 //record is a final class, cannot extend anything further, but can implement interfaces, and can add whatever methods you want
@@ -53,7 +52,7 @@ class EmployeeClass {  //replaces having data carrying class; doesn't do any pro
     //autogenerates public getters as objectname.fieldname (aka no "get")
     //no setters though, as fields are final by default, so immutable. so once created, a record object cannot be changed
     //autgenerates a canonical constructor that assigns the field parameters to the objects fields values.
-            can still define own constructors though, and even override the default one eg. to do validation of values being set, e.g. no id <0)
+     //can still define own constructors though, and even override the default one eg. to do validation of values being set, e.g. no id <0)
     //autogenerates implementations for toString(), equals() and hashCode()
     //you can override these yourself though
 //cannot extend any class. all implicitly extend the Record class, and no multiple inheritance
@@ -61,9 +60,9 @@ class EmployeeClass {  //replaces having data carrying class; doesn't do any pro
 //implicitly are final classes, so no other classes can extend them
 
 
-public record EmployeeRecord(String name, int id) {   //This single line does exactly the same as all the boilerplate above
+record EmployeeRecord(String name, int id) {   //This single line does exactly the same as all the boilerplate above
     public static final String MYFINALSTRING = "bleh";   //can define static fields.
-                                                   But NOT any non-static instance fields (aka they must be static). These must be defined at top inside the () after the record declaration
+                                                 //  But NOT any non-static instance fields (aka they must be static). These must be defined at top inside the () after the record declaration
     public String nameInUpperCase(){    // you can also define instance methods e.g. field1InUpperCase() that can be called on record objects
         return name.toUpperCase();
     }
@@ -74,11 +73,11 @@ public record EmployeeRecord(String name, int id) {   //This single line does ex
 //creating objects of this works exactly the same. behind the scenes, record creates parameterized constructor based on the record body, as well as .equals(), .toString()
 //will disallow default constructor as you specified some state descriptions
 //     but you can create different constructors yourself e.g. This is not recommended as it passes hardcoded values which then become final as records are immutable (as it is just data carrying object)
-    public Employee(){    //no-args constructor
-        this("",0)       //it must call the default parameterized constructor and pass in some specified values
+    public EmployeeRecord(){    //no-args constructor
+        this("",0);       //it must call the default parameterized constructor and pass in some specified values
     }
 
- */
+
 
 public class RecordDemo {
     //many classes are functional -> just do processing
@@ -97,4 +96,4 @@ public class RecordDemo {
         //System.out.println(er.nameInUpperCase);  //calling self-defined instance methods on record object
         //er.recordStaticMethod
     }
-}
+}}
