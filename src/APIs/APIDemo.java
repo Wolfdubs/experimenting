@@ -22,13 +22,17 @@ public class APIDemo {
 //                .POST(HttpRequest.BodyPublishers.ofString("{\"lat\":\"51.362150\",\"lon\":\"-1.184940\"}"))    //specify http method for the request. Pass in a BodyPublisher object. If sending json, add .ofString
 //                .build();
 
-        //can pass in json either manually to the BodyPublishers, or via custom object created using gson
-        JSONBody jb = new JSONBody();
+        //can pass in json either manually to the BodyPublishers, or via custom object created using gson.
+        MyRequestBody jb = new MyRequestBody();
         jb.setLat("51.362150");
         jb.setLon("-1.184940");
         Gson gs = new Gson();                        //use gson to translate the object into json
         String jsonRequest = gs.toJson(jb);
         System.out.println(jsonRequest);
+
+        MyResponseBody rb = new MyResponseBody();
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(rb);
 
 //        HttpRequest postRequest2 = HttpRequest.newBuilder()
 //                .uri(new URI("https://api.openweathermap.org/data/3.0/onecall"))
@@ -50,8 +54,8 @@ public class APIDemo {
         //CREATE THE GET REQUEST
         MyResponseBody rb2 = null;   //This isn't needed for GET request, but is so that if you do a GET using some details from a prior request, this demo's how to pass in a json value from a past request e.g. a jobID
         HttpRequest getRequest1 = HttpRequest.newBuilder()      //uses Builder design pattern so can add all the elements of the request in a chain of method calls
-                .uri(new URI("https://api.openweathermap.org/data/3.0/onecall"))// + rb2.getResponsecode())) //including the rb2 as demo for adding on data parsed from prior requests
-                .header("appid", "529c72ca6de13443b0027f2c0fd23e3e")  //to add headers by KV to the request
+                .uri(new URI("https://api.openweathermap.org/data/3.0/onecall?lat=51.362150&lon=-1.184940&appid=529c72ca6de13443b0027f2c0fd23e3e"))// + rb2.getResponsecode())) //including the rb2 as demo for adding on data parsed from prior requests
+               // .header("appid", "529c72ca6de13443b0027f2c0fd23e3e")  //to add headers by KV to the request
                 .build();   //default httpmethod is GET so don't have to specify it before build()
 
 
@@ -59,17 +63,26 @@ public class APIDemo {
         //SEND THE GET REQUEST
         HttpClient hc1 = HttpClient.newHttpClient();
         HttpResponse<String> getResponse = hc1.send(getRequest1, HttpResponse.BodyHandlers.ofString());
-        System.out.println(getResponse.body());
+        int code = getResponse.statusCode();
+        System.out.println(code);
+        System.out.println(getResponse.body().getClass());
+        System.out.println(getResponse.body());    //getResponse.body returns a String
+        System.out.println(getResponse.body().substring(29,55));
+        int timeZoneIndex = getResponse.body().indexOf("timezone");
+        int timeZoneIndexEnd = (getResponse.body().indexOf("timezone_offset")) - 2;
+        System.out.println(getResponse.body().substring(timeZoneIndex-1, timeZoneIndexEnd));
 
-        //READ JSON RESPONSE
-        MyResponseBody getRB = gs.fromJson(getResponse.body(), MyResponseBody.class);  //saves json response into a MyResponseBody object
-        System.out.println(getRB.getResponsecode() + getRB.getMessage());
+
+//        //READ JSON RESPONSE
+//        MyResponseBody getRB = gson.fromJson(getResponse.body(), MyResponseBody.class);  //saves json response into a MyResponseBody object
+//        System.out.println(getRB.getTimezone() + getRB.getCurrent());
         //to keep polling the API until status==successful, use a while(true) loop and only break if jsonObj.status.equals("success"), or .equals("error")
+
     }
 
 }
 
-class JSONBody{   //using gson to turn the json body of the request into an object that can be passed in to BodyPublishers.ofString()
+class MyRequestBody {   //using gson to turn the json body of the request into an object that can be passed in to BodyPublishers.ofString()
     private String lat;   //fields must have the same name as in the original json
     private String lon;
 
@@ -80,13 +93,25 @@ class JSONBody{   //using gson to turn the json body of the request into an obje
 }
 
 class MyResponseBody {
-    String cod;
-    String message;
+//    String cod;
+//    String message;
+    float lat;
+    float lon;
+    String timezone;
+    int timezone_offset;
+    String current;
 
-    public String getResponsecode() {        return cod;    }
-    public void setResponsecode(String responsecode) {        this.cod = responsecode;    }
-    public String getMessage() {       return message;    }
-    public void setMessage(String message) {        this.message = message;    }
+//    public String getResponsecode() {        return cod;    }
+//    public void setResponsecode(String responsecode) {        this.cod = responsecode;    }
+//    public String getMessage() {       return message;    }
+//    public void setMessage(String message) {        this.message = message;    }
+    public String getTimezone() {        return timezone;    }
+    public void setTimezone(String timezone) {        this.timezone = timezone;    }
+    public String getCurrent() {        return current;    }
+    public void setCurrent(String current) {        this.current = current;    }
+    public float getLat() {        return lat;    }
+    public float getLon() {        return lon;    }
+    public int getTimezone_offset() {        return timezone_offset;    }
 }
 
 

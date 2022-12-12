@@ -153,3 +153,12 @@ Also useful to have one store data in the database, and using another to pull da
 I don't potentially expose unnecessary information to the end user
  */
 
+
+/*
+null
+setting a variable to null means that variable will just be a reference that points to nothing at all in memory
+primitives cannot be set to null; so best practice to always use boolean, not Boolean, to make sure its never null
+avoid initializing variables to null, and avoid having methods ever return null, to avoid NullPointerExceptions arising later
+Can use Optionals to manage null possibilities
+ */
+

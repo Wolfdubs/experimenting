@@ -75,6 +75,13 @@ public class Keywords {
     // To call superclasses constructors (can only do this in subclasses constructors)
 //can only use it inside the subclass implementation, not with objects created of the subclass e.g. while in main()
 //super cannot access any private properties of the superclass
+/*
+Calling just super() calls the constructor in the superclass
+Calling super.someMethod() calls the superclass's implementation of someMethod
+use calls to super from within the subclass's implementation of a method to extend the behaviour of the superclass's method without
+overwriting it completely.  So subclass.someMethod could, at some point, call super.someMethod() which would mean that someMethod
+was augmenting the implementation of someMethod as opposed to replacing it entirely
+ */
 class SuperDemo extends SuperDemoParent{
     double trouble;
 
@@ -118,3 +125,12 @@ class SuperDemoParent{
         System.out.println("private method so sub cannot call super on this");
     }
 }
+
+
+/*
+Java is always pass by value; it passes references by value
+    passing object variables into methods will pass its memory address in, which is a reference to the specified value,
+    so the method operates on the value of the contents of the shared object pointed to by the reference that the object variable holds
+    so method passes in the value of the memory address reference
+    if the method reassigns the variable passed in to another object e.g. with new Object(), then it no longer will refer to the original object in memory refered to by the variable passed in
+ */

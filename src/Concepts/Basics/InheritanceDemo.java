@@ -1,8 +1,15 @@
 package Concepts.Basics;
 
+/*
+Inheritance means that everything in a subclass gets everything from the superclass "for free".
+    That means that we can call all superclass methods on any subclass (but not the reverse!).
+Only protected and public fields and methods are inherited -- private ones are not!
+Java looks in the instantiated type of the object to find an implementation for a method, and if it doesn't find one, it looks up the hierarchy.
+ */
 class InheritanceSuper {       //Super/parent/base.    keyword super() represents it, so it can be called from child class
 
     int i;
+    private int j;   //subclasses will not inherit this private field
     public InheritanceSuper(){
         System.out.println("inside super constructor");
     }
@@ -18,6 +25,9 @@ class InheritanceSuper {       //Super/parent/base.    keyword super() represent
 
     public void overrideMethod(){
         System.out.println("Inside super's override method");
+    }
+    private void superPrivateMethod(){      //subclasses don't inherit private fields or methods
+        System.out.println("Subclasses will NOT inherit this method");
     }
 }
 
@@ -76,6 +86,8 @@ public final class InheritanceDemo extends InheritanceSub{    //final class mean
         InheritanceSuper superObject = new InheritanceSub();   //can create an object of sub with a reference type of super
         superObject.overrideMethod();    //the method will still call the implementation of the sub,
         // superObject.subOnly();        // but cannot call any sub only methods not in super because super doesnt know about that class
+                //Java looks in the declared type of an object to see what methods are available to that object
+                // (it doesn't matter how the object is instantiated)
         superObject = new InheritanceDemo();
         superObject.overrideMethod();       //Dynamic Method Dispatch; whereby runtime polymorphism decisions which implementation to run based on the object class
             /*

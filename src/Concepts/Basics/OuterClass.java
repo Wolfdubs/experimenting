@@ -1,16 +1,18 @@
 package Concepts.Basics;
 
+//Inner class is defined inside an inner class, and is a property of the outer class, just like fields and methods
 public class OuterClass {
 
     int a;
     public void show(){}
 
     /*3 types of inner classes
-        - Member classes
+        - Member (non-static) classes
         - Static classes
-        - Anonymous classes
+        - Anonymous classes (method local)
     //Inner classes useful only functionality will only help outer class, only works to help outer class*/
-    class Inner{             //is a member class contained by the outer class
+    public class Inner{             //is a member class contained by the outer class
+        int innerField = 0;
         public void display(){
             System.out.println("In inner class' Display Method");
         }
@@ -24,10 +26,13 @@ public class OuterClass {
 
     public static void main(String[] args) {
         OuterClass out = new OuterClass();
+        //Creating objects of inner class:
         //Inner inner = new Inner();     cannot create an inner class directly
+        //if inner class is non-static, create it similarly to accessing any non-static field/method of the outer class
         Inner inner1 = out.new Inner();   //must create the outer class object, then, as new Inner() is an object of the inner class, you can only access it via an object of the outer class
         inner1.display();    //now can call inner class methods
-        OuterClass.Inner2 innerStatic= new OuterClass.Inner2();  //static inncer classes dont need object of outer to call inner's constructor
+        //if inner class is static
+        OuterClass.Inner2 innerStatic= new OuterClass.Inner2();  //static inner classes dont need object of outer to call inner's constructor
         innerStatic.displayStatic();
 
 
@@ -54,9 +59,11 @@ public class OuterClass {
         OuterClassDemo ocd = new OuterClassDemo(){
             @Override
             public void show() {
-                System.out.println("inside overridden anonymous class show method");;
+                System.out.println("inside overridden anonymous class show method");
             }
         };
+        OuterClassDemo outerClassDemo = new OuterClassDemo();
+        outerClassDemo.MethodContainingAnonymousClass();  //this will load the anon class inside the method and execute the methods inside that anon class
 
     }
 }
@@ -82,5 +89,16 @@ class OuterClassDemo {
 
     static class StaticInnerClassDemo{
         int k;
+    }
+
+    public void MethodContainingAnonymousClass(){
+        class AnonymousClass{   //only accessible from right inside the method where its declared
+            String anonVariable = "qwerty";
+            public void anonMethod(){
+                System.out.println("inside anonymous class' own method");
+            }
+        }
+        AnonymousClass ac = new AnonymousClass();
+        ac.anonMethod();
     }
 }

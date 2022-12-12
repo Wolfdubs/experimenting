@@ -84,7 +84,7 @@ class FirstClass{
 }
 
 class SecondClass extends  FirstClass{
-    @Override   //useful if method name could be misspelled, as will throw compile time error highlighting the method is not the same name
+    @Override   //useful if method name could be misspelled, as will throw compile time error highlighting the method is not the same name. but not required
     @SuppressWarnings("uncheck")  //will suppress warnings shown creating an ArrayList with no type specified
     public void show(){
         System.out.println("implementation in SecondClass");

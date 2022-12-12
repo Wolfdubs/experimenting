@@ -31,6 +31,7 @@ public class InterfaceClass {
     //interface methods are by default public abstract, so don't need to specify that.
     // Can only define methods in interface if it has keywords 'default' or 'static'. must do this if you modify the interface to add more methods, that currently using classes won't have had their own implementation for, else those classes will break as not implementing the new method
 
+
     public static void main(String[] args) {
         Writer pen = new Pen();        // can still create references of the interface, but object must be of implementing class
         //cannot create object of the interface (except via anonymous class & lambda, as they dont have a constructor
@@ -58,7 +59,7 @@ interface Demo1{
     default void show(){
         System.out.println("Inside Demo1 interface");
     }
-    static String LANGUAGE = "Java";   //variables defined inside an interface auto become a constant; by default it final
+    static String LANGUAGE = "Java";   //variables defined inside an interface auto become a constant; by default its final and static
 }
 
 interface Demo2 {
@@ -79,3 +80,10 @@ interface StaticDemo {
         System.out.println("Inside static method of interface");   //call it just via Interface.method
     }
 }
+
+//EXTRACTING INTERFACES
+/*
+If you write a class, and realize you want many similar classes, governed by shared principles, you can 'extract the interface' from the
+existing class, to generate an interface with the methods that class has, so that other similar classes must then implement them
+Is easier than writing the interface from scratch
+ */

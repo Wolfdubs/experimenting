@@ -11,6 +11,14 @@ package Concepts.Basics;
         // if you need to store a generic ArrayList of the parent abstract class type, e.g. ArrayList<Animal> where you can store any concrete subclasses in the same array
     //interface = many unrelated classes that need to all implement the specified method
 
+/*
+Abstract Class sits in between a regular class and an Interface.  It is like a class, in that it can specify behaviour and data.
+It is like an interface, in that it can have abstract methods (these are not implemented, and just have a semicolon instead of { }) and
+cannot be instantiated
+If an abstract class implements an interface, the abstract class does not need all the methods from the interface to be present,
+but all the non-abstract subclasses of the abstract class would need to implement the interface in full.
+ */
+
 abstract class Animal {
 
     int weight;
@@ -19,7 +27,7 @@ abstract class Animal {
     //abstract methods can just be declared - don't need implementation {}
     //can only do this in abstract classes
     public abstract void eat();
-    public abstract String sleep();
+    abstract String sleep();
 
     //abstract class can include concrete methods
     public void move(){System.out.println("moving");
