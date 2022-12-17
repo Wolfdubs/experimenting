@@ -38,6 +38,9 @@ public class ExceptionHandlingClass {
         useBufferedReader();
         tryWithResources();
         System.out.println(printInt());
+
+
+
     }
 
     public static int useBufferedReader() throws IOException{   //throws Exception is alternative to try-catch. is mandatory, else get compile time error
@@ -67,12 +70,12 @@ public class ExceptionHandlingClass {
         {
             n = Integer.parseInt(bufferedReader.readLine());   //.readLine() can cause an exception, due to invalid user input for IO
             if (n>10){
-                throw new myException(); //you can manually call exceptions too, even call yur own custom exceptions, and catch it
+                throw new MyCustomException(); //you can manually call exceptions too, even call yur own custom exceptions, and catch it
             }
             if (n<-10){
-                throw new myException("passing in message"); //calling alt constructor for custom exception
+                throw new MyCustomException("passing in message"); //calling alt constructor for custom exception
             }
-        } catch (myException e){
+        } catch (MyCustomException e){
             System.out.println("throwing custom exception " +e.getClass());
         } catch (Exception e){
             e.printStackTrace();
@@ -89,16 +92,10 @@ public class ExceptionHandlingClass {
             return 5;    //this method will return 5, even though there is nothing wrong with the try. so returns in finally will always override a return in try/catc
         }
     }
-
 }
 
-class myException extends Exception{
-    String message;
-    public myException(){}
-    public myException(String str){   //lets you pass a message to the custom exception from the call
-        super(str);                //passes the string to Exception class, whose own public Exception(string) constructor calls Throwable, which prints the message
-    }
-}
+
+
 
 //Unchecked exceptions; you can still add try/catch or throws for these if you want
 class UncheckedExceptionDemo{

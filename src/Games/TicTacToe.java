@@ -47,11 +47,15 @@ public class TicTacToe {
     }
 
     public static char userChoiceOfChar() {
-        System.out.println("\nWould you like to be X or O");
-        Scanner scanner = new Scanner(System.in);
-        String userString = scanner.nextLine();
-        char[] userStringAsChar = userString.toUpperCase().toCharArray();
-        char userCharChoice = userStringAsChar[0];
+        String userString;
+        char userCharChoice;
+        do {
+            System.out.println("\nWould you like to be X or O");
+            Scanner scanner = new Scanner(System.in);
+            userString = scanner.nextLine();
+            char[] userStringAsChar = userString.toUpperCase().toCharArray();
+            userCharChoice = userStringAsChar[0];
+        } while (!userString.equals("x") && !userString.equals("X") && !userString.equals("O") && !userString.equals("o"));
         System.out.println("You have chosen to play as " + userCharChoice);
         if (userString.equals("X") || userString.equals("x")) {
             computerChar = 'O';

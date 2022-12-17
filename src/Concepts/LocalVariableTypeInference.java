@@ -57,7 +57,7 @@ class enhancedSwitch {
         //Usage 4 = just like Usage 3, but replace -> with : yield
         String sports = "Swimming";
         String myResult2 = "";
-        myResult = switch (sport) {
+        myResult2 = switch (sport) {
             case "Hockey":
                 yield "Buy stick";    //directly returns the value "Buy stock" to myResult
             case "Swimming":
