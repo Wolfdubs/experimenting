@@ -1,7 +1,7 @@
 package Concepts.Basics.Variables;
 
 
-//for creating custom ranges e.g. months, colors, mammals
+//for creating custom ranges e.g. months, colors, mammals of things that wont change
 //better than defining constant variables inside interface, as caller won't know the type the interface has defined the variable as
 //in back-end, java creates a class in which each enum value is created as a static final object
 // static is why to refer to the enum requires the enum class name too e.g. EnumDemo.MULE

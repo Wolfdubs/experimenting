@@ -20,5 +20,6 @@
     </orderEntry>
     <orderEntry type="library" name="lombok" level="project" />
     <orderEntry type="library" name="gson-2.10" level="project" />
+    <orderEntry type="library" name="okhttp-5.0.0-alpha.11" level="project" />
   </component>
 </module>

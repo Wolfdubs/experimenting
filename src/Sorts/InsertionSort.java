@@ -2,6 +2,7 @@ package Sorts;
 
 import java.util.Arrays;
 
+//best performance of the elementary sorts
 public class InsertionSort {
     public static void main(String[] args) {
         int[] myArray = {5,1,8,4,0,8,3,2,8,9,6,1,4,2,0,4,1,8,5,4,7,9,3,2,3,8,8,5,0,6};

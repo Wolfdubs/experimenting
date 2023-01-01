@@ -1,4 +1,4 @@
-package Concepts.Basics;
+package Concepts.Basics.InputOutput;
 
 import java.io.*;
 

@@ -162,3 +162,78 @@ avoid initializing variables to null, and avoid having methods ever return null,
 Can use Optionals to manage null possibilities
  */
 
+/*
+	src is compiled into bytecode, which the JVM runs on the machine
+	by default all decimals are double
+		could also store whole numbers in doubles, but will add a .0
+		cast to int will truncate the decimal
+	float, must end with f; float num = 5.5f;
+	short: use if you are certain value will be between -32000 - 32000
+	byte; store values from -128 - 127
+	long; 8 bytes
+	char: can assign to a letter e.g. 'A' or directly to an ASCII character
+		so can do a++ to increment to next letter in ASCII
+	Constructor:
+		allocates to heap memory how much memory the object will need
+		will never return anything, hence don’t include return type
+		default no-args constructor, unless you add one
+			this will only assign memory to heap for the object, not assign values
+		can use to initialize values
+		call it via new object();
+		constructor overloading - can have many constructors if they have different parameters
+	psvm: public so can call from anywhere, static as wouldn’t work to have to create objects to run it against first, void as returns nothing as it encompasses the full execution, main keyword tells java to run from there. takes string[] args because strings can accept any input type, and [] allows for any range of inputs
+	this keyword: specifies that the variable is the instance variable within the object, not a local variable
+		this represents the current object
+	static variables: mean the variable is not specific to the specific object, but is true for all objects of the class. all objects share the same value
+	static methods don’t need objects to call it on
+	Inner classes - classes can contain other classes, which will be a member class
+	2D Array
+		Jagged Array = if sub-arrays are of different sizes
+	VarArgs = to allow one method to accept different numbers of parameters. e.g. an add that can take as many parameters as you pass in
+		use methodDefintion(int … i)
+			when called, parameters passed in to the call are sent to method defintion as an array
+		permit variable length arguments
+	Inheritance: sub class extends super class
+		sub has access to all method implementation from super class
+	Package names should be reverse of your domain
+	Access Modifies
+		Types;
+			public: any class or package
+			private: specific class
+			protected: only same package or any subsiding class; extends/implements
+			default: specific package
+				difference vs protected; protected can be accessed outside the package by extending/implementing classes
+		classes can be abstract, final, or public, or with nothing at all (will leave it with default))
+			cannot be private or protected
+		by default, unless otherwise specified, class/variable/method cannot be accessed outside the package. default = package private, so cannot reassign variables / run methods outside their package
+
+ */
+/*
+Heap = where created objects are stored
+Non-heap = stores class & method definitions
+            each thread has its own stack, sitting in non-heap
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

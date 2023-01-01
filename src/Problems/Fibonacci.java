@@ -9,7 +9,7 @@ public class Fibonacci {
             return n;
         }
         return (fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2));
-        //this is slow as the reclaculations of values you have already done, means it is inefficient, with exponential increase
+        //this is slow as the recalculations of values you have already done, means it is inefficient, with exponential increase
     }
 
 

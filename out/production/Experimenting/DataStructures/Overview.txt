@@ -1,0 +1,98 @@
+LinkedList
+	limitation of array -> cannot change size
+		but is fast for accessing/updating values directly
+	rather than having a dynamic array that keeps needing re-sizing, and potential memory waste
+	data stored anywhere, not in contiguous memory locations
+		separate memory locations of data, that are linked together with pointers
+	doubly linked list (nodes point to next and previous nodes)
+	singly linked list (nodes only point to next node)
+	Structure:
+		composed as nodes
+		start with a head pointing to 1st node
+		each node has data, and address of next node
+		pointer in last node will just be null
+	add nodes;
+		at end:
+			create new node, makes its pointer point to null
+			make old last node point to it
+		at start:
+			make new node, make head point to it
+			make new node point to old 1st node
+		in middle:
+			create node, make it point to next node, and have prior node point to it
+	is slower than array as no random access, must traverse -> search = O(n)
+
+	Implementation
+		Classes: Node - must create node class to create nodes
+				each with data, and reference to next node object
+			    LinkedList
+				with methods
+					insert(3) #inserts at end
+						must 1st create a node
+						this node doesn't need to have a pointer to a next node, as it’s the last one
+						must check if it is the 1st node, by seeing if head==null (because head hasn’t been pointed to anything)
+							if so, make head node become this new node
+							else, must traverse the nodes in the list to get to the last one
+								start at head and jump to the next nodes until node.next == null, by while node.next!=null
+								once at last node, update its pointer to point to the new node
+					insertAt(3, 12)
+						loop until 1 before the entered index, to get to the node just before where you insert and update its next reference to point to the new node, and set the node nodes.next to point to that prior nodes next
+					insertAtStart(3),
+					delete()
+						just change the .next point of the previous node to go to the deleted nodes next node, to skip it and cut it out of the list
+					printList()
+						traverse nodes from head to last node where n.next==null
+						while traversing, print each node and then shift to next node
+				always contains a head node which is just a variable to refer to the 1st node
+			    Main
+				main method that creates objects
+
+Stack
+	push, pop, peek
+	LIFO
+	Implementation
+		could use array
+			either fixed, or arraylist
+			dynamic array
+				once size overruns, it creates a new array of 2x the size, and copy values over to it
+					same for shrinking if usage is below 1/4
+		could use linkedlist
+		use variable top to track last added element
+		must make sure push wont try to add element beyond array size, or that pop is applied to empty array
+
+Queue
+	enqueue, dequeue, peek, size, isEmpty
+		enqueue -> always insert element wherever end pointer points
+		dequeue -> remove element wherever front pointer points
+			once you hit the end of the array, must loop end pointer back around to front
+	FIFO
+	Implementation
+		could use array
+			either fixed, or arraylist
+			dynamic array
+				once size overruns, it creates a new array of 2x the size, and copy values over to it
+					same for shrinking if usage is below 1/4
+		could use linkedlist
+		variables to track front and end of queue, and size
+			end should always point to most recently added element
+				so every element added -> end++
+			front should stay on the last added element, until it is dequeued
+				every deletion -> front++
+
+Tree
+	root node has references to other nodes, which themselves have references to other nodes, connected by edges
+	leaf nodes don’t refer to any other nodes
+	traverse & store data starting from root
+	trees have height and depth
+		depth = distance of node from root
+		height = distance of node from its leaves. height of root = height of tree
+	binary tree
+		each node has maximum of 2 nodes
+		Strict binary tree
+			every node has either 2 children, or 0 children
+		Full binary tree
+			every node has 2 children, except leaf nodes, which should all be on the same level
+		Complete binary tree
+			all leaf nodes are on level n, or level n-1
+			so maximum distance between leaf nodes if 1 level
+

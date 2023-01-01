@@ -1,0 +1,207 @@
+public static void main(String[] args)
+	Methods require an object be created that they can be called upon
+		static methods don't need an object, and can be called directly on the class; class.method()
+	JRE calls main() to run
+	public; so it can be called by something from outside the class (ie by the JRE)
+	static; can call the method on the class without needing an object of the class to run upon, rather than on an instance of the class
+	void; main() returns nothing
+	main() name so JRE knows what to run
+	String[] args; an array of strings that can be passed into the program
+	can enter arguments via IDE config, can do same in powershell by running the file and passing in the arg afterwards
+
+
+Constructors
+method used to created new objects of a class
+java creates by default an invisible no-args constructor when you create a class, to create new empty objects, so don't need to type a new one unless need to change it to include arguments and set values on the object
+	if you specify your own custom constructors, java won't provide to default no-args anymore
+method name must match class, and have no return type
+this.field specifies that it is the field of the specific object, being assigned to the argument passed in
+can have many constructors just with different parameter types
+for classes without ever needing an object e.g. a Constants class -> make a private no-args constructor, so it can never be instantiated as an object
+
+
+Enums
+enumeration
+when you have pre-defined set of unchanging values
+	write values as a comma separated list
+	convention is upper case
+
+can create objects of the enum (different to doing so for a class, don't use 'new')
+
+	the day' variable then gets the value in the enum of THURSDAY
+has built-in functionality
+	e.g. enum.values() returns all possible enum values
+
+
+enums can have fields and constructors
+	should set fields as final so they cant be changed outside of the enum file
+	now to create an enum, you must pass in the argument expected by your constructor
+
+
+
+Final
+	classes
+		prevents any other classes trying to inherit it to be child classes that extend it
+		e.g. public final class
+		often for constants/variables classes, but otherwise, don’t do it
+	methods
+		prevents child classes overriding the method body in the parent class; child must use the parent's implementation
+	variables
+		a variable that can only be assigned a value 1 time
+		used to create constants; outside any method, below class declaration
+
+Input/Output
+	BufferedWriter & BufferedReader
+		must tell BufferedWriter that it is to write to a file (as it can write to many outputs) by passing in a New FileWriter
+		tell FileWriter what file to write by passing it in
+		then just call write() on the writer object and pass in any text
+		then close the writer
+
+
+
+			#will read every line of the file until at the end, the line is null, so while loop exits
+
+Input
+	Scanner myScanner= new Scanner(System.in)
+	int myInt = myScanner.nextInt(); or myScanner.nextLine();
+	myScanner.close();
+
+.equals() vs ==
+	== compares underlying memory location, so cannot use for objects
+	== can be used for primitives as they are call by value, not reference
+	.equals() is for inbuilt objects, but must be implemented by you for custom classes
+
+Insertion Sort
+	iterate through unsorted array, sequentially copying each variable to a temp variable, and comparing to the prior element to see if it is less or greater.
+	if it is less than, shift the greater element in the array up 1 position rightwards, and compare the temp against the next one along the left.
+	once get to element that is less than, just insert the temp there
+	O(n^2)
+
+Generics
+	Classes:
+		To create classes that can created with many different data types e.g. printing ints, strings, doubles, objects
+		allow for 1 class that is flexible for many types
+		don’t work for primitives, so must use wrapper classes
+		used for collections e.g. ArrayList<> where you specify the data type for the ArrayList
+			it is good that ArrayLists must have a specified data type, because if you could any type of object to the same ArrayList it wouldn’t be type safe, and you would have problems resulting
+			so generics allow for type safety; you always know what type you are dealing with
+		create:
+			at class declaration, add <T> //T is a convention
+				T represents the data type that the class will operate on
+
+
+		Can have multiple generics
+
+
+		Use: when creating the object to run the method on, pass in the data type to stand in for T
+
+
+		Bounded Generics:
+			you can limit generics so it doesn’t allow any possible type, but only groupings of data types by specifying the type they must extend
+
+				#will only allow creation of objects using child classes of Animal type
+			now any method available to the extended type will be available in the new generic class object, because you know e.g. thingToPrint will be an Animal, so you know it will have those methods
+
+			Can do same with interfaces also via 'extends'
+			can have a list of extends
+
+
+	Methods:
+		pass in generic specifier
+
+		can now call the method with any data type as a parameter
+		can add multiple generics, and return a generic
+
+
+	Wild Cards;
+		to make methods that can work on lists of any data type
+		specify parameter type as List<?> to say it is a list of unknown types
+		use when you don't know what types the list will contain
+
+		can bound them too
+
+
+
+Multithreading
+	lets program execute multiple paths of code concurrently
+	threads all run at exactly same time, so random order in output
+	if one thread dies with an exception, it doesn’t effect any others
+	2 ways to crate threads
+		have a class extend thread class
+			then override the parent thread class's run() method
+				add @Override as best practice
+				inside body, add code to execute across multiple threads
+				for objects to the run this with multithreading, must call object.start()
+					java will create a new thread and branch off the run(), but proceed to continue down code in the main thread in main()
+			can assign a number to thread objects to differentiate them in output
+			drawback: can only extend 1 class, so it uses a valuable slot
+		have class implement Runnable interface
+			cannot call start() on your object as that is only from Thread parent class
+			create a new Thread object and pass it the object of your class, then call start() on that Thread object
+			advantage: can implement as many interfaces as desired
+			drawback: must create new Thread object in calling class main()
+	Threads.sleep(time in ms) -> make threads sleep
+	thread.join() -> method waits for thread to die, so calling program will stop until the thread completes. so use if you only want code to continue once thread completes
+	thread.isAlive() -> returns boolean of if thread is still running or not
+
+	Other multithreading concepts = Concurrency API, synchronizing, using Monitors (Locking), using CyclicBarriers , Parallel Streams (findAny vs. findFirst), thread pools
+
+LinkedList vs ArrayList
+	both implement List interface and are part of Collections
+		so both support all the same methods
+	only differ in their implementation
+	ArrayList uses array as underlying data structure
+		dynamically resizing; can take lots of time & resources
+		default initial capacity of 10
+		much faster for finding elements, very slow for update; add/remove
+			finds elements in constant time due to random access as can go straight to any element
+			slow updates as must shift all later elements back/forward by 1 index
+	LinkedList
+		instead of an array, it is a series of independent nodes that pointer reference to the next node
+		LL itself just points to the 1st node
+		LL in Java is a doubly linkedlist, so each node points to previous and next nodes
+			and in Java, also a pointer to the tail
+		so is much faster for updating; adding/removing elements
+			just creates a new node and updates the next & previous nodes pointers to rewire the new node in
+		slow for finding elements as much traverse entire list until it gets to the element
+
+Interfaces
+	Like a contract that any class implementing to interface, must provide their own implementation of the methods in that interface
+	can pass the interface name as a parameter type to a method, so to call that method you must pass in an object of a class that implements that interface
+	Must make a class implement the interface, then implement the interfaces methods, then create an object of that class, then pass in that object as a parameter to the static method that takes an object that implements the interface, to run the objects implementation of the given interface method
+	Functional interface; interface with only  single abstract method (SAM interface)
+		but can have additional static & default methods
+		abstract method = has no implementation
+
+Lambdas
+	just pass in a specific implementation of an interfaces method as the interface parameter, rather than the many steps needed specified in Interfaces above
+	so instead of passing the method an implementing object with the method implementation to use, just pass it the implementation itself
+	Instead of passing in an object that contains a specific implementation, just pass in the implementation directly
+	so instead of passing in an object with the implementation to use, just pass in the implementation itself
+	Details:
+		don’t pass in the method access level (public, private)
+		or the method name, as only need what it does
+		or the return type because compiler auto figures it out
+		only include;
+			parameters
+			method body
+			connected by an arrow
+			ie (parameters) -> {method body}
+	Can save the lambda like any other object, to save that implementation of the interface method
+		can then pass in the lambda interface object to the interface method
+
+	Let you use method implementations just like objects; can save them as variables, pass into other methods
+	If implemented method has a parameter, must argument inside () in lambda
+
+	Lambdas can only be used in the context of a functional interface (only 1 abstract method)
+	Cannot use lambdas for interfaces with more than 1 abstract method
+		because lambdas only let you define implementaton of 1 method, so if interface has multiple, java doesn’t know which one the lambda is defining
+		but can solve this via anonymous inner classes
+
+	shortcut to defining implementation of a functional interface, rather than having to create a class that implements the interface, adding implementation for its method, and creating an object of that class and calling the method
+	effectively treat code as a parameter
+	Use when you want to pass an implementation into a function that accepts an object of a functional interface
+		1. need functional interface
+		2. need a method that accepts an object of the functional interface type
+		3. can then pass lambda function directly into that method
+

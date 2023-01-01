@@ -2,6 +2,8 @@ package Concepts.Basics;
 //POJO = plain old java object. is just a regular java class/interface
 public class Keywords {
 
+    //cannot use 'this' in static methods or for static variables
+
     //STATIC
     String differentForEachObject;
     static String sharedForAllObjects;    //mean the variable is not specific to the specific object, but is true for all objects of the class. all objects share the same value
@@ -42,6 +44,19 @@ public class Keywords {
     final double PI = 3.141;   //constant, cannot be changed. can also just declare in class and assign in constructor call
     //final class cannot be extended; see InheritanceDemo class demo
     //final method cannot be overridden; see InheritanceDemo class demo
+
+
+    //INSTANCEOF
+    //boolean that returns if the thing on the left is an instance of whatever is on the right //can use for classes & interfaces
+    Keywords k = new Keywords();
+    boolean isKeyword = k instanceof Keywords;
+    boolean isString = "ssdsd" instanceof String;
+    boolean isInt = (Integer)6 instanceof Integer;
+    //using with sub&super classes
+    SuperDemo sd = new SuperDemo("a", 1, 2);
+    boolean isSubOfSuper = sd instanceof SuperDemoParent;
+
+
 
 
 

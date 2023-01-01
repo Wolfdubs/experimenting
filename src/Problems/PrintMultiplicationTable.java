@@ -5,17 +5,23 @@ import java.util.Scanner;
 //print full multiplication table for user input integer
 public class PrintMultiplicationTable {
     public static void main(String[] args) {
-        int number = getUserNumber();
-        int[][] table = calculateMultiplicationTable(number);
-        printTable(table);
+        while (true) {
+            int number = getUserNumber();
+            int[][] table = calculateMultiplicationTable(number);
+            printTable(table);
+            System.out.println("Exit? (yes/no)");
+            if (new Scanner(System.in).nextLine().equals("yes")) {
+                break;
+            }
+        }
     }
 
     public static int getUserNumber(){
+        System.out.println("Please enter a number");
         Scanner scanner = new Scanner(System.in);
         int number = 0;
         boolean validNumber = false;
         do {
-            System.out.println("Please enter a number");
             String numberString = scanner.nextLine();
 
             try {

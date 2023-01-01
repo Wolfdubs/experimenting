@@ -2,7 +2,7 @@ package DataStructures.List.LinkedList;
 
 public class LinkedList {
 
-    Node head;
+    Node head;  //by default this will be null when the default no-args constructor is called
 
     public void insert(int num){
         Node node = new Node(num, null);
@@ -55,6 +55,34 @@ public class LinkedList {
         n.next = n.next.next;
     }
 
+    public Node deleteValue(int n){
+        Node node = head;
+        Node previousNode = head;
+
+        if (head.data==n){
+            head=head.next;
+        } else {
+            while (node!=null){
+                if (node.data == n){
+                   previousNode.next = node.next;
+                } else {
+                    previousNode = node;
+                    node = node.next;
+                }
+            }
+        }
+        return node;
+    }
+
+    public Node deleteFirst(){
+        Node reference = head;
+        if (!isEmpty()){
+            head = head.next;
+        }
+        return reference;
+
+    }
+
     public void printList(){
         Node node = head;       // sets node iterator to start at head node
         System.out.println("\n");  // just for formatting to print blank line
@@ -62,6 +90,23 @@ public class LinkedList {
             System.out.print(node.data + ", ");    // prints out nodes data
             node = node.next;                 // jumps to next node
         }
+    }
+
+    public boolean isEmpty(){
+        return (head ==null);
+    }
+
+    public Node search(int data){
+        Node node = head;
+        if (!isEmpty()) {
+            while (node != null) {
+                if (node.data == data) {
+                    return node;
+                }
+                node = node.next;
+            }
+        }
+        return null;
     }
 
     // n finishes pointing to the last existing node

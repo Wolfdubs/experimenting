@@ -16,8 +16,8 @@ public class TicTacToe {
     //determine when game is over; either a 3-in-a-row or full board
     public static void main(String[] args) throws InterruptedException {
         char[][] board = {{' ', ' ', ' '},
-                {' ', ' ', ' '},
-                {' ', ' ', ' '}};
+                          {' ', ' ', ' '},
+                          {' ', ' ', ' '}};
 
         userChar = userChoiceOfChar();
         do {

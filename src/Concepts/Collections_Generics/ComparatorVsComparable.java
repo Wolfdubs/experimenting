@@ -11,7 +11,7 @@ public class ComparatorVsComparable {
         cars.add(new Car("BMW", 25000, 130)); cars.add(new Car("Porsche", 80000, 190));
         cars.add(new Car("Ford", 10000, 90)); cars.add(new Car("Lambourgini", 150000, 250));
 
-        //use Collections class sort() and pass in a list. sort() will then use logic in that lists compareTo()
+        //use Collections class static method sort() and pass in a list. sort() will then use logic in that lists compareTo()
         Collections.sort(cars);  //sort() only accepts Objects that implement Comparable. Must specify the criteria to sort by
                                 //so to pass in a list, your class must implement Comparable interface and override compareTo()
                                  //sort() swaps based on output of 1 or -1 from compareTo() within your class
@@ -81,6 +81,6 @@ class Car implements Comparable<Car>{
     @Override
     public int compareTo(Car c){   //must override the SAM compareTo with custom implementation
         //this.price > c.price
-        return this.getPrice()>c.getPrice() ? 1 : -1;  //despite passing in only 1 object, it compares the object that calls compareTo against the passed in object
+        return this.getPrice()>=c.getPrice() ? 1 : -1;  //despite passing in only 1 object, it compares the object that calls compareTo against the passed in object
     }
 }

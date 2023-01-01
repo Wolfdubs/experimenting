@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="okhttp-5.0.0-alpha.11">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../JarFiles/okhttp-5.0.0-alpha.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="jar://$PROJECT_DIR$/../JarFiles/okhttp-5.0.0-alpha.11.jar!/" recursive="false" />
+  </library>
+</component>

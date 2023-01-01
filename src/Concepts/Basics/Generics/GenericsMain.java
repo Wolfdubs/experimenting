@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//Placeholder for a class
+//used with collections because the collection can hold different data types
 class Generics<T> {
 
     T thingToPrint;
@@ -69,6 +71,16 @@ public class GenericsMain {
         Generics.printList(strList);
 
     }
+}
+
+class Pair<KeyClass, ValueClass>{
+    KeyClass key;
+    ValueClass value;
+    public Pair(KeyClass kc, ValueClass vc) {
+        key = kc;
+        value = vc;
+    }
+
 }
 
 

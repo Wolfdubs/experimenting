@@ -16,7 +16,7 @@ public class LotteryGame {
     public static void main(String[] args) {
 
         int[] lotteryNumbers = generateLotteryNumbers();
-     //   Arrays.stream(lotteryNumbers).forEach(System.out::println);
+        Arrays.stream(lotteryNumbers).forEach(System.out::println);
         int[] userGuesses = userGuesses();
         compareLotteryNumbers(lotteryNumbers, userGuesses);
 
