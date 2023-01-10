@@ -8,6 +8,10 @@ Collection interface used to create collections of elements
     Collection interface -> List interface -> ArrayList class
     has inbuilt methods e.g. size(), contains(), isEmpty(), iterator(), toArray(), add() returns boolean, remove()
 Collections in-built class
+To retrieve custom Objects from HashTable, must override the equals() and hashCode() methods for your custom object, else java will see that the object
+you pass in to search for isn't the same reference as the object in the table, so returns nothing and can throw exception
+    because hashTables get() uses the equals() of the object to get its equivalent, so must override Object class' default to check the values
+    must override equals() and hashCode() together as they work together
  */
 public class CollectionsClass {
 

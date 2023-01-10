@@ -115,6 +115,13 @@ public class Variables {
 
     */
 
+}
+
+class myPOJO{   //is a POJO class as no extends, implements or annotations
+    int age;
+    String name;
+}
+
     /*
     Java Bean
         Must have
@@ -122,13 +129,10 @@ public class Variables {
         2. All properties must be private
         3. Public getters & setters
         4. Must be serializable
+        Why: used to encapsulate many objects into a single object for transmission, can access from 1 place
+            easy to expose to consumers
+            Bean setters are basis of Dependency Injection
      */
-}
-
-class myPOJO{   //is a POJO class as no extends, implements or annotations
-    int age;
-    String name;
-}
 
 class myJavaBean implements Serializable {   //means class can be written to DBs & files
     private int age;

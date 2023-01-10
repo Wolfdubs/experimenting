@@ -112,3 +112,40 @@ class UncheckedExceptionDemo{
 
 
 //Scanner does exact same as buffered reader, but is cleaner code, has many methods, handles IO exceptions itself, and closes its own resources itself
+/*
+A call-stack is formed when one method calls another.  If a() called b(), we would see b() stacked on top of a().
+We can then say that the return path out of b() would be back down into its calling method, a().
+Exceptions are not just error messages. Exception mechanisms in a programming language let us write code to recover from errors,
+and resume normal execution of the code.
+Exceptions are objects that are "thrown" by a method. This is done with the keyword throw, and then the construction of a new exception object
+(new Exception()).  This would look like: throw new SomeException();
+Throwing the exception object causes an alternate return path to be taken: once an exception is thrown, none of the subsequent code in that
+method is executed.  Instead, the exception object can be thought of as falling back down the return path to the calling method.
+Normal execution through the normal return path does not resume until the exception is caught.  If the exception is not caught it keeps
+falling down the alternate exceptional path until the program effectively crashes.
+Exceptions can be caught by a method with the keywords try and catch.  First, we try to call the method by placing the method call within the
+try's block of code, and if an exception is thrown in that method, then we catch that exception and execute the code in the catch block.
+A method should only catch an exception if it can actually do the work to recover from (handle) that exception.  If it is not appropriate for
+the current method to deal with an exception, and recover execution, then it should just pass it along, letting the exception object keep
+falling down the return path.
+In that case, the method would not use the try/catch block. Instead, the method would be indicated as thrown in the method signature
+Specifying 'throws Exception' in method signature tells java that instead of the call stack following c() -> b() -> a() -> main()
+    it could just be c() throwing that exception down to main if not caught by b() or a() if they have code to deal with it
+    Throws will throw the exception down the call stack until it finds a method that catches it
+Exceptions can be thrown from anywhere, including inside of a catch block.
+    Just like exceptions thrown from elsewhere, no subsequent code in the throwing method executes, instead the exception is thrown out along
+    that separate path, and normal operation does not resume until the exception is caught.
+A Try/Catch statement has a third part: Finally
+The Finally block of code executes either after the catch block (whether an exception was caught or not), or before the method exits if
+an exception is thrown within the catch block.
+
+If an exception is declared to be caught, as in catch (SuperException supe) {..., any of the subclasses of that exception will also be
+caught by that same catch statement.
+Exception hierarchies are typically used to provide a standard response to an entire hierarchy of exceptions, while still leaving open the
+option for catching more concrete exceptions individually as needed.
+Just remember that catches execute in order, so if there was also a catch (SubException sube), you would need to place its catch before that
+of its super class -- otherwise the exception will get gobbled up before the SubException catch is reached.
+
+Checked exceptions = checked by the compiler; IDE will alert you to issues
+Unchecked exceptions = compiler won't alert about, but could be thrown by a method e.g. Arithmetic, ArrayOutOfBounds
+ */
