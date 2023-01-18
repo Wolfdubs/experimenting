@@ -3,6 +3,7 @@ package Concepts.Basics.Variables;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 public class Variables {
 
@@ -50,6 +51,8 @@ public class Variables {
             }
             System.out.println();
         }
+
+
 
         //STRING IMMUTABILITY
         //  Strings are immutable; changing a variable value doesn't change the String object in memory it creates a new String object and just
@@ -144,7 +147,7 @@ class myJavaBean implements Serializable {   //means class can be written to DBs
     public void setName(String name) {        this.name = name;    }
 }
 
-
+class VariablesDefined {
 /*
 DTO - Data Transfer Object classes
 DTO is basically a simple class, usually a POJO, whose job is to work as a middle-man between two representations.
@@ -219,6 +222,45 @@ Non-heap = stores class & method definitions
  */
 
 
+
+/*
+Volatile
+Ensures updates to variable propagate predictably to other threads
+    tells the runtime and processor not to reorder any instructions with volatile variables
+    so is another way of making a class thread safe
+        otherwise changes to a variable in 1 thread may not immediately reflect in another thread
+multithreaded programs can have memory visibility issues; a thread might check/work with a variable having a specific value, while another
+    thread is changing it, and the order that different threads see that lines have run in other threads can vary
+If threads run on different processors, they hold local copies of variables - so if one thread modifies its variable, this might not be seen in main
+    memory immediately
+Multithreaded programs rules:
+    - Mutual exclusion = one 1 thread executes a critical section at a time
+    - Visibility = changes to shared data are visible to other threads, for data consistency
+    Synchronized methods & blocks provide this (at cost of app performance)
+    Volatile keyword provides visibility, without cost of mutual exclusion; so multiple threads can execute code in parallel
+        can be used with primitives or with objects, but not classes or methods
+        means the value is not cached by the processor- it is always read from main memory
+ */
+private volatile static int myInt;
+private volatile boolean myBool;
+
+
+
+/*
+Vector = threadsafe Arraylist
+ */
+    Vector<String> myvector = new Vector<>();
+
+
+
+
+
+
+
+
+
+
+}
 
 
 

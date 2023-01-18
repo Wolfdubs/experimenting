@@ -32,6 +32,9 @@ abstract class Animal {
     //abstract class can include concrete methods
     public void move(){System.out.println("moving");
     }
+    public Animal(){
+        System.out.println("inside abstract class constructor");
+    }
 
 }
 
