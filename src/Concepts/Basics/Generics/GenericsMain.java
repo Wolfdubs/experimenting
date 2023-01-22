@@ -1,8 +1,10 @@
 package Concepts.Basics.Generics;
 
 import DataStructures.List.LinkedList.LinkedList;
+import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +83,56 @@ class Pair<KeyClass, ValueClass>{
         value = vc;
     }
 
+}
+
+
+class GenericBubbleSort{
+    private static <T extends Comparable<T>> List<T> genericBubbleSort(List<T> list) {
+        boolean swapped = true;
+        while (swapped) {
+            swapped = false;
+            for (int i = 0; i < list.size()-1; i++) {
+                if (list.get(i).compareTo(list.get(i+1))==1) {
+                    T temp = list.get(i);
+                    list.set(i, list.get(i + 1));
+                    list.set(i + 1, temp);
+                    swapped = true;
+                }
+            }
+        }
+        System.out.println(list);
+        return list;
+    }
+
+    public static void main(String[] args) {
+        List<String> strings = new ArrayList<>(List.of("womble", "mungo", "kato", "sita", "jambo", "kosie"));
+        List<Integer> integerList = new ArrayList<>(Arrays.asList(1,6,3,9,6,2,0,11,3,7,1,5));
+        List<ProgrammingLanguage> programmingLanguages = new ArrayList<>(List.of(new ProgrammingLanguage("Java", 100, true),
+                new ProgrammingLanguage("python", 200, false), new ProgrammingLanguage("perl", 30, false),
+                new ProgrammingLanguage("ruby", 50, true), new ProgrammingLanguage("shell", 40, false),
+                new ProgrammingLanguage("C#", 35, true), new ProgrammingLanguage("go", 5, true)));
+        genericBubbleSort(strings);
+        genericBubbleSort(integerList);
+        genericBubbleSort(programmingLanguages);
+    }
+
+    @ToString
+    private static class ProgrammingLanguage implements Comparable<ProgrammingLanguage>{
+        String name;
+        int users;
+        boolean isOOP;
+
+        public ProgrammingLanguage(String name, int users, boolean isOOP) {
+            this.name = name;
+            this.users = users;
+            this.isOOP = isOOP;
+        }
+
+        @Override
+        public int compareTo(ProgrammingLanguage o) {
+            return this.users > o.users ? 1 : this.users==o.users ? 0 : -1;
+        }
+    }
 }
 
 

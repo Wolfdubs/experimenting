@@ -1,5 +1,6 @@
 package Concepts.Basics;
 
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,8 @@ import static java.util.Map.entry;
 //Static import: to be able to call predefined methods without needing to qualify owning class (whereas regular import just means don't need to specify package)
 import static java.lang.Math.*;
 import static java.lang.System.*;
+import static org.junit.Assert.assertFalse;
+
 class StaticImports {
     public static void main(String[] args) {
         out.println(sqrt(5)); //can directly call the members of the System class due to static import
@@ -77,6 +80,13 @@ Java is OOP, dynamic, architecture neutral, but does not use pointers
     Architecture neutral = compiled java is not platform specific, but is platform-independent bytecode, interpreted by the JVM on whatever machine its installed on
         compiler generates architecture-neutral object files
     Dynamic = carries runtime info so can verify and resolve objects at runtime
+float is 32 bits, double is 64 bits
+When you pass an object reference to a method, it passes the original reference
+Refer to static function of a class via Function<Integer><Integer> myFunction = MyClass::staticFunction;
+Unicode is for external representation of characters and strings
+Garbage collector thread type = a daemon thread (as opposed to user thread)
+a thread's run() is invoked by the JVM when the thread is initially executed, via the start() of the Thread
+Run a jar file via: java -jar jarFile.jar
 
 */
 }
@@ -121,6 +131,15 @@ class RandomLearnings {
         out.println();
         err.println();
         in.toString();
+
+        for (int i = 0; i < 10; i=i++) {  //prints 10 times as the value of i=i++ is never used
+            i+=1;
+            out.println("womble");
+        }
+
+
+
+
 
     }
 
@@ -170,6 +189,8 @@ class ListLearning {
         stringList.sort(Comparator.comparing(String::toString));
         Collections.sort(stringList);
         stringList.stream().sorted((s1, s2) -> s1.compareTo(s2)).collect(Collectors.toList());
+        stringList.stream().sorted(String::compareTo).collect(Collectors.toList());
+
 
         //sorting a list with strings that are also numbers
         String[] arrayStrings = {"Hello", "100", "23", "yodel","0","5"};
@@ -202,6 +223,7 @@ class ListLearning {
                                     //interface), so changes to the input array are reflected in the list.
         List<String> listOf = List.of("jambo","kosie","kato");    //returns an immutable list that cannot be modified ->
                                 // UnsupportedOperationException. does not permit nulls. changes to input array are not reflected in this list
+        List<String> dogList = new ArrayList<>(List.of("womble","mungo","sita","jambo","kato")); //makes a mutable list, despite using List.of()
         List<String> listAsModifiable = new ArrayList<>(Arrays.asList("pekinese","shitzu","labrador")); //this list is modifiable, as is a standard AL
                     //creates an independent copy of the array input, so modifications are not relfected in input array
         listAsModifiable.add("boo dog");
@@ -235,6 +257,9 @@ class ListLearning {
             }
         }
         out.println(letters);
+
+        //So how to modify a list during a loop:
+
 
         List<String> strings1 = new ArrayList<>();
         strings1.add("One"); strings1.add("Two"); strings1.add("Three");
@@ -306,9 +331,11 @@ class ClassRelations {
         return "Hello";
     }
 
+
     public static void main(String[] args) {
         System.out.print(new ClassRelations().message());   //direct call to super's implementation
         System.out.print(new ClassRelationsChild().message());  //will override message()
+
     }
 }
 class ClassRelationsChild extends ClassRelations {
@@ -319,6 +346,7 @@ class ClassRelationsChild extends ClassRelations {
 
 //Error = serious issue thrown by JVM it cannot recover from
 //Exception = unexpected event an application could manage and continue execution after
+//will not compile if you add Exception catches beneath catches of super class Exceptions
 class ErrorVsException {
     public static void main(String[] args) {   //prints out AD, because error is not inherited from Exception
         try {
@@ -327,7 +355,10 @@ class ErrorVsException {
             System.out.println("B");
         } catch (Exception e) {
             System.out.println("C");
-        } finally {      //note: if an exception is thrown by both the finally & try block, the method returns the exception from finally
+      /*  } catch (ArithmeticException ae){    //this causes compile error, as it is already caught by Exception block
+            out.println("this will never be reached");*/
+        }
+        finally {      //note: if an exception is thrown by both the finally & try block, the method returns the exception from finally
             System.out.println("D");
         }
     }
@@ -552,7 +583,7 @@ enum Direction {
 
     private final String shortCode;
 
-    Direction(String shortCode){
+    Direction(String shortCode){   //because the enum expects the 1 string argument
         this.shortCode=shortCode;
     }
 
@@ -666,6 +697,9 @@ class Lambda {
                     .mapToDouble(Dog::getWeight)
                     .summaryStatistics();  //produces the count, sum, min, max, average
             out.println(doubleSummaryStatistics);
+
+            List<Dog> dogList = List.copyOf(dogs);
+            List<String> dogNames = dogList.stream().map(Dog::getName).toList();
         }
         private static class Dog {
             String name;
@@ -692,12 +726,30 @@ class Lambda {
 }
 
 //Optional is a container class that may or may not contain a null value; revealed by isPresent()
-//Used as a method return type to show if a value is null, but returning null itself would cause an error
+//Used as a method return type to show if a value is null, but returning null itself would cause an error - deals with NullPointerExceptions
 class MyOptional {
     public static void main(String[] args) {
         String val = "womble";
-        java.util.Optional<String> optional = java.util.Optional.of(val);
+        Optional<String> optional = Optional.of(val);   //returns Optional with the present non-null value. cannot pass null
         out.println(optional.isPresent());  //will print true
+        out.println(optional.get());  //returns value present in Optional - if empty, returns NoSuchElementException
+        String variable = optional.orElseGet(() -> "mungo");   //if the optional is empty, it will return the alternative provided
+        optional.filter(x -> x.contains("w"));
+
+        //using Optional to avoid NullPointerException
+        Byte[] bytes = new Byte[10];
+        Optional<Byte> byteOptional = Optional.ofNullable(bytes[5]);  //returns an Optional with the value; if no value returns empty Optional. can pass null
+        if (byteOptional.isPresent()) {
+            byte byteHalf = (byte) (bytes[5] / 2);
+            byteOptional.orElse((byte) 11);    //if value is not present in Optional, it returns 11 as default
+        } else {
+            out.println("byte not present");
+        }
+
+        //create an empty optional
+        Optional<String> empty = Optional.empty();
+        assertFalse(empty.isPresent());
+
     }
 }
 
@@ -782,9 +834,7 @@ class MyComparable {
 
         @Override
         public int compareTo(Pekingese o) {
-            if (this.getWeight() == o.getWeight())
-                return 0;
-            return (this.getWeight() > o.getWeight() ? 1 : -1);   //ascending order of weight
+            return this.getWeight() > o.getWeight() ? 1 : this.getWeight()==o.getWeight() ? 0 : -1;   //ascending order of weight
         }
     }
 
@@ -799,6 +849,115 @@ class MyComparable {
         }
 }
 
+//Sleep throws IllegalMonitorStateException, whereas Wait throws InterruptedException
+
+class SleepVsWait {
+    public static void main(String[] args) throws InterruptedException {
+        //wait is an instance method that can be called on any object, used for thread synchronization
+        //can only be called from a synchronized block
+            //whereby current thread waits and releases the lock it has on the object
+        //it tells the calling thread (current thread) to wait until another thread invokes the notify() or notifyAll() method for the object
+            //notifyAll() is for if many threads are set to wait() (though only 1 can resume execution)
+        //so can be woken by another thread
+        Object lock = new Object();
+        synchronized (lock) {
+            lock.wait(1000);
+            out.println("Object " + lock + " just waited for 1 second");
+        }
+
+
+        //sleep is a static method that can be called from any context
+        //pauses the current thread, without releasing any locks
+        //thread automatically wakes after time elapses. does not lose its ownership of the monitor
+        //cannot be woken by another thread
+        Thread.sleep(1000);
+        out.println("Thread " + Thread.currentThread().getName() + " just slept for 1 second");
+    }
+    //other threads can wake a waiting thread via notify() or notifyAll() on the object
+    int sum = 0;
+    public void run(){
+        synchronized (this) {
+            int i = 0;
+            while (i < 1000) {
+                sum+=i;
+                i++;
+            }
+            notify();
+        }
+    }
+}
+
+enum Dogs {
+    PEKINGESE, LABRADOR, SHITZU
+}
+
+//methods in a final class cannot be overridden
+//final classes cannot be inherited
+final class MyFinalClass {
+    private void printing(){
+        out.println("this method is final, as in a final class, so cannot be overridden");
+    }
+}
+
+//Consumer is an operation that accepts 1 input, and returns nothing
+class FunctionalInterfaces {
+    Consumer<Integer> myConsumer = new Consumer<Integer>() {
+        @Override
+        public void accept(Integer integer) {
+
+        }
+    };
+
+}
+
+class MyMap {
+    static Map<String,Integer> myMap = new HashMap<>() {{
+        put("womble",6); put("mungo",5); put("jambo",5); put("sita",4); put("kato",4);
+    }
+        private void put(String name){      //can create a method to simplify block methods too
+            put(name, name.length());
+        }
+    };
+
+    public static void main(String[] args) {
+        int result = 0;
+        for (Map.Entry<String,Integer> entry : myMap.entrySet()) {    //iterating over each entry object in the Map
+            result += entry.getValue();            //getting the value of each entry
+        }
+        out.println(result);   //prints 24
+    }
+}
+
+
+class FormatterDemo {
+    public static void main(String[] args) {
+        Formatter formatter = new Formatter();
+        formatter.format("dog %s", "womble ");
+        out.println(formatter);  //prints: dog womble
+        formatter.format("pekingese %s", "fluffy");
+        out.println(formatter);  //prints dog womble pekingese fluffy
+    }
+}
+//O(AB)
+class printUnorderedPairsInArrays {
+    void printUnorderedPairsInArrays(int[] array1, int[] array2) {
+        for (int i = 0; i < array1.length; i++) {
+            for (int j = 0; i < array2.length; i++) {
+                if (array1[i] > array2[j]) {
+                    out.println(array1[i] + " , " + array2[j]);
+                }
+            }
+        }
+        out.println();
+    }
+
+    public static void main(String[] args) {
+        printUnorderedPairsInArrays printing = new printUnorderedPairsInArrays();
+        printing.printUnorderedPairsInArrays(new int[]{1,2,3,4,5}, new int[]{9,8,7,6,5});
+        printing.printUnorderedPairsInArrays(new int[]{1,2,3,4,5}, new int[]{1,2,3,4,5});
+
+    }
+}
 
 
 

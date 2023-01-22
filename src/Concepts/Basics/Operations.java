@@ -19,6 +19,10 @@ public class Operations {
         // expression ? AssignmentExpressionIfTrue : AssignmentExpressionIfFalse
         String j = i >= 0 ? "Input was positive" : "Input was 0 or negative";
         System.out.println(j);
+        //can chain ternary operations; useful for compareTo for Comparators
+        int a=1, b=2;
+        int returnCode = (a < b) ? -1 : (a==b) ? 0 : -1;   //if a less than b, return -1. if a greater, return 1. if equal return 0
+
     }
 
     public static void switchStatement(int n){           //switch does not support double, but does support String, char, int

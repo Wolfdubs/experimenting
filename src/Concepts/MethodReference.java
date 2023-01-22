@@ -1,13 +1,22 @@
 package Concepts;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 //Passing a method as a parameter into another method
 // after the :: specify the method, before the :: specify the class the method belongs to = methodClass::methodName
+//4 types of methods it can be used for:
+//   static
+//   instance of particular object
+//   instance of arbitrary object of particular type
+//   constructor
+//is just the shorthand syntax for a lambda expression with 1 method call
 public class MethodReference {
 
     public static void main(String[] args) {
@@ -75,13 +84,18 @@ public class MethodReference {
 
         //calling simple static & non-static custom methods via method reference
         List<Integer> integerList = Arrays.asList(4,7,2,9,4,0,6,1);
-        //Static calls without objects
-        integerList.forEach(i -> DoubleInput.doubleInputStatic(i));   //calling custom static method via lambda
-        integerList.forEach(DoubleInput::doubleInputStatic);   //calling static method directly on each list value
-        //Non-static calls with objects
+        //Static calls without objects, just on the class
+        integerList.stream().map(i -> DoubleInput.doubleInputStatic(i));   //calling custom static method via lambda
+        integerList.stream().map(DoubleInput::doubleInputStatic);   //calling static method directly on each list value
+
+        //Non-static calls on objects
         DoubleInput di = new DoubleInput();
-        integerList.forEach(i -> di.doubleInput(i));
-        integerList.forEach(di::doubleInput);    //calling method from te instantiated object
+        integerList.stream().map(i -> di.doubleInput(i));
+        integerList.stream().map(di::doubleInput).toList().forEach(System.out::println);    //calling method from te instantiated object
+
+        //Note: CANNOT use forEach to return/assign values to a variable, as its a terminal operation ; use map()
+
+
     }
 }
 
@@ -133,3 +147,92 @@ class DoubleInput{
         return i*2;
     }
 }
+
+
+
+
+interface Walkable {
+    default void walk(String distance){
+        System.out.println("Interface walked so far - " + distance);
+    }
+    void SAM();
+}
+
+@Getter
+@Setter
+@ToString
+class Dog implements Walkable{
+    String name;
+    String species;
+    int age;
+    double weight;
+
+    public Dog() {
+        //generating a random name of 7 random chars
+        Random random = new Random();
+        this.name = random.ints(97, 123)
+                .limit(7)
+                .collect(StringBuilder::new,
+                        StringBuilder::appendCodePoint,
+                        StringBuilder::append)
+                .toString();
+    }
+
+    public Dog(String s) {
+
+    }
+
+    @Override
+    public void walk(String distance) {
+        System.out.println("Dog class walked so far - " + distance);
+    }
+
+    @Override
+    public void SAM() {
+
+    }
+
+}
+
+class MethodReferenceConstructor {
+
+    private static <T> List<T> getObjectList(int length, Supplier<T> objectSupply) {
+        List<T> list = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            list.add(objectSupply.get());
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        List<Dog> dogs = getObjectList(5, Dog::new);
+        dogs.stream()
+                .map(Dog::getName)
+                .forEach(System.out::println);
+        Walkable boo = Dog::new;   //Reference to constructor must be declared as functional interface type
+        boo.walk("long way");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

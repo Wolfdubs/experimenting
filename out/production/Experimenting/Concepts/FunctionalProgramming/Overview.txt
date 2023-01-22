@@ -1,0 +1,10 @@
+As an OOP language, there are no pure functions in Java; instead use Functional Interfaces with SAM
+  4 main kinds of functional interfaces:
+    Consumer (further implemented by Bi-Consumer)
+    Predicate (further implemented by Bi-Predicate)
+    Function (further implemented by Bi-Function, Unary Operator, Binary Operator)
+    Supplier
+Define the implementation of the SAM's of each of these functional interfaces via lambda, method reference, anonymous class, or a concrete class that
+implements the interface and overrides its method
+Some of them have additional default methods -> each has only 1 abstract method, being a SAM
+
