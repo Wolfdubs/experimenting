@@ -1,6 +1,8 @@
 package DataStructures.Set;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //Sets are much faster than lists for searching
 //HashSet implements the Set interface
@@ -35,6 +37,16 @@ public class HashSetDemo {
         numsSet.addAll(numsList);
         Set<Integer> numsSet2 = new HashSet<>(numsList); //faster than above, creates the set using the elements of the list passed in
         System.out.println(numsSet + "\n" + numsSet2);
+
+
+
+        Set<Integer> integerSetAnonymous = new HashSet<>() {{   //creating with values via anonymous class
+            add(1); add(6); add(9); add(6); add(12);
+        }};
+
+        Set<Integer> integerSetConstructor = new HashSet<>(Arrays.asList(1,6,7,4,2,8,9,0,4,9));
+        Set<Integer> integerSetStream = Stream.of(4,5,3,8,8,8,8,7,8,7,2,1,3,8,4).collect(Collectors.toSet());
+        Set<Integer> integerSetStreamCollection = Stream.of(3,8,8,7,8,3,2,6,4,0,8,1,3,2,7).collect(Collectors.toCollection(HashSet::new));
     }
 }
 

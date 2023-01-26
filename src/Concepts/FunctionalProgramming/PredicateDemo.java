@@ -1,12 +1,13 @@
 package Concepts.FunctionalProgramming;
 
 import lombok.Getter;
+import utils.Weapon;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+
+import static utils.Weapon.generateWeaponsList;
 
 //A functional interface that accepts 1 argument, returns a boolean
 //used for stream.filter()
@@ -19,8 +20,8 @@ public class PredicateDemo {
     public static void main(String[] args) {
         evaluate(list, n -> true);    //passing in a predicate where it returns true for each element
         evaluate(list, n -> n % 2 == 0);   //predicate that only returns true for even elements
-        Predicate<Integer> predicate = n -> n > 5;
-        evaluate(list, predicate);
+        Predicate<Integer> greaterThan5 = n -> n > 5;
+        evaluate(list, greaterThan5);
 
         List<String> stringList = Arrays.asList("womble","mungo","sita","kato","jambo","kosie");
         Predicate<String> stringPredicate = str -> str.startsWith("k");
@@ -31,7 +32,35 @@ public class PredicateDemo {
                 System.out.println(currentString);
             }
         }
+
+        Predicate<Integer> lessThan10 = i -> i < 10;
+        System.out.println(lessThan10.test(8));
+        boolean andResult = lessThan10.and(greaterThan5).test(7);
+        System.out.println("and Result = " + andResult);
+        boolean orResult = lessThan10.or(n -> n%3==0).test(18);
+        System.out.println("or result = " + orResult);
+
+        //negate returns a predicate that is the opposite of the one specified
+        System.out.println(lessThan10.negate().test(8));
+
+        predicateInFunction(9, n -> Math.sqrt(81)==n);
+
+        stringLengthAbove5.test("womble");
+        stringsPredication();
+
+        List<Weapon> weapons = generateWeaponsList();
+        List<Weapon> groupWeapons = weaponsPredication(weapons, weapon -> !weapon.isSinglePerson());
+        groupWeapons.forEach(System.out::println);
+
+
     }
+
+    private static Predicate<String> stringLengthAbove5 = new Predicate<String>() {
+        @Override
+        public boolean test(String s) {
+            return s.length()>5;
+        }
+    };
 
     private static void evaluate(List<Integer> list, Predicate<Integer> predicate){
         for (int i : list){
@@ -40,6 +69,33 @@ public class PredicateDemo {
             }
         }
         System.out.println();
+    }
+
+    private static void predicateInFunction(int n, Predicate<Integer> predicate) {
+        if (predicate.test(n)){
+            System.out.println("The number = " + n);
+        }
+    }
+
+    private static void stringsPredication() {
+        Predicate<String> nonNullPredicate = Objects::nonNull;
+        String nullString = null;
+        boolean nullStringResult = nonNullPredicate.and(stringLengthAbove5).test(nullString);
+        System.out.println(nullStringResult);
+
+        String trueString = "womble is a fluffy dog";
+        boolean trueStringResult = nonNullPredicate.and(stringLengthAbove5).test(trueString);
+        System.out.println(trueStringResult);
+    }
+
+    private static List<Weapon> weaponsPredication(List<Weapon> list, Predicate<Weapon> predicate) {
+        List<Weapon> predicatedWeapons = new ArrayList<>();
+        for (Weapon weapon : list) {
+            if (predicate.test(weapon)) {
+                predicatedWeapons.add(weapon);
+            }
+        }
+        return predicatedWeapons;
     }
 
 

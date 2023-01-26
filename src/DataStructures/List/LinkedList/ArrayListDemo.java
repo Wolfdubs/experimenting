@@ -1,9 +1,6 @@
 package DataStructures.List.LinkedList;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ArrayListDemo {
 
@@ -32,13 +29,53 @@ public class ArrayListDemo {
             list.set(iterator.nextIndex(), element);
         }
 
-        //Structural modification can be risky;
+        //Structural modification can throw a ConcurrentModificationException
+        // so do not just remove elements via a forEach through a list, or an iterator/ListIterator that then has the list call its remove()
+        //Do remove/additions via iteration and the iterators' remove(). Also streams, and removeIf
+            //ITERATOR MUST BE THE ONE TO MODIFY as only it knows how to manage changed list structure
+        //for lots of modifications, better to use LL as constant time
+        ListIterator<String> iterator = list.listIterator();
+        while (iterator.hasNext()){
+            if (iterator.next().equals("kato")){
+                iterator.remove();                 //safe way to remove elements from a list
+                iterator.add("jambo");      //ListIterator has method to add
+            }
+        }
+
         list.stream().map(i -> i.concat(" the dog"));          // updating elements with map()
         list.stream().filter(i -> i.length()==4);             //removing elements with filter()
         list.removeIf(i -> i.startsWith("m"));
 
 
+
+
+
+        //for loop with iterator
+        for (ListIterator<String> iteratorLooper = list.listIterator(); iteratorLooper.hasNext(); iteratorLooper.next()){
+            iteratorLooper.next();
+            list.set(iteratorLooper.nextIndex()-1, iteratorLooper.previous() + "extra content");
+        }
+
+
     }
+
+    List<List<List<String>>> veryDeepList = Arrays.asList(
+            List.of(
+                    List.of("womble","mungo"),
+                    List.of("kato", "sita"),
+                    List.of("jambo", "kosie")
+            ),
+            List.of(
+                    List.of("java","python"),
+                    List.of("kotlin", "pascal"),
+                    List.of("javascript", "go")
+            ),
+            List.of(
+                    List.of("dubs","trips"),
+                    List.of("get", "rolling")
+            )
+
+    );
 
 
 }

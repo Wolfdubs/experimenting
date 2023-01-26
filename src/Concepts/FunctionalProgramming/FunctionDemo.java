@@ -4,13 +4,14 @@ package Concepts.FunctionalProgramming;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import utils.Weapon;
 
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import java.util.stream.Collectors;
+
+import static utils.Weapon.TYPE.*;
+import static utils.Weapon.generateWeaponsList;
 
 //a type of Functional Interface that receives a single argument, and returns a value after processing
 //the lambda / MR you provide is used to define its SAM apply(), which applies the given function to the argument
@@ -74,8 +75,9 @@ public class FunctionDemo {
 
         //compose() is reverse of andThen(); executes parameterized function first
         Function<Integer,Integer> plusOne = n -> n+1;
-        Function<Integer,Integer> PlusOneAndSquare = squaringFunction.compose(plusOne);   //so it adds 1, then squares
-        System.out.println(PlusOneAndSquare.apply(5));
+        Function<Integer,Integer> plusOneAndSquare = squaringFunction.compose(plusOne);   //so it adds 1, then squares
+        System.out.println(plusOneAndSquare.apply(5));
+        int inceptionInt = plusOneAndSquare.compose(squaringFunction).apply(3);
 
         //identity() returns a function that returns its only argument; so just echoes the parameter passed
         Function<String,String> identityFunction = Function.identity();
@@ -89,11 +91,61 @@ public class FunctionDemo {
         Function<Integer,String> hi = w -> w.toString() + " hi";
         processing(14, hi);
 
+        List<Weapon> weaponList = generateWeaponsList();
+        List<Weapon> groupWeapons = weaponList.stream()
+                .filter(Weapon::isSinglePerson)
+                .toList();
+
+
     }
     //method defined to accept a function and apply it to other argument
     private static String processing(int number, Function<Integer, String> lambda){
         return lambda.apply(number);
     }
+
+
+}
+
+//as primitives cannot be used as the real type for generics, the most common primitives have their own versions of Functions
+class SpecializedFunctions {
+    //Specified argument: they dont require boxing of the argument, just the return type
+    IntFunction<String> intFunction = n-> String.valueOf(n) + ".... ";
+    DoubleFunction<Double> doubleFunction = d -> d/(d-1);
+    LongFunction<Integer> longFunction = l -> ((int) l) + 7;
+
+    //Specified return: don't require boxing of the return, just the argument type
+    ToIntFunction<Boolean> toIntFunction = b -> {
+        if (b) return 44;
+        else return 0;
+    };
+    ToDoubleFunction<String> toDoubleFunction = Double::valueOf;
+    ToLongFunction<Long> toLongFunction = l -> l*3;
+
+    //Specified argument and return; don't need to box any types
+    IntToDoubleFunction intToDoubleFunction;
+    IntToLongFunction intToLongFunction;
+    DoubleToIntFunction doubleToIntFunction;
+    DoubleToLongFunction doubleToLongFunction;
+    LongToDoubleFunction longToDoubleFunction;
+    LongToIntFunction longToIntFunction;
+
+    //can write custm specializations e.g. for short to byte
+    @FunctionalInterface
+    interface ShortToByteFunction{
+        byte applyAsByte(short s);
+    }
+
+    ShortToByteFunction shortToByteFunction = s -> (byte) s;
+    private static Byte[] transformShortArrayToByteArray(short[] shorts, ShortToByteFunction function) {
+        Byte[] bytes = new Byte[shorts.length];
+        for (int i = 0; i < shorts.length; i++) {
+            bytes[i] = function.applyAsByte(shorts[i]);
+        }
+        return bytes;
+    }
+
+    short[] shorts = {(short) 1, (short) 2, (short) 3, (short) 4};
+    Byte[] bytes = transformShortArrayToByteArray(shorts, s -> (byte) (s*2));
 
 
 }
@@ -176,6 +228,103 @@ class BiFunctionDemo {
             return longString;
         };
         repeatString.apply("womble", 10);
+
+        BiFunction<Integer,Integer,Double> power = Math::pow;
+        double powered = power.apply(4,6);
+        System.out.println(powered);
+
+        BiFunction<Short, Short, List<Short>> shortList = Arrays::asList;       //(a,b) -> Arrays.asList(a,b);
+        shortList.apply((short) 3, (short) 9);
+
+        //andThen can only accept a function
+        Function<Double,String> intToString = Object::toString;
+        power.andThen(intToString).apply(3,7);
+
+        String poweredString = biFunctionThenFunction(6,4, power, intToString);
+
+        String multipliedByGeneric = genericBiFunctionThenFunction(9,5, (a,b) -> a*b, c -> "Multiplied = " + c.toString());
+        String poweredByGeneric = genericBiFunctionThenFunction(9,5, (a,b) -> Math.pow(a,b), c -> "Powered = " + c.toString());
+        String concatenatedByGeneric = genericBiFunctionThenFunction("womble", "mungo", String::concat, String::toUpperCase);
+        Integer concatenatedIntoInteger = genericBiFunctionThenFunction("18","72", (a,b) -> a+b, c -> Integer.valueOf(c));
+
+
+    }
+
+    private static String biFunctionThenFunction(int a, int b, BiFunction<Integer,Integer,Double> biFunction, Function<Double, String> function) {
+        return biFunction.andThen(function).apply(a,b);
+    }
+
+    private static <A1, A2, R1, R2> R2 genericBiFunctionThenFunction(A1 a1, A2 a2, BiFunction<A1, A2, R1> biFunction, Function<R1, R2> function) {
+        return biFunction.andThen(function).apply(a1,a2);
+    }
+
+    //if the map has no value for the key, the method will use the function to calculate it, else just retrieve it from the map
+    private static void computeIfAbsentDemo(){
+        Map<String, Integer> stringToLengthMap = new HashMap<>();
+        Integer keyLength = stringToLengthMap.computeIfAbsent("womble", String::length);
+    }
+
+
+}
+
+//implement the factory pattern using a BiFunction to create objects by calling their constructor and passing in the arguments it needs
+class BiFunctionFactory {
+    public static void main(String[] args) {
+        Weapon bowieKnife = biFunctionFactory("bowie knife", BLADED, Weapon::new);  //the BiFunction is a call to the Weapon constructor, and passes in the 2 prior parameters
+    }
+
+    private static <R extends Weapon> R biFunctionFactory(String name, Weapon.TYPE type, BiFunction<String, Weapon.TYPE, R> biFunction) {
+        return biFunction.apply(name, type);
+    }
+
+}
+
+class BiFunctionFiltering {
+    public static void main(String[] args) {
+        List<Weapon> weapons = generateWeaponsList();
+        List<String> weaponNamesAboveLength6 = filterList(weapons, 6, new BiFunctionFiltering()::filterByLength);
+        weaponNamesAboveLength6.forEach(System.out::println);
+
+        List<String> weaponNamesAlsoAboveLength6 = filterList(weapons, 6, (element, size) -> {
+                    if (element.getName().length() > size) return element.getName();
+                    else return null;
+                });
+
+        filterList(weapons, "a", (element, letter) -> {
+            if (element.getName().startsWith(letter)) return element.getName();
+            else return null;
+        });
+
+        List<Weapon> handToHandWeapons = filterList(weapons, true, (element, bool) -> {
+            if (element.isHandToHand()) return element;
+            else return null;
+        });
+
+        List<Weapon> selfSustainingWeapons = filterList(weapons, 7, (element, num) -> {
+            if (element.getSelfSustainability() >= num) return element;
+            else return null;
+        });
+
+
+    }
+    private String filterByLength(Weapon weapon, int n) {
+        String weaponName = weapon.getName();
+        if (weaponName.length() > n) {
+            return weaponName;
+        } else {
+            return null;
+        }
+    }
+    public static <T,U,R> List<R> filterList(List<T> list, U condition, BiFunction<T,U,R> biFunction){
+        List<R> filteredList = new ArrayList<>();
+        for (T t : list){
+            R filteredItem = biFunction.apply(t, condition);
+            if (filteredItem != null){
+                filteredList.add(filteredItem);
+            }
+        }
+        return filteredList;
+
     }
 }
 

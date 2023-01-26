@@ -10,6 +10,7 @@ import java.util.List;
 
 //Placeholder for a class
 //used with collections because the collection can hold different data types
+//primitives cannot be passed in as the type for a generic
 class Generics<T> {
 
     T thingToPrint;

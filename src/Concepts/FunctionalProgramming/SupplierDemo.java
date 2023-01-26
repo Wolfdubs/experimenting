@@ -10,6 +10,7 @@ import java.util.function.*;
 //used for lazy generation of values, and define logic for generating sequences
 //SAM is get()
 //useful for deferred execution; only happens when it is needed, e.g. See Optional & doubleSupplier example
+
 public class SupplierDemo {
     public static void main(String[] args) {
         String product = "Programming";
@@ -49,9 +50,10 @@ public class SupplierDemo {
     }
 
     private static Supplier<List<String>> generateSupplier(){
-        return () -> new ArrayList<String>();
+        return () -> new ArrayList<>();
         //or return ArrayList::new;
     }
+
 
 }
 
