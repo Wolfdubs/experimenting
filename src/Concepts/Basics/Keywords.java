@@ -8,6 +8,9 @@ public class Keywords {
     String differentForEachObject;
     static String sharedForAllObjects;    //mean the variable is not specific to the specific object, but is true for all objects of the class. all objects share the same value
     static String assignOnceViaStaticBlock;
+    //static methods cannot access non-static members (as these can only exist within association to an instance)
+    //getters for static variables must also be static
+
 
     public Keywords(){}
     public Keywords(String diff, String shared){
@@ -56,6 +59,10 @@ public class Keywords {
     SuperDemo sd = new SuperDemo("a", 1, 2);
     boolean isSubOfSuper = sd instanceof SuperDemoParent;
 
+    protected String womble;  //only accessible by members of package, and by subclass children
+            //different to default/none which cannot be inherited by subclass children
+            //so subclasses only inherit public & protected fields; not private or unspecified
+    private String mungo; //subclasses will not inherit this
 
 
 
@@ -142,10 +149,4 @@ class SuperDemoParent{
 }
 
 
-/*
-Java is always pass by value; it passes references by value
-    passing object variables into methods will pass its memory address in, which is a reference to the specified value,
-    so the method operates on the value of the contents of the shared object pointed to by the reference that the object variable holds
-    so method passes in the value of the memory address reference
-    if the method reassigns the variable passed in to another object e.g. with new Object(), then it no longer will refer to the original object in memory refered to by the variable passed in
- */
+

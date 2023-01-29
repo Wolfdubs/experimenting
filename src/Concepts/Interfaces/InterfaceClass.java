@@ -20,17 +20,25 @@ class Pen implements Writer, Product{    //can also still extend a super class a
 }
 
 public class InterfaceClass {
-    //useful for generalization, like abstract super classes; both can declare & define methods
-    //    Interface: can define methods via anonymous classes, lambdas, and default keyword. inside interface can define public & private helper methods
-    //to permit concrete classes having more than 1 specification (to extend/implement). as no multiple inheritance of super classes
-    //note: any variables defined in an interface become a constant
-    // when you want to ensure classes must have certain methods that they implement
-    //    e.g. APIs require you to implement all the interfaces they provide
-    //Only 3 ways to create object reference of interface; via lambda, or by creating new object of class that implements interface; InterfaceName obj = new ClassImplementing(), or calling a method that returns instance of interface;
-    //Marker Interface = interfaces with no methods inside
-    //interface methods are by default public abstract, so don't need to specify that.
-    // Can only define methods in interface if it has keywords 'default' or 'static'. must do this if you modify the interface to add more methods, that currently using classes won't have had their own implementation for, else those classes will break as not implementing the new method
-
+    /*
+    useful for generalization, like abstract super classes; both can declare & define methods, and constants
+        all members are implicitly public
+        for creating/using related classes that lack inheritance relationship but have similar behavior
+        concrete implementors must implement methods. abstract class implementors don't have to
+            superclass implementors mean all subclasses will be implementors too
+    Objects that implement the interface are not only of their class type, but also the interface type
+    Interface: can define methods via anonymous classes, lambdas, and default keyword. inside interface can define public & private helper methods
+    to permit concrete classes having more than 1 specification (to extend/implement). as no multiple inheritance of super classes
+    note: any variables defined in an interface become a constant
+     when you want to ensure classes must have certain methods that they implement
+        e.g. APIs require you to implement all the interfaces they provide
+    Only 3 ways to create object reference of interface; via lambda, or by creating new object of class that implements interface; InterfaceName obj = new ClassImplementing(), or calling a method that returns instance of interface;
+    Marker Interface = interfaces with no methods inside
+    interface methods are by default public abstract, so don't need to specify that.
+     Can only define methods in interface if it has keywords 'default' or 'static'. must do this if you modify the interface to add more methods, that currently using classes won't have had their own implementation for, else those classes will break as not implementing the new method
+        implementing classes get access to default methods without needing own implementation
+            they can overwrite the default methods, but not static methods
+*/
 
     public static void main(String[] args) {
         Writer pen = new Pen();        // can still create references of the interface, but object must be of implementing class
@@ -56,6 +64,8 @@ public class InterfaceClass {
 //           - call Interface.method to specify which interface to call the method from
 
 interface Demo1{
+    public static final String constant = ""; //interface variables are public static and final by default
+    int constantInt = 1;   //no instance variables allowed - this is also public static final
     default void show(){
         System.out.println("Inside Demo1 interface");
     }
@@ -66,16 +76,27 @@ interface Demo2 {
     default void show(){
         System.out.println("Inside Demo2 interface");
     }
-}
-
-class Demo implements Demo1, Demo2{   //both interfaces have default show()
-    public void show(){
-        Demo1.super.show();     //calls the super interface implemtnation of show(), so no compilation errors where java doesnt know which to run
+    static void staticMethod(){
+        System.out.println("statics rock");
     }
 }
 
+//interfaces can extend other interfaces; inheriting all its constants and methods
+interface Demo3 extends Demo2 {
+
+}
+
+class Demo implements Demo1, Demo2{   //both interfaces have default show()
+    @Override
+    public void show(){
+        Demo1.super.show();     //calls the super interface implemtnation of show(), so no compilation errors where java doesnt know which to run
+    }
+   // @Override
+   // static void staticMethod(){}
+}
+
 //static methods in interfaces mean you dont have to create an object of the class that implements the interface to call the method
-interface StaticDemo {
+interface StaticDemo {   //implementing classes cannot overwrite
     static void show(){
         System.out.println("Inside static method of interface");   //call it just via Interface.method
     }

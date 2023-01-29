@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import utils.Weapon;
+import utils.Weapon.*;
 
 import java.util.*;
 import java.util.function.*;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 import static utils.Weapon.TYPE.*;
 import static utils.Weapon.generateWeaponsList;
+import static utils.Weapon.generateWeaponsMap;
 
 //a type of Functional Interface that receives a single argument, and returns a value after processing
 //the lambda / MR you provide is used to define its SAM apply(), which applies the given function to the argument
@@ -129,7 +131,17 @@ class SpecializedFunctions {
     LongToDoubleFunction longToDoubleFunction;
     LongToIntFunction longToIntFunction;
 
-    //can write custm specializations e.g. for short to byte
+    //primitive BiFunctions - just specify the 2 arguments
+    ToDoubleBiFunction<Integer, String> toDoubleBiFunction = (a,b) -> Double.parseDouble(b) + ((double) a);
+    ToIntBiFunction<String, Boolean> toIntBiFunction;
+    ToLongBiFunction<Character, Float> toLongBiFunction;
+
+    private void replaceAllDemo() {
+        Map<String,Integer> map = generateWeaponsMap();
+        map.replaceAll((key, oldValue) -> key.equals("nuke") ? oldValue : oldValue-1 );
+    }
+
+    //can write custom specializations e.g. for short to byte
     @FunctionalInterface
     interface ShortToByteFunction{
         byte applyAsByte(short s);
@@ -328,6 +340,7 @@ class BiFunctionFiltering {
     }
 }
 
+//UnaryOperator & BinaryOperators are both functions that just accept and produce only 1 type for everything
 //Unary Operator extends the Function interface
 //accepts one 1 argument, produces 1 value
 //Difference to Function -> with Unary Operator, both the argument and return must be of the same value, so only give 1 type parameter in <>
@@ -341,7 +354,22 @@ class UnaryOperatorDemo {
         UnaryOperator<String> replaceDashes = str -> str.replace("/", "-");
         dates.replaceAll(replaceDashes);
         System.out.println(dates);
+
+        //replace elements in a list with upperCase
+        List<Weapon> weapons = generateWeaponsList();
+        List<String> weaponNames = new ArrayList<>();
+        for (Weapon weapon : weapons) {
+            String name = weapon.getName();
+            weaponNames.add(name);
+        }
+        weaponNames.replaceAll(String::toUpperCase);  //replaceAll returns void as it updates all elements in place; thus the unary operator
+                                                        //returns the same type as it receives
     }
+
+    //Specialized UnaryOperators, for use with primitives. dont need to box the type
+    IntUnaryOperator intUnaryOperator;
+    DoubleUnaryOperator doubleUnaryOperator;
+    LongUnaryOperator longUnaryOperator;
 
 
 }
@@ -350,6 +378,19 @@ class UnaryOperatorDemo {
 //accepts 2 arguments, produces 1 value, but these must all be of the same type
 class BinaryOperatorDemo {
     BinaryOperator<Character> binaryOperator = (c,d) -> (char) (d-c);
+
+    //useful for reducing
+    public static void main(String[] args) {
+        List<Integer> weaponDifficulties = generateWeaponsList().stream()
+                .map(Weapon::getDifficulty).toList();
+        weaponDifficulties.stream()
+                .reduce(0,(a,b) -> a+b);  //pass reduce an initial accumulator value, then the binaryOperator as the accummulator
+    }
+
+    //Specialized BinaryOperators
+    IntBinaryOperator intBinaryOperator;
+    DoubleBinaryOperator doubleBinaryOperator;
+    LongBinaryOperator longBinaryOperator;
 }
 
 

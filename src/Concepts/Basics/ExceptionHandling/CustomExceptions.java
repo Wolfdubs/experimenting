@@ -9,8 +9,11 @@ public class CustomExceptions {
 
     //making a method to use with the custom exception
     private static void validateAge(int age) throws NegativeIntNotAllowedException {
+        if (age < -10) {
+            throw new NegativeIntNotAllowedException("custom message because -10 is just crazy to try");
+        }
         if (age < 0){
-            throw new NegativeIntNotAllowedException("Age cannot be negative");
+            throw new NegativeIntNotAllowedException();
         }
         if (age == 0) {
             throw new NegativeIntNotAllowedException("Oops", new RuntimeException());   //can pass an exception for your Throwable parameter constructor
@@ -28,6 +31,10 @@ class MyCustomException extends Exception{   //this line is technically all you 
 }
 
 class NegativeIntNotAllowedException extends IllegalArgumentException{   //should extend the closest exception to your use-case
+    public NegativeIntNotAllowedException(){
+        super("negative int is not allowed");
+    }
+
     public NegativeIntNotAllowedException(String message){
         super(message);
     }
@@ -43,4 +50,6 @@ class NegativeIntNotAllowedException extends IllegalArgumentException{   //shoul
     }
 
 }
+
+
 

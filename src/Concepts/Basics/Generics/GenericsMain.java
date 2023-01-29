@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-//Placeholder for a class
+//Placeholder for a class -> discover type compatability at runtime
 //used with collections because the collection can hold different data types
 //primitives cannot be passed in as the type for a generic
 class Generics<T> {

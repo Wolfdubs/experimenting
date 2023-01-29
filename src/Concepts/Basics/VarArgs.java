@@ -3,6 +3,7 @@ package Concepts.Basics;
 public class VarArgs {
 
     //variable length arguments: to allow one method to accept different numbers of parameter. so dont have to add overload methods for every possibility
+    //varargs sends array of the type
     public static int addVarArgs(int ... n){  //the ... tells method to accept any number of arguments of the type
         int sum = 0;
         for (int i : n) {     //arguments have been sent to the method as an array, so must iterate over elements

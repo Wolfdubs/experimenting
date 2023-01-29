@@ -3,9 +3,23 @@ package Concepts.MultiThreading;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Main {
+/*
+Lets the machine run multiple tasks at a time -> multiple threads running concurrently improves app capabilities
+2 units of execution:
+    Process = standalone execution environment with private runtime resources and memory. Can contain multiple threads, always at least 1
+    Thread = a task; like a lightweight process. has own execution environment, but creating new threads requires much less resources than processes
+        different threads manage different aspects of a program. exist inside processes
+        States = Running, Sleep, Ready, Dead (completed), Awaiting IO Input
+        Create via extends Thread or implements Runnable
+ */
+public class MultiThreadingDemo {
 
     public static void main(String[] args) {
+
+        for (int i = 0; i < 10; i++) {
+            Thread thread = new ThreadExtends();  //Initialize class containing run()
+            thread.start();               //call start(), which itself calls run(), changing state from ready to running
+        }
 
         // creating objects of my multithreaded class with extends Thread
         MultiThreadingWithExtends myThreadExtended = new MultiThreadingWithExtends(1);

@@ -49,7 +49,7 @@ class ThreadExtends2 extends Thread{  //means objects of this class with be Thre
     }
 }
 
-//Implement runnable
+//Implement runnable is 2nd way to make a class be a thread type. Object must be declared as Thread type
 // Runnable is a Functional Interface (only 1 SAM is run()) -> so can use anonymous classes & lambdas
 class ThreadImplements implements Runnable{   //means you dont use up the 1 permitted extends
     int[] myArray = {2,4,6,8,10};
@@ -118,12 +118,14 @@ public class MultiThreadingTelusko {
 
         /*Synchronization & Thread safety
           Problem:
+            Running threads cannot guarantee order of execution
             if multiple threads are calling same method to mutate a variable at the same time;
                one thread retrieves variable's value and by the time it mutates that value, the other thread may have already changed it.
                both might mutate the same variable at the same time
                --> means method is not thread safe: will produce inconsistent values
           Solution:
-            1. make method synchronized so that only 1 thread can execute it at a time; locks method while thread is executing it
+            1. make method synchronized so that only 1 thread can execute it at a time;
+                intrinsic lock -> synchronized means thread will lock the method while thread is executing it
                any method accessed by threads should have keyword synchronized
             2. Use Atomic wrapper class. Is built in wrapper for all primitives that make their variables thread safe
          */
@@ -137,6 +139,15 @@ class SynchronizedClass {
     int counter;
     public synchronized void synchronizedMethod() {   //synchronized keyword means method will only allow 1 thread access at a time
         counter++;
+    }
+    //instead of locking the entire method, can specify specific thread sensitive code elements
+    void synchronizedElement(){
+        synchronized (this) {
+            for (int i = 0; i < 5; i++) {
+                System.out.println("this specific code block is synchronized");
+            }
+        }
+        System.out.println("this code block is not synchronized");
     }
 
     AtomicInteger atom = new AtomicInteger();

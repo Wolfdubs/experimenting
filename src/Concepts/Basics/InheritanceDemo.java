@@ -23,12 +23,14 @@ class InheritanceSuper {       //Super/parent/base.    keyword super() represent
         return i+j;
     }  //means add() can only be called by subsiding classes
 
-    public void overrideMethod(){
+    protected void overrideMethod(){
         System.out.println("Inside super's override method");
     }
     private void superPrivateMethod(){      //subclasses don't inherit private fields or methods
         System.out.println("Subclasses will NOT inherit this method");
     }
+    public void protectedMethod(){}
+    final void finalMethod(){}  //subclasses cannot override final methods
 }
 
 class InheritanceSub extends InheritanceSuper{     //sub/child/derived
@@ -46,9 +48,15 @@ class InheritanceSub extends InheritanceSuper{     //sub/child/derived
 
     @Override  //best practice to include for method overriding, because compiler will make sure there is a super method to override; ie you didn't misspell the method in the sub class
     public void overrideMethod(){   //overrides the same method of the super class
+        super.overrideMethod();   //can also make a call back to super's methods
         System.out.println("Inside subs's override method");
        // super.overrideMethod();   //if you wanted to run the super classes override method too
         super.i = 8; //can access super class variables via call to super()
+    }
+
+    @Override
+    public void protectedMethod() {  //cannot make this private, as cannot assign weaker privileges to superclass members
+        super.protectedMethod();
     }
 
     public final void subOnly(){     //child classes cannot override this method, must follow initial implementation\

@@ -2,6 +2,16 @@ package Sorts;
 
 import java.util.Arrays;
 
+/*divide array int sorted and unsorted halves
+    sorted sublist starts as the very leftmost element
+    each pass, 1 element is moved from unsorted right into the sorted left
+    new elements added to sorted left could shift its existing elements 1 rightward (unless new element is larger than them all)
+        to prevent each rightward shift overwriting the existing element there, use a temporary value to store a copy of the new element
+        new elements are swapped in from the unsorted right, into the last index of sorted left, and moved backwards until reaching a smaller element
+    worstcase - if all elements are in reverse order; On^2
+    bestcase - all elements in order; O(n)
+
+ */
 //best performance of the elementary sorts
 public class InsertionSort {
     public static void main(String[] args) {

@@ -34,61 +34,7 @@ class StaticImports {
 }
 public class AboutJava {
 
-/*
-Java is a pass-by-value language. This means that when a method is called and a variable is passed as an argument,
-the value of the variable is passed to the method, rather than a reference to the memory location where the variable is stored.
-When a primitive data type (such as an int, double, or boolean) is passed as an argument to a method, the method receives a copy of the value,
-and any changes made to the parameter inside the method have no effect outside the method.
-When an object is passed as an argument to a method, the method receives a reference to the memory location where the object is stored.
-This means that the method has access to the same object that was passed as an argument, and any changes made to the object inside the method
-will be visible outside the method. However, the reference itself is passed by value.
-It's important to note that, even though Java is pass-by-value, when an object is passed, the reference to the object is passed by value,
-so any changes made to the state of the object are visible to the caller. It is not directly passing the memory reference but a copy of the reference.
-OOP is where you organize the program around objects and data, not actions and logic
 
-Achieve runtime polymorphism via method overriding
-2 | 1 = 3  is the bit or operation
-Anonymous classes
-    can specify either an abstract base class or an interface as its base type
-    requires a 0 arg constructor
-Valid keywords in module descriptor (module-info.java): requires, exports
-Volatile keyword = variable will never be cached by the CPU. Can still be read by multiple threads at a time
-Synchronized = method keyword; ensures 2 threads never execute the method on same object instance
-NullPointerExceptions caused when variable is used but hasn't been instantiated
-UnsupportedClassVersionException = code was compiled on a newer version of Java than the JRE executing it
-Abstract classes:
-    can contain constructors
-    allow member variables & methods to be inherited by subclasses
-    Cannot be instantiated
-To access a static member of a class e.g. Math.PI, you either specify the class Math, or can just refer to PI by adding a static import
-a catch block will not compile if Exception catch has any other catches below it
-Disadvantage of inheritance: classes related by inheritance are tightly coupled
-Java provides 3 functional interfaces as data types for lambda expressions;
-    Consumer, Predicate, Supplier
-hashCode() used to decide if 2 instances of a class are equal; does their hashCode generate same value?
-Design Patterns:
-    Static Factory Method = helps create instances of classes
-    Singleton = Ensures only 1 instance of class can be created
-    Strategy Pattern = allows a group of algorithms to be interchangeable
-Pass by value  = method receives a copy of arguments passed to it, rather than a reference to the objects themselves
-HashSet uses hashcode of objects shen inserted, and contains unique, unordered elements
-Collection interface is implemented by ArrayList, Vector and HashSet, but not HashMap -> which implements the Map interface
-BigDecimal is best data type for money
-Generics allow data types to be a parameter for classes, interfaces and methods to reuse the same code for different data types
-The JRE runs compiled Java code, while the JDK compiles the files
-Java is OOP, dynamic, architecture neutral, but does not use pointers
-    Architecture neutral = compiled java is not platform specific, but is platform-independent bytecode, interpreted by the JVM on whatever machine its installed on
-        compiler generates architecture-neutral object files
-    Dynamic = carries runtime info so can verify and resolve objects at runtime
-float is 32 bits, double is 64 bits
-When you pass an object reference to a method, it passes the original reference
-Refer to static function of a class via Function<Integer><Integer> myFunction = MyClass::staticFunction;
-Unicode is for external representation of characters and strings
-Garbage collector thread type = a daemon thread (as opposed to user thread)
-a thread's run() is invoked by the JVM when the thread is initially executed, via the start() of the Thread
-Run a jar file via: java -jar jarFile.jar
-
-*/
 }
 
 
@@ -175,6 +121,14 @@ class InterfaceLearnings {
 }
 
 class ListLearning {
+
+    //Arraylist is a generic class implementation of List interface using array as data structure
+        //default length = 10 null values
+        //fast reads due to random access in arrays to access directly, so get() is O(1)
+    //LinkedList have no initial sizing; starts empty and only adds space for each new element
+        //doesn't require copying into a new list to grow, and don't have to shift elements rightward when adding at start(unlike arraylist)
+        //consist of nodes that store data and pointer to next node that links all the nodes across the LL
+        //get requires traversal of list
 
     public static void main(String[] args) {
         List list = new ArrayList();

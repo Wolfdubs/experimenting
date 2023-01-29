@@ -1,12 +1,13 @@
 package Concepts;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static Concepts.Gun.TYPE.*;
+
 
 //Comparable = define how a list of the class should be ordered when sorted
 //is a functional interface; SAM = compareTo()
@@ -74,19 +75,41 @@ public class ComparableDemo {
         }
 
 
+}
+@ToString
+class Gun implements Comparable<Gun> {
+    protected TYPE TYPE;
+    public enum TYPE {HANDGUN, RIFLE, SHOTGUN, SNIPER, REVOLVER}
+    protected String make;
+    protected String model;
+    protected int capacity;
+    protected int power;
+    protected boolean automatic;
 
+    public Gun(Gun.TYPE type, String make, String model, int capacity, int power, boolean automatic) {
+        TYPE = type;
+        this.make = make;
+        this.model = model;
+        this.capacity = capacity;
+        this.power = power;
+        this.automatic = automatic;
+    }
 
+    @Override
+    public int compareTo(Gun g) {
+        return Integer.compare(this.power, g.power);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public static void main(String[] args) {
+        Gun[] guns = {new Gun(HANDGUN, "make1", "model1", 10, 3, true),
+            new Gun(RIFLE, "make2", "model2", 30, 7, true),
+            new Gun(SHOTGUN, "make3", "model3", 2, 8, false),
+            new Gun(SNIPER, "make4", "model4", 5,10, false),
+            new Gun(REVOLVER, "make5", "make5", 6, 5, false)
+        };
+        Arrays.sort(guns, Gun::compareTo);
+        for (Gun gun : guns) {
+            System.out.println(gun);
+        }
+    }
 }

@@ -17,6 +17,10 @@ It is like an interface, in that it can have abstract methods (these are not imp
 cannot be instantiated
 If an abstract class implements an interface, the abstract class does not need all the methods from the interface to be present,
 but all the non-abstract subclasses of the abstract class would need to implement the interface in full.
+any class with an abstract method must be an abstract class
+abstract class can contain regular methods
+
+Use them to hold constants, instance variables and abstract methods shared by classes
  */
 
 abstract class Animal {

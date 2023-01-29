@@ -48,6 +48,16 @@ public class ArraySearch {
         return found;
     }
 
+    /*pre-condition; elements must be sorted
+    Process;
+        compare middle element to target
+        if equal, terminate
+        if target is less, set highindex bound to mid-1 (aka repeat steps for left subhalf)
+        if target is more, repeat steps for right subhalf from mid+1
+        repeat until target found, or have single element array
+    best case; O(1) element at mid
+    worst; O(log2(n))
+    */
     public boolean binarySearch(int target){
         int[] sortedArr = streamSort();
         System.out.println("The sorted array");

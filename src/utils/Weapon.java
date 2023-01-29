@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static utils.Weapon.TYPE.*;
 import static utils.Weapon.TYPE.BLADED;
@@ -13,7 +15,7 @@ import static utils.Weapon.TYPE.BLADED;
 @Setter
 @ToString
 public class Weapon {
-    private static TYPE TYPE;
+    private TYPE TYPE;
     String name;
     public enum TYPE {
         BLUNTFORCE, BLADED, FIREARM, EXPLOSIVE, GASPOWERED, BIOLOGICAL, CHEMICAL, NUCLEAR, BOW
@@ -63,5 +65,17 @@ public class Weapon {
                 new Weapon("crossbow", BOW, false, true, 4, 8, 4),
                 new Weapon("katana", BLADED, true, true, 5,9, 5));
         return weapons;
+    }
+
+    public static Map<String,Integer> generateWeaponsMap(){
+        List<Weapon> weapons = generateWeaponsList();
+        Map<String, Integer> weaponNameToLethalityMap = weapons.stream()
+                .collect(Collectors.toMap(Weapon::getName, Weapon::getLethality
+                        ,(key, duplicateKey) -> key));
+        return weaponNameToLethalityMap;
+    }
+
+    public void useWeapon(){
+        System.out.println("weapon was just used");
     }
 }

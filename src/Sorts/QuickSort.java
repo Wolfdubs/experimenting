@@ -13,6 +13,8 @@ import java.util.Random;
     3. Recursively quicksort the subarrays with the values to left of pivot, and right of pivot
        keep going until get to single element subarrays, which are by definition already sorted
 */
+//types you are sorting should implement Comparable, because classes don't necessarily have compareTo, and interface enforces some method definition
+
 public class QuickSort {   //regarded as the fastest sorting algorithm
 
     public static void main(String[] args) {
@@ -144,6 +146,9 @@ public class QuickSort {   //regarded as the fastest sorting algorithm
         }
         return randomArray;
     }
+
+
+
 
 }
 

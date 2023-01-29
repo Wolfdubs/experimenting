@@ -1,11 +1,12 @@
 package Concepts.Basics.Variables;
 
 
-//for creating custom ranges e.g. months, colors, mammals of things that wont change
+//for creating custom ranges e.g. months, colors, mammals of things that wont change -> by default they are constant
 //better than defining constant variables inside interface, as caller won't know the type the interface has defined the variable as
 //in back-end, java creates a class in which each enum value is created as a static final object
 // static is why to refer to the enum requires the enum class name too e.g. EnumDemo.MULE
 public enum EnumDemo {   //enum cannot extend any class, as it by default extends Enum class, but it can implement any interface
+            //optionally can define the value of the enum; where the name is constant and what users see, but it has an internal value the program can use
     HORSE, DONKEY(400), MULE, BURRO;     //DONKEY has been created using overloaded constructor. This declaration line auto instantiates each enum
     //can also create variables & methods inside enum
     private int price;
@@ -48,6 +49,10 @@ class EnumClassDemo{
         System.out.println(EnumDemo.DONKEY.getPrice());
         EnumDemo.BURRO.setPrice(300);
         System.out.println(EnumDemo.BURRO.getPrice());
+
+        EnumDemo enumDemo = EnumDemo.HORSE;
+        System.out.println("EnumDemo name = " + enumDemo.name());
+        System.out.println("EnumDemo value = " + enumDemo.getPrice());
 
         //enums have many built in methods too, because every enum extends Enum class, which implements Comparable & Serializable
         System.out.println(EnumDemo.HORSE.ordinal());  //prints what position in the sequence of enums it is

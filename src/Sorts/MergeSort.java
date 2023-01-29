@@ -3,7 +3,7 @@ package Sorts;
 import java.util.Arrays;
 import java.util.Random;
 
-//O(nlogn)
+//O(nlog2(n)) -log2 due to splitting into halves
 //divide array into halves until get to base case of 1 element, then sort each pair while combining
 //divide array in half, and then recursively call mergeSort on each half
 //once at 1 element arrays, each is sorted (as 1 element array is by definition sorted).

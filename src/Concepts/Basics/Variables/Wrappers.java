@@ -18,6 +18,18 @@ public class Wrappers {
     int stringValue = Integer.parseInt(str);
 
 
+}
+
+//automatic conversion by the compiler between primitives and their object wrapper
+    //Collections can only store objects, so to store an int array, must convert to Integer
+class Autoboxing {
+    int i = 10;
+    Integer integer = i;   //autoboxing, don't need Integer.valueOf()
+    Character character = 'a';
+
+    //Unboxing = wrapper object class to primitive
+    int j = integer;
+    char aChar = character;
 
 
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 //takes no arguments, but returns a single value
 //used for lazy generation of values, and define logic for generating sequences
@@ -42,6 +43,20 @@ public class SupplierDemo {
         Optional<Double> optionalDouble = Optional.empty();
         Supplier<Double> doubleSupplier = () -> 10.0;
         System.out.println(optionalDouble.orElseGet(doubleSupplier));
+
+        //generate accepts a Supplier
+        int[] fibonacciStart = {0,1};  //the supplier is using some external state. use array as values for supplier must effectively be final
+        Stream<Integer> fibonacci = Stream.generate(() -> {
+            int result = fibonacciStart[1];
+            int fibonacci3 = fibonacciStart[0] + fibonacciStart[1];
+            fibonacciStart[0] = fibonacciStart[1];
+            fibonacciStart[1] = fibonacci3;
+            return result;
+        });
+
+
+
+
     }
 
     private static int generateRandom(){
@@ -52,6 +67,12 @@ public class SupplierDemo {
     private static Supplier<List<String>> generateSupplier(){
         return () -> new ArrayList<>();
         //or return ArrayList::new;
+    }
+
+    //can have a method that accepts a supplier (of some type); useful because it allows lazy generation of the value
+    Supplier<Double> supplierOfDouble = () -> 8d;      //lazy generation of double; defers execution of this line, until its called by method
+    private double squareLazy(Supplier<Double> supplier) {
+        return Math.pow(supplier.get(),2);   //function squares the value of the supplier
     }
 
 

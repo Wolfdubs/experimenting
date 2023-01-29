@@ -1,0 +1,145 @@
+Java is a pass-by-value language. This means that when a method is called and a variable is passed as an argument,
+the value of the variable is passed to the method, rather than a reference to the memory location where the variable is stored.
+When a primitive data type (such as an int, double, or boolean) is passed as an argument to a method, the method receives a copy of the value,
+and any changes made to the parameter inside the method have no effect outside the method.
+When an object is passed as an argument to a method, the method receives a reference to the memory location where the object is stored.
+This means that the method has access to the same object that was passed as an argument, and any changes made to the object inside the method
+will be visible outside the method. However, the reference itself is passed by value.
+It's important to note that, even though Java is pass-by-value, when an object is passed, the reference to the object is passed by value,
+so any changes made to the state of the object are visible to the caller. It is not directly passing the memory reference but a copy of the reference.
+OOP is where you organize the program around objects and data, not actions and logic
+
+Achieve runtime polymorphism via method overriding
+2 | 1 = 3  is the bit or operation
+Anonymous classes
+    can specify either an abstract base class or an interface as its base type
+    requires a 0 arg constructor
+Valid keywords in module descriptor (module-info.java): requires, exports
+Volatile keyword = variable will never be cached by the CPU. Can still be read by multiple threads at a time
+Synchronized = method keyword; ensures 2 threads never execute the method on same object instance
+NullPointerExceptions caused when variable is used but hasn't been instantiated
+UnsupportedClassVersionException = code was compiled on a newer version of Java than the JRE executing it
+Abstract classes:
+    can contain constructors
+    allow member variables & methods to be inherited by subclasses
+    Cannot be instantiated
+To access a static member of a class e.g. Math.PI, you either specify the class Math, or can just refer to PI by adding a static import
+a catch block will not compile if Exception catch has any other catches below it
+Disadvantage of inheritance: classes related by inheritance are tightly coupled
+Java provides 3 functional interfaces as data types for lambda expressions;
+    Consumer, Predicate, Supplier
+hashCode() used to decide if 2 instances of a class are equal; does their hashCode generate same value?
+Design Patterns:
+    Static Factory Method = helps create instances of classes
+    Singleton = Ensures only 1 instance of class can be created
+    Strategy Pattern = allows a group of algorithms to be interchangeable
+Pass by value  = method receives a copy of arguments passed to it, rather than a reference to the objects themselves
+HashSet uses hashcode of objects shen inserted, and contains unique, unordered elements
+Collection interface is implemented by ArrayList, Vector and HashSet, but not HashMap -> which implements the Map interface
+BigDecimal is best data type for money
+Generics allow data types to be a parameter for classes, interfaces and methods to reuse the same code for different data types
+The JRE runs compiled Java code, while the JDK compiles the files
+Java is OOP, dynamic, architecture neutral, but does not use pointers
+    Architecture neutral = compiled java is not platform specific, but is platform-independent bytecode, interpreted by the JVM on whatever machine its installed on
+        compiler generates architecture-neutral object files
+    Dynamic = carries runtime info so can verify and resolve objects at runtime
+float is 32 bits, double is 64 bits
+When you pass an object reference to a method, it passes the original reference
+Refer to static function of a class via Function<Integer><Integer> myFunction = MyClass::staticFunction;
+Unicode is for external representation of characters and strings
+Garbage collector thread type = a daemon thread (as opposed to user thread)
+a thread's run() is invoked by the JVM when the thread is initially executed, via the start() of the Thread
+Run a jar file via: java -jar jarFile.jar
+
+Java is compiled & interpreted;
+    compiled into bytecode as .class files. this only has to be done once. compiled files are faster to run, as machine code (close to machine code if bytecode)
+    JVM then interprets during runtime, translating bytecode into machine code
+    compile via javac <filename.java>
+    run via java <filename> (don't need .class)
+
+statically types - must declare variable before using
+
+javadoc: a tool that scans src for comments and creates html files to describe the code, with comments inside /** */
+    means comments are created as documentation for the code
+
+Constructor:
+		allocates to heap memory how much memory the object will need
+		will never return anything, hence don’t include return type
+		default no-args constructor, unless you add one
+			this will only assign memory to heap for the object, not assign values
+		can use to initialize values
+		call it via new object();
+		constructor overloading - can have many constructors if they have different parameters
+psvm: public so can call from anywhere, static as wouldn’t work to have to create objects to run it against first, void as returns nothing as it encompasses the full execution, main keyword tells java to run from there. takes string[] args because strings can accept any input type, and [] allows for any range of inputs
+this keyword: specifies that the variable is the instance variable within the object, not a local variable
+	this represents the current object
+static variables: mean the variable is not specific to the specific object, but is true for all objects of the class. all objects share the same value
+static methods don’t need objects to call it on
+Inner classes - classes can contain other classes, which will be a member class
+2D Array
+	Jagged Array = if sub-arrays are of different sizes
+VarArgs = to allow one method to accept different numbers of parameters. e.g. an add that can take as many parameters as you pass in
+	use methodDefintion(int … i)
+		when called, parameters passed in to the call are sent to method defintion as an array
+	permit variable length arguments
+Inheritance: sub class extends super class
+	sub has access to all method implementation from super class
+Package names should be reverse of your domain
+Access Modifies
+	Types;
+		public: any class or package
+		private: specific class
+		protected: only same package or any subsiding class; extends/implements
+		default: specific package
+			difference vs protected; protected can be accessed outside the package by extending/implementing classes
+	classes can be abstract, final, or public, or with nothing at all (will leave it with default))
+		cannot be private or protected
+	by default, unless otherwise specified, class/variable/method cannot be accessed outside the package. default = package private, so cannot reassign variables / run methods outside their package
+
+Heap = where created objects are stored
+Non-heap = stores class & method definitions
+            each thread has its own stack, sitting in non-heap
+
+break & continue applicable for switches, whiles and fors
+Use a method from a different class in same package by preceding the call with the class name
+non-Strings automatically call toString() when printed
+
+
+Java is always pass by value; it passes references by value
+    passing object variables into methods will pass its memory address in, which is a reference to the specified value,
+    so the method operates on the value of the contents of the shared object pointed to by the reference that the object variable holds
+    so method passes in the value of the memory address reference
+    if the method reassigns the variable passed in to another object e.g. with new Object(), then it no longer will refer to the original object in memory refered to by the variable passed in
+Java is only pass by value
+	Call by Value means calling a method with a parameter as value. Through this, the argument value is passed to the parameter.
+	While Call by Reference means calling a method with a parameter as reference. Through this, the argument reference is passed to the parameter.
+	In call by value, the modification done to the parameter passed does not reflect in the caller's scope while in call by reference, the modification done to the parameter passed are persistent and changes are reflected in the caller's scope.
+	But Java uses only call by value. It creates a copy of references and pass them as value to the methods. If reference contains objects, then the value of object can be modified in the method but not the entire object
+	Java uses pass by value. There is no pass by reference in Java
+	Pass by Value =  Actual parameter expressions that are passed to a method are evaluated and a value is derived. Then this value is stored in a location and then it becomes the formal parameter to the invoked method
+	Pass by reference  = the formal parameter is just an alias to the actual parameter. It refers to the actual argument. Any changes done to the formal argument will reflect in actual argument and vice versa
+
+
+Call Stack:
+    bottom up ordering of a series of methods in chronological order of invokation
+        as methods complete, they pop off the stack revealing the info needed by its caller
+
+Portable: write-once, read anywhere as platform independent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

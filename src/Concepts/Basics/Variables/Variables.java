@@ -1,11 +1,36 @@
 package Concepts.Basics.Variables;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 public class Variables {
+
+    /*8 primitives
+    float, must end with f; float num = 5.5f;
+    short: use if you are certain value will be between -32000 - 32000 -> 2 bytes
+    byte; store values from -128 - 127 -> 1 byte
+    int -> 4 bytes
+    long; 8 bytes
+    char: can assign to a letter e.g. 'A' or directly to an ASCII character
+        so can do a++ to increment to next letter in ASCII
+    double:
+        By default all decimals are double
+        could also store whole numbers in doubles, but will add a .0
+        cast to int will truncate the decimal
+    boolean
+
+
+    static means don't need an object to operate on
+    */
+
+    //Object variables = reference variable, as the variable is a pointer to a memory address in heap that stores the object
+    //When 2 variables point to same object, changing the object with 1 alias, will change it for all aliases
+    //Garbage collection - objects not pointed to by a variable are auto trashed
+
 
     //multiple overloading constructors need different signatures; polymorphism
     public Variables() {
@@ -57,17 +82,43 @@ public class Variables {
         //STRING IMMUTABILITY
         //  Strings are immutable; changing a variable value doesn't change the String object in memory it creates a new String object and just
         //  changes the reference in the variable
+        //changes are made to the calling object, not the original, so must assign to variable every time (can be same variable)
         // 3 benefits:
         // memory optimization
         // security: methods cannot change string values of objects they access
         // Strings completely thread safe as threads cannot change it
         String name = "Cody";
+        //Strings literals are added to the string constant pool in heap, so if another string has same literal it recycles the pooled object so it has multiple aliases
         String anotherName = "Cody";   //both these variables actually point to the same string object inside Java's string pool (used to save memory avoiding duplication)
         System.out.println(name == anotherName);  //returns true as the same object
-        String thirdName = new String("Cody");  //creates a new string object
+        String thirdName = new String("Cody");  //creates a new string object not added to the constant sting pool, is only ever its own alias
         System.out.println(name == thirdName);   //returns false as fifferet objects
+        name.compareTo(anotherName);  //converts strings to unicode and compares value at each index
+
+
+        name.indexOf("dy");
+        name.indexOf('y',3);
+        float floater = 1403.11339f;
+
+        //formatting strings
+        String formatterString = String.format("namePrePadding: %10s, float %.1f, namePostPadding: %-10s, 1000s commas separator %,.3d", name, floater, thirdName, floater);
+                                        //1 decimal place for the float. padding of 10 in front/behind of the string. format with 1000s comma for the float
+        System.out.println(formatterString);
+
+        //formatting ints
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.UK);
+        numberFormat.format(18);
+
+        String womble = "womble is a fluffy pekingese";
+        String[] wombleArray = womble.split(" ");
+        String[] wombleArrayRegex = womble.split("A-Z");  //split string based on uppercases
+        for (String s : wombleArray) {
+            System.out.println(s);
+        }
+
 
     }
+
 
     public static char incrementChar(char inputChar) {
         char myChar = inputChar;
@@ -89,18 +140,7 @@ public class Variables {
     }
 
 
-    /*by default all decimals are double
-    could also store whole numbers in doubles, but will add a .0
-    cast to int will truncate the decimal
-    float, must end with f; float num = 5.5f;
-    short: use if you are certain value will be between -32000 - 32000
-    byte; store values from -128 - 127
-    long; 8 bytes
-    char: can assign to a letter e.g. 'A' or directly to an ASCII character
-    so can do a++ to increment to next letter in ASCII
 
-    static means don't need an object to operate on
-    */
 
     /*
     POJO - plain old java object
@@ -169,57 +209,6 @@ avoid initializing variables to null, and avoid having methods ever return null,
 Can use Optionals to manage null possibilities
  */
 
-/*
-	src is compiled into bytecode, which the JVM runs on the machine
-	by default all decimals are double
-		could also store whole numbers in doubles, but will add a .0
-		cast to int will truncate the decimal
-	float, must end with f; float num = 5.5f;
-	short: use if you are certain value will be between -32000 - 32000
-	byte; store values from -128 - 127
-	long; 8 bytes
-	char: can assign to a letter e.g. 'A' or directly to an ASCII character
-		so can do a++ to increment to next letter in ASCII
-	Constructor:
-		allocates to heap memory how much memory the object will need
-		will never return anything, hence don’t include return type
-		default no-args constructor, unless you add one
-			this will only assign memory to heap for the object, not assign values
-		can use to initialize values
-		call it via new object();
-		constructor overloading - can have many constructors if they have different parameters
-	psvm: public so can call from anywhere, static as wouldn’t work to have to create objects to run it against first, void as returns nothing as it encompasses the full execution, main keyword tells java to run from there. takes string[] args because strings can accept any input type, and [] allows for any range of inputs
-	this keyword: specifies that the variable is the instance variable within the object, not a local variable
-		this represents the current object
-	static variables: mean the variable is not specific to the specific object, but is true for all objects of the class. all objects share the same value
-	static methods don’t need objects to call it on
-	Inner classes - classes can contain other classes, which will be a member class
-	2D Array
-		Jagged Array = if sub-arrays are of different sizes
-	VarArgs = to allow one method to accept different numbers of parameters. e.g. an add that can take as many parameters as you pass in
-		use methodDefintion(int … i)
-			when called, parameters passed in to the call are sent to method defintion as an array
-		permit variable length arguments
-	Inheritance: sub class extends super class
-		sub has access to all method implementation from super class
-	Package names should be reverse of your domain
-	Access Modifies
-		Types;
-			public: any class or package
-			private: specific class
-			protected: only same package or any subsiding class; extends/implements
-			default: specific package
-				difference vs protected; protected can be accessed outside the package by extending/implementing classes
-		classes can be abstract, final, or public, or with nothing at all (will leave it with default))
-			cannot be private or protected
-		by default, unless otherwise specified, class/variable/method cannot be accessed outside the package. default = package private, so cannot reassign variables / run methods outside their package
-
- */
-/*
-Heap = where created objects are stored
-Non-heap = stores class & method definitions
-            each thread has its own stack, sitting in non-heap
- */
 
 
 

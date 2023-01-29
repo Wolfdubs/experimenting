@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
 
-//Annotations are metadata, processed either at runtime, or compile time
+//Annotations provide metadata to compiler to give extra instructions; processed either at runtime, or compile time
 public class AnnotationsDemo {
     public static void main(String[] args) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         SecondClass sc = new SecondClass();
@@ -111,7 +111,7 @@ interface functionalInterfaceDemo{
 @Inherited  //optional meta-annotation that means subclasses of classes with the annotation will also have it
 @Target({ElementType.TYPE, ElementType.METHOD})    //when creating annotation, must specify at what level it will be used (class, method, field, etc). ElementType.TYPE means for classes/interfaces. Can select multiple types. Can leave blank to make applicable to any java element
 @Retention(RetentionPolicy.RUNTIME)   //until at what point the annotation will be available. Runtime good for 99% of cases; tells java to keep annotation through the actual running of the program so other code can see it and use it during runtime. .SOURCE means java gets rid of annotation before compilation. .CLASS means java gets rid of annotation just after compilation, when runtime starts.
-@interface SmartPhone{   //@interface is command to create a SmartPhone, whose properties you then define.
+@interface SmartPhone{   //@interface is command to create a SmartPhone annotation, whose properties you then define.
     String os();           //creates a field that all implementing classes must have
     int version() default 1;        //Multi Value Annotations have multiple values, vs Single Value Annotations.  Can set default values classes will have. if have a default, implementing element doesnt have to provide a value, otherwise it must
 }
@@ -144,7 +144,25 @@ class Nokia{
     @MagicalSweatshop(times = 5)   //have to initialize the field in the annotation when we invoke it. can then use this field for the method calls in main()
     public void browseInternet(){System.out.println("I'm browsing the internet");}
     public void takePhoto(){System.out.println("I'm taking a photo");}
+
+    public static void main(String[] args) throws NoSuchMethodException {
+        Nokia nokia = new Nokia();
+        Method methodVal = nokia.getClass().getMethod("takePhoto");
+        SmartPhone smartPhone = methodVal.getAnnotation(SmartPhone.class);   //use reflection API to get annotation values
+        System.out.println("Smartphone details = " + smartPhone.os() + "  " + smartPhone.version());
+
+    }
 }
+
+
+//marker annotation is an empty annotation with no metadata logic; contains no code. just for giving very high level instructions to the compiler
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@interface MarkerAnnotation {
+
+}
+
+
 
 
 

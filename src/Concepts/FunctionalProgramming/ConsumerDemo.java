@@ -1,13 +1,15 @@
 package Concepts.FunctionalProgramming;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.*;
 import java.util.stream.Stream;
+
+import static utils.Weapon.generateWeaponsMap;
 
 /*
 Consumer interface accepts only 1 / gentrified argument
 no return value
+so it represents a side effect
 Functional variants; IntConsumer, DoubleConsumer, LongConsumer, accepting primitives as arguments
 SAM is accept()
 also have andThen()
@@ -97,6 +99,11 @@ class BiConsumerDemo{
 
     }
 
+    //Specialized BiConsumers -> accept 2 arguments, one is the primitive in the name, one is parameterized object
+    ObjIntConsumer<String> objIntConsumer;
+    ObjLongConsumer<Integer> objLongConsumer;
+    ObjDoubleConsumer<Double> objDoubleConsumer;
+
     static class CustomBiConsumer implements BiConsumer<String, Integer>{
 
         @Override
@@ -105,6 +112,13 @@ class BiConsumerDemo{
             if (integer>6) {System.out.println("That's a special dog");}
         }
     }
+
+    //BiConsumer direct iterating through map
+    private void biConsumerIteratingThroughMap() {
+        Map<String, Integer> weaponMap = generateWeaponsMap();
+        weaponMap.forEach((k, v) -> System.out.println("key = " + k + " value = " + v));
+    }
+
 
 }
 
