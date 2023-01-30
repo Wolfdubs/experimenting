@@ -1,0 +1,8 @@
+For high quality code = reliable, reusable, maintainable, testable, flexible and functional
+Building blocks of OOP
+
+Single Responsibility
+Open-closed
+Liskov Substitution
+Interface Segregation
+Dependency Inversion

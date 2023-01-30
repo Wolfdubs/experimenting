@@ -1,14 +1,17 @@
 package Concepts.Basics.Variables;
 
 import lombok.*;
+import lombok.experimental.Accessors;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 
 import javax.annotation.processing.Generated;
+import java.io.*;
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.*;
 
 //Annotations provide metadata to compiler to give extra instructions; processed either at runtime, or compile time
 public class AnnotationsDemo {
@@ -60,10 +63,9 @@ public class AnnotationsDemo {
 
         //Using Lombok getters, setters, toString;
         LombokDemo ld = new LombokDemo();
-        ld.getId();
-        ld.getName();
-        ld.setId(6);
-        ld.setAlive(true);
+        ld.id();  //the getter. fluent means it doesn't need the get prefix
+        ld.name();
+        ld.id(3).name("womble").isAlive(true);    //chain=true allows chaining setters for the fields
         ld.toString();
         ld.hashCode();
         ld.equals(new LombokDemo());
@@ -169,16 +171,61 @@ class Nokia{
 ////////////////////////////////////////////////////////////////////////
 
 //LOMBOK ANNOTATIONS
+//java library that manages boilerplate code
 //Lombok autogenerates getters, setters, equals, toString, hashCode, so don't need boilerplate code
+    //for fields in the class. when class is compiled, lombok creates the methods and adds them to the compiled class file
 //to use Lombok annotations, must download jar file from projectlombok.org and add to project library
-@Getter //autogenerates a getter method for each field in the class. when class is compiled, lombok creates and adds them to the compiled class file
-@Setter
-@EqualsAndHashCode // autogenerates an equals method to check objects of the class are the same, and also a hascode method
-@ToString
-@Data    //Actually combines @Getter, @Setter, @EqualsAndHashCode, @ToString and a canonical constructor all into 1 clean annotation
+//lazy generation -> method only generated when called
+
+@NoArgsConstructor  //generates default empty constructor
+@AllArgsConstructor  //constructor that accepts all fields of the class
+@RequiredArgsConstructor  //constructor with only the variables marked final or NonNull (as they must be assigned a vlaue when creating an object)
+@Getter (AccessLevel.PROTECTED)  //getter & setter auto set to public, but can specify differently
+@Setter @Accessors(chain = true, fluent = true)  //get/set customization. chain enables chaining of getter/setter calls for each field.
+            // fluent removes set/get prefix from the getter/setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // autogenerates an equals method to check objects of the class are the same, and also a hascode method
+@ToString (includeFieldNames = false)  //toString will only contain the values
+            //if a subclass & superclass both have Lombok toString, can choose to call the supers via callSuper = true. same for @EqualsAndHashCode
+@Data    //Shortcut that combines @Getter, @Setter, @EqualsAndHashCode, @ToString and a canonical constructor (@RequiredArgsConstructor) all into 1 clean annotation
+@Builder(setterPrefix = "add")  //generates static builder method for the class, so you create instances via ClassName.builder()
+@Log   //generates logger field named log whose type depends on the specific annotation version used. requires extra dependencies added to project
+@Log4j   //example alternative log library
 class LombokDemo{
+    @EqualsAndHashCode.Include  //specifying the fields to include for @EqualsAndHashCode
     String name;    //lombok won't work if these fields are declared private
+    @EqualsAndHashCode.Include
+    @NonNull   //marks field as required to be given a value, else throws NullPointerException
     int id;
+    @Getter(AccessLevel.PRIVATE)
     boolean isAlive;
+    @ToString.Exclude  //will exclude the below field from the toString
+    final List<String> data = initData();
+
+    public List<String> initData(){
+        return new LinkedList<>();
+    }
+
+    public static void main(String[] args) throws IOException {
+
+    val valInt = 9;  //val can be used a type of local variable declaration instead of writing the actual type
+    val valMap = new TreeMap<String, Double>();   //val marks the variable as final, so cannot reinitialize/reassign
+    valMap.put("womble",4.44); valMap.put("mungo",2.33);
+    for (val entry : valMap.entrySet()) {    //using val here means no concern about the types in the map
+        System.out.println(entry.getKey() + entry.getValue());
+    }
+    LombokDemo lombokDemo = LombokDemo.builder().build();
+    LombokDemo lombokDemo1 = LombokDemo.builder()
+            .addId(1).addName("jambo").addIsAlive(false).build();  //specify add due to Builder customization
+
+    @Cleanup  //ensures resources closed before code execution exits current scope
+    BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("dummyFile.txt")));
+    @Cleanup
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("dummyOutput.txt"));
+    bufferedWriter.write(bufferedReader.readLine());
+
+
+
+
+    }
 }
 

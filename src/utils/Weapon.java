@@ -25,6 +25,7 @@ public class Weapon {
     int lethality;
     int selfSustainability;
     int difficulty;
+    double antiqueValue;
 
 
     public Weapon(String name, Weapon.TYPE type) {

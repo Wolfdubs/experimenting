@@ -27,6 +27,7 @@ import java.util.Scanner;
 
 import static java.sql.DriverManager.getConnection;
 
+//Uniform way for java to connect with the different DBs; adding the specific vendor's JDBC added to the build path
 public class JDBCDemo {
     public static void main(String[] args) throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         String driver = "com.mysql.cj.jdbc.Driver"; //register the Driver. my download jar containing this library
@@ -98,7 +99,44 @@ class ForNameDemo{  //to call the static block without creating an object, you c
 */
 
 /*
-DDL = data definition language for changing structure of the DB, e.g. creating tabkle
+DDL = data definition language for changing structure of the DB, e.g. creating table
 DQL = data query language = to fetch data
 DML = data modifying language
  */
+
+
+
+class PostgressJDBC {
+    public static void main(String[] args) {
+        String url = "jsbc:postgresql://localhost/test";  //creating the connection; specify connection utl including port
+        Connection connection = null;
+        int pekingeseNo = 1;
+        String name = "womble";
+        int age = 13;
+        String sql = "insert into pekingese(pekingeseNo, name, age) " + "values(" + pekingeseNo + "," + name + "," + age + ")";
+        try {
+            connection = DriverManager.getConnection(url, "username", "password");  //creates live connection to the db
+            Statement statement = connection.createStatement();    //statement object created on this connection
+            int response = statement.executeUpdate(sql);   //returns number of rows effected
+            if (response==1) System.out.println("Inserted successfully " + sql);    //expecting 1 row to have been effected, as posting 1 new entry
+            else System.out.println("Insertion failed");
+        } catch (SQLException sqle) {
+            System.err.println(sqle);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException sqle) {
+                System.err.println(sqle);
+            }
+        }
+
+    }
+}
+
+
+
+
+
+
+
+

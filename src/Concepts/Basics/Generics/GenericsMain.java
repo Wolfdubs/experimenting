@@ -1,6 +1,7 @@
 package Concepts.Basics.Generics;
 
 import DataStructures.List.LinkedList.LinkedList;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -9,13 +10,15 @@ import java.util.Collections;
 import java.util.List;
 
 //Placeholder for a class -> discover type compatability at runtime
+//so can use the same code for different input types, so functionality can be reused by many types
 //used with collections because the collection can hold different data types
+    //Collections are built upon generics as require a type parameter
 //primitives cannot be passed in as the type for a generic
-class Generics<T> {
+class GenericsDemo<T> {
 
     T thingToPrint;
 
-    public Generics(T whatever) {
+    public GenericsDemo(T whatever) {
         this.thingToPrint = whatever;
     }
 
@@ -52,26 +55,26 @@ class Generics<T> {
 public class GenericsMain {
     public static void main(String[] args) {
 
-        Generics<Integer> genericInt = new Generics<>(18);
+        GenericsDemo<Integer> genericInt = new GenericsDemo<>(18);
         genericInt.printGeneric();
 
-        Generics<Double> genericDouble = new Generics<>(9.3);
+        GenericsDemo<Double> genericDouble = new GenericsDemo<>(9.3);
         genericDouble.printGeneric();
 
-        Generics<String> genericString = new Generics<>("look");
+        GenericsDemo<String> genericString = new GenericsDemo<>("look");
         genericString.printGeneric();
 
-        Generics.printGenericWithGenericParameter(4, new LinkedList());
-        Generics.printGenericWithGenericParameter("kewl", new Generics<>(3));
-        Generics.printGenericWithGenericParameter(-293.503, true);
+        GenericsDemo.printGenericWithGenericParameter(4, new LinkedList());
+        GenericsDemo.printGenericWithGenericParameter("kewl", new GenericsDemo<>(3));
+        GenericsDemo.printGenericWithGenericParameter(-293.503, true);
 
         ArrayList<Integer> intList = new ArrayList<>();
         intList.add(5); intList.add(1); intList.add(0);
-        Generics.printList(intList);
+        GenericsDemo.printList(intList);
 
         ArrayList<String> strList = new ArrayList<>();
         strList.add("qewe"); strList.add("unu"); strList.add("str3");
-        Generics.printList(strList);
+        GenericsDemo.printList(strList);
 
     }
 }
@@ -133,6 +136,53 @@ class GenericBubbleSort{
         public int compareTo(ProgrammingLanguage o) {
             return this.users > o.users ? 1 : this.users==o.users ? 0 : -1;
         }
+    }
+}
+
+
+class GenericsGT {
+
+    //generic class - whoever uses the class must supply the type
+    static class MyGeneric<T> {
+        T memberVariable;
+        MyGeneric(T memberVariable){
+            this.memberVariable = memberVariable;
+        }
+        T getMemberVariable() {return this.memberVariable;}
+    }
+
+    @NoArgsConstructor
+    static class My2Generics<T, U> {    //has 2 generic types; used for maps
+        T fieldT;
+        U fieldU;
+
+        My2Generics(T fieldT, U fieldU) {
+            this.fieldT = fieldT;
+            this.fieldU = fieldU;
+        }
+        public T getFieldT() {            return fieldT;        }
+        public U getFieldU() {            return fieldU;        }
+        void display() {            System.out.println(fieldT);            System.out.println(fieldU);        }
+    }
+
+    public static void main(String[] args) {
+        List rawList = new ArrayList<>();
+        rawList.add("womble");
+        String wombleString = (String) rawList.get(0);   //for a raw list, must cast elements as a specific type as stored as just objects
+
+        //calling the custom generic class
+        MyGeneric<Double> myDoubleGeneric = new MyGeneric<>(10.0);
+        myDoubleGeneric.getMemberVariable();
+        MyGeneric<Character> myCharacterGeneric = new MyGeneric<>('w');
+        myCharacterGeneric.getMemberVariable();
+        MyGeneric<Boolean> booleanMyGeneric = new MyGeneric<>(false);
+
+        //calling custom 2 generics class
+        My2Generics<String, Integer> stringIntegerMy2Generics = new My2Generics<>("womble", 13);
+        stringIntegerMy2Generics.display();
+        My2Generics<Boolean, Long> booleanLongMy2Generics = new My2Generics<>();
+
+
     }
 }
 

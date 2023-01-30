@@ -7,10 +7,35 @@ import java.util.concurrent.Executors;
 Lets the machine run multiple tasks at a time -> multiple threads running concurrently improves app capabilities
 2 units of execution:
     Process = standalone execution environment with private runtime resources and memory. Can contain multiple threads, always at least 1
-    Thread = a task; like a lightweight process. has own execution environment, but creating new threads requires much less resources than processes
+    Thread = The smallest sequence of instructions that can be managed independently by the scheduler and executed independently by the processor
+        a task; like a lightweight process. has own execution environment, but creating new threads requires much less resources than processes
         different threads manage different aspects of a program. exist inside processes
+        has dedicated resources allocated -> registry, stack memory
         States = Running, Sleep, Ready, Dead (completed), Awaiting IO Input
         Create via extends Thread or implements Runnable
+Parallelism:
+    Programs can consist of multiple processes
+        Process = actual execution of the program
+            different processes do not share resources, have different memory addresses
+            alive as long as it contains a single active thread
+        Single threaded process = 1 thread executes all operations
+        Multi threaded process = Parallelism; multiple threads execute the operations concurrently
+            Multiple threads can can exist in a process and share its resources e.g. stack memory, heap memory, code
+            inter-thread communication within a process is faster than inter-process communication due to resource sharing
+            CPU core count defines max number of parallel threads
+                when thread count exceeds cores, processor grants illusion of parallelism by allocating minuscule time slots to each operation
+    Drawbacks: threads share resources e.g. access same file, so one idly waits for other to finish, so move from parallel to concurrent
+                    Scheduler fixes by ensuring efficient distribution of processor time across threads
+                        assigns prioritization to threads according to set rules
+    Multi-process vs multi-threaded
+        multi-process = if 1 process crashes, rest can continue
+            better memory management and optimization for current activities, so higher performance & less glitches
+        multi-threaded = if 1 thread crashes, the whole program crashes
+
+
+
+
+
  */
 public class MultiThreadingDemo {
 

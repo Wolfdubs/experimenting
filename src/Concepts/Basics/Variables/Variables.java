@@ -46,6 +46,12 @@ public class Variables {
     }
 
     public static void main(String[] args) {
+        var varString = "kato";   //var doesn't make the variable final, so can be reinitialized/reassigned
+        varString = "sita";
+        var varInt = 8;
+        var varBoolean = true;
+        var varByte = (byte) 4;
+
         System.out.println(incrementChar('x'));
         System.out.println(incrementChar('Z'));
         System.out.println(incrementChar('z'));
@@ -81,7 +87,8 @@ public class Variables {
 
         //STRING IMMUTABILITY
         //  Strings are immutable; changing a variable value doesn't change the String object in memory it creates a new String object and just
-        //  changes the reference in the variable
+            //  changes the reference in the variable
+            //so changes just create new objects and points to those instead, old one still remains
         //changes are made to the calling object, not the original, so must assign to variable every time (can be same variable)
         // 3 benefits:
         // memory optimization
@@ -115,6 +122,24 @@ public class Variables {
         for (String s : wombleArray) {
             System.out.println(s);
         }
+
+        //random string methods
+        name.charAt(1);
+        name.compareTo(anotherName);
+        name.compareToIgnoreCase(thirdName);
+        name.concat(name);
+        name.contains("woo");
+        name.copyValueOf(new char[] {'w', 'o', 'm'});
+        name.endsWith("ble");
+        name.equals(anotherName);
+        name.indexOf("om");
+        name.replace("wom", "mun");
+        name.substring(2,4);
+        name.length();
+        name.split(", ");
+        String.format("%s is a %d years old %f lbs fluffy pekingese %b", "womble", 13, 10.0, true);
+
+
 
 
     }
@@ -167,11 +192,16 @@ class myPOJO{   //is a POJO class as no extends, implements or annotations
 
     /*
     Java Bean
-        Must have
-        1. Public no-args constructor
-        2. All properties must be private
-        3. Public getters & setters
-        4. Must be serializable
+        Specification to follow for enterprise apps
+        A reusable software component that can be manipulated visually in IDE
+            reusable = multiple software components and apps can reuse the bean repeatedly -> so must be serializable so it can be transported
+        Still has methods like any other class
+        Can also have events - way for 1 object to notify another that something happened
+        Technically it just a java class with the specifications
+            1. Public no-args constructor
+            2. All properties must be private
+            3. Public getters & setters
+            4. Must be serializable; because beans are exported between apps, written to a db, or converted to xml/json and sent over network
         Why: used to encapsulate many objects into a single object for transmission, can access from 1 place
             easy to expose to consumers
             Bean setters are basis of Dependency Injection

@@ -3,6 +3,7 @@ package Concepts.Streams;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import utils.Pekingese;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -376,23 +377,7 @@ class CustomClassWithStream<T> {
 
 }
 
-@ToString
-@Getter
-@Setter
-class Pekingese {
-    String name;
-    int age;
-    float weight;
 
-    public Pekingese(String name, int age, float weight) {
-        this.name = name;
-        this.age = age;
-        this.weight = weight;
-    }
-    void incrementAge(){
-        this.setAge(this.getAge()+1);
-    }
-}
 
 //Because Stream<T> is a generic, and primitives cannot be used with generics, so must use the primitive interface stream
 //don't require auto-boxing
