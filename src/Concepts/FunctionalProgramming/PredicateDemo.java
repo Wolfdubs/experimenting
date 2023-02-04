@@ -4,16 +4,21 @@ import lombok.Getter;
 import utils.Weapon;
 
 import java.util.*;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 import static utils.Weapon.generateWeaponsList;
 
 //A functional interface that accepts 1 argument, returns a boolean
+//special case of Function interface; takes 1 argument, returns a boolean
+//SAM = test() accepts an argument and returns a boolean
 //used for stream.filter()
 //extensions: IntPredicate, LongPredicate, DoublePredicate
     //exact same, but only accept the specific primitive
-//can define with lambda, or have a class implement it and implement its SAM test() (which accepts an argument and returns a boolean)
+//can define with lambda, or have a class implement it and implement test()
+//Default methods
+    //and() = adds a && between the 2 predicate conditions
+    //or() = adds a || between 2 predicates
+    //negate() adds a ! before a predicate
 public class PredicateDemo {
     static List<Integer> list = List.of(1,2,3,4,5,6,7,8,9,10);
 
@@ -32,6 +37,15 @@ public class PredicateDemo {
                 System.out.println(currentString);
             }
         }
+        List<String> fourLetterNames = stringList.stream()
+                .filter(s -> s.length()==4)
+                .toList();
+
+        Predicate<String> andPredicate = s -> s.length()==4 && s.contains("oo");//using and()
+        stringPredicate.and(andPredicate).test("womble");    //other way to use and()
+        Predicate<Double> orPredicate = d -> d>5 || d.toString().length()==3;//using or()
+        stringPredicate.or(andPredicate).test("mungo");   //other way to use or()
+        andPredicate.negate().test("womble");   //inverses the calling predicate
 
         Predicate<Integer> lessThan10 = i -> i < 10;
         System.out.println(lessThan10.test(8));
@@ -97,10 +111,15 @@ public class PredicateDemo {
         }
         return predicatedWeapons;
     }
-
-
-
 }
+
+class SpecializedPredicates {
+    IntPredicate intPredicate = i -> i>10;
+    DoublePredicate doublePredicate = d -> d>10;
+    LongPredicate longPredicate = l -> l>10;
+}
+
+
 
 @Getter
 class Dog implements Predicate<Dog> {
@@ -150,5 +169,7 @@ class BiPredicateDemo {
                 System.out.println("Strings with same length found at index " + i + " and " + j + ", with values " + strings[i] + ", " + strings[j]);
             }
         }
+
+        BiPredicate<Integer,String> integerStringBiPredicate = (a,b) -> a.toString().equals(b);
     }
 }

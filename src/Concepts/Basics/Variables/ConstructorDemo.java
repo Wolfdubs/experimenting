@@ -4,7 +4,7 @@ public class ConstructorDemo {
 
     //Chaining constructors = best practice with constructor overloading, because DRY
     //less specific constructor calls more specific one to set other fields
-    private class Pekingse {
+    private static class Pekingse {
         protected String name;
         int age;
         protected double weight;
@@ -34,5 +34,14 @@ public class ConstructorDemo {
         public PekingesePets(String name) {
             super(name);
         }
+    }
+
+    //have a method that contains a call to the constructor, so user can create an object via this method call
+    private static Pekingse createPekingese(String name, int age, double weight){
+        return new Pekingse(name, age, weight);
+    }
+
+    public static void main(String[] args) {
+        Pekingse myPekingese = createPekingese("womble", 13, 10);
     }
 }

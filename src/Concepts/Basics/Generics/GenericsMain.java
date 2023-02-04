@@ -1,19 +1,21 @@
 package Concepts.Basics.Generics;
 
-import DataStructures.List.LinkedList.LinkedList;
+import DataStructures.List.LinkedList;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-//Placeholder for a class -> discover type compatability at runtime
+//Placeholder for a class -> discover type compatibility at runtime. so used for classes
 //so can use the same code for different input types, so functionality can be reused by many types
+    //makes methods flexible for use with different types e.g. sort() for int and string
+//takes the type as a parameter so the contained methods also take that type as a parameter
 //used with collections because the collection can hold different data types
-    //Collections are built upon generics as require a type parameter
-//primitives cannot be passed in as the type for a generic
+    //Collections are built upon generics as require a type parameter, e.g. List<String>, List<Integer>, List<MyClass>
+//primitives cannot be passed in as the type for a generic -> because generics are calculated at runtime, so during compilation the generic T is erased
+    //and replaced by the Object class, so generics must extend Object
+//To make a method generic, must make the class generic -> the classes generic type can be used for all its methods
+    //convention; T = type, K = key, V = value
 class GenericsDemo<T> {
 
     T thingToPrint;
@@ -182,6 +184,26 @@ class GenericsGT {
         stringIntegerMy2Generics.display();
         My2Generics<Boolean, Long> booleanLongMy2Generics = new My2Generics<>();
 
+
+    }
+}
+
+class BoundedGenerics {
+    /*
+    bound the generics to specific types
+    e.g. sort() ensuring the type is a comparable one, so do T extends Comparable so sort() knows what to sort by using its compareTo()
+        Integer, Double, String extend Comparable by default
+    If the type does not extend the specific type, throws compilation error
+     */
+    class SortingClass<T extends Comparable<T>> {
+        private List<T> sort(List<T> list){
+            //sorting logic
+            return new Vector<>();
+        }
+    }
+
+    //can have a generic type bounded to multiple specific types
+    class MultipleBoundsClass<T extends Number & Comparable<T>> {
 
     }
 }

@@ -1,5 +1,6 @@
 package utils;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +12,8 @@ import java.util.stream.Collectors;
 import static utils.Weapon.TYPE.*;
 import static utils.Weapon.TYPE.BLADED;
 
-@Getter
-@Setter
+@Getter (AccessLevel.PUBLIC)
+@Setter (AccessLevel.PUBLIC)
 @ToString
 public class Weapon {
     private TYPE TYPE;
@@ -68,6 +69,7 @@ public class Weapon {
         return weapons;
     }
 
+
     public static Map<String,Integer> generateWeaponsMap(){
         List<Weapon> weapons = generateWeaponsList();
         Map<String, Integer> weaponNameToLethalityMap = weapons.stream()
@@ -79,4 +81,6 @@ public class Weapon {
     public void useWeapon(){
         System.out.println("weapon was just used");
     }
+
+
 }

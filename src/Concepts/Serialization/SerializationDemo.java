@@ -23,7 +23,7 @@ public class SerializationDemo {
 
 
     //for storing the state of values within an object in a file, rather than the whole object itself
-    //store state of objects in a file
+    //store/writing state of objects in/to a file
     public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException {
 
         //creating object to serialize
@@ -35,7 +35,7 @@ public class SerializationDemo {
         try {
             FileOutputStream fos = new FileOutputStream(f);
             ObjectOutputStream oos = new ObjectOutputStream(fos);   //object specific stream for output
-            oos.writeObject(demo);   //passing the object output stream the specific object to store in the input filepath
+            oos.writeObject(demo);   //passing the object output stream the specific object to store in the input filepath to persist the state of the object passed
             oos.close();
             fos.close();
             System.out.println("Object has been serialized" + demo);
@@ -65,5 +65,16 @@ class Demo implements Serializable {    //Serializable allows class to be saved.
     private int i;
     public void setI(int i) {this.i = i;}
 
-    transient int x; //transient specifies members to exclude from serialization, so it won't be sent
+    int a = 10;
+    final int b = 20;
+    transient int c = 30; //transient specifies members to exclude from serialization, so it won't be sent
+                    /*indicates variable is not part of the default serialized form of the object / the objects persisted state
+                    When objects are serialized, transient instance fields are ignored
+                    when objects deserialized, transient instance fields are initialized to their default value, e.g. for int it will be 0 */
+    transient static int d = 40; //using static with transient -> negates the transient, because static fields are part of the class,
+                                 //while transient only operate sat the object state level
+    transient final int e = 50;  //using final with transient -> final fields are directly serialized by their initial value so cannot be reinitialized
+
+    //values written to the file will be: 10, 20, 30, 40, 50
+    //values retrieved from the file will be: 10, 20, 0, 40, 50
 }

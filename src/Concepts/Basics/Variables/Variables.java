@@ -2,10 +2,8 @@ package Concepts.Basics.Variables;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.*;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Vector;
 
 public class Variables {
 
@@ -46,11 +44,7 @@ public class Variables {
     }
 
     public static void main(String[] args) {
-        var varString = "kato";   //var doesn't make the variable final, so can be reinitialized/reassigned
-        varString = "sita";
-        var varInt = 8;
-        var varBoolean = true;
-        var varByte = (byte) 4;
+
 
         System.out.println(incrementChar('x'));
         System.out.println(incrementChar('Z'));
@@ -241,27 +235,6 @@ Can use Optionals to manage null possibilities
 
 
 
-
-/*
-Volatile
-Ensures updates to variable propagate predictably to other threads
-    tells the runtime and processor not to reorder any instructions with volatile variables
-    so is another way of making a class thread safe
-        otherwise changes to a variable in 1 thread may not immediately reflect in another thread
-multithreaded programs can have memory visibility issues; a thread might check/work with a variable having a specific value, while another
-    thread is changing it, and the order that different threads see that lines have run in other threads can vary
-If threads run on different processors, they hold local copies of variables - so if one thread modifies its variable, this might not be seen in main
-    memory immediately
-Multithreaded programs rules:
-    - Mutual exclusion = one 1 thread executes a critical section at a time
-    - Visibility = changes to shared data are visible to other threads, for data consistency
-    Synchronized methods & blocks provide this (at cost of app performance)
-    Volatile keyword provides visibility, without cost of mutual exclusion; so multiple threads can execute code in parallel
-        can be used with primitives or with objects, but not classes or methods
-        means the value is not cached by the processor- it is always read from main memory
- */
-private volatile static int myInt;
-private volatile boolean myBool;
 
 
 

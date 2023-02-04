@@ -46,6 +46,34 @@ LinkedList
 				always contains a head node which is just a variable to refer to the 1st node
 			    Main
 				main method that creates objects
+	Java inbuilt LL
+	    implemented as doubly-linked list
+	    maintains element order
+	    much more efficient for adding/removing elements from middle of list, as just change pointers on surrounding nodes
+	    slow for search as much traverse
+	    Better for frequent modification but not retrieval
+	    not thread safe
+
+
+ArrayList & LinkedList = both dynamic sizing
+
+ArrayList implemented as a dynamic array without requiring declared size
+    starts with specific size, capacity changes as elements added/removed
+    Slow addition/removal -> to add/remove elements to middle, must shift later indexes along by 1. so is inefficient O(n)
+        so better if not much modification, just retrieval
+    not thread safe
+    O(1) lookup
+    maintains element order by index
+    Vs Array
+        array required fixed unchanging size
+        best if know size won't change, as uses less memory
+        arraylist contains many inbuilt methods
+        arrays can hold any type vs arraylists can only hold objects, no primitives (must use Object wrapper class)
+        can just pass an arraylist directly to print, dont need to loop elements
+
+Vector
+    thread safe version of arraylist -> only 1 thread can access at a time
+
 
 Stack
 	push, pop, peek

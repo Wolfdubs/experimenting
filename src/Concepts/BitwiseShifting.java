@@ -52,6 +52,122 @@ class BitwiseOperations {
     }
 }
 
+class BitManipulation {
+    //Often used in problems where must have a fast time complexity, but reduce space complexity to constant
+    //look at the problem bit by bit, rather than entire digits at once, to see what result AND OR & XOR gives
+/*
+Addition is just like in decimal
+    1 0 1+
+    0 1 1
+= 1 0 0 0
+    1 1
+ */
+    /*
+    Representing Negatives in binary
+    2's compliment
+        1st bit represents the sign
+            0 = positive
+            1 = negative
+        Remaining bits are filled with the remaining number you would have to add to the positive version to get 2^(bit count)
+            e.g. 18 = 00010010
+                -18 = what number must be added to 0010010 (drop 1st signed bit) to get 10000000
+                    0010010 +
+                    xxxxxxx
+                  = 1000000
+
+                  Answer -> add all the inverse bits of the positive version (so every single bit is a 1)
+                    then add 1 to flip is over from 1111111 -> 10000000
+                    0010010 +
+                    1101101 -> 1101110 = -18
+                  = 1111111   10000000
+                  Steps
+                    1. Take all the non-signed bits of the positive value representation (drop 1st index)
+                    2. Invert all digits
+                    3. add 1 (ie move the last 1 up 1 index)
+
+     */
+
+    /*
+    Shifting
+    2 types (distinction only relevant for right shift)
+        Logical shifting
+        Arithmetic shifting
+
+    Left Shift: move all bits leftwards, dropping the 1st digit off to trash. does a 2x
+    Right Shift: move all bits rightwards, dropping last digit to trash. does a truncated /2
+
+    Negative numbers:
+        fate of the signed bit depends on whether doing logical vs arithmetic shifting
+            Logical right shift = shifts all bits rightward, filling the now empty signed bit index with 0
+                loses relationship between original and new values
+            Arithmetic right shift =shifts all bits rightward, then fills signed bit space with original value
+                preserves arithmetic relation between original and new values - so does truncated /2
+    */
+    
+    /*
+    MASKS
+    used to get & update bits
+    0 & 0 -> 0
+    0 & 1 -> 0
+    1 & 1 -> 1
+    0 | 0 -> 0
+    0 | 1 -> 1
+    1 | 1 -> 1
+    0 ^ 0 -> 0
+    0 ^ 1 -> 1
+    1 ^ 1 -> 0
+    
+    Getting nth bit in a number to find if it is a 0 or 1
+        1. Take the input number
+        2. Create a mask with all 0's, except a 1 in the target index
+            create by taking a 1 and left shifting by n positions
+        3. Do & operation between the input and the mask -> output will show if original bit is 1 or 0
+            if the tested bit was 0, the entire output will be all 0's
+                 00101100
+               & 00100000  (1<<n)
+                 00100000  -> shows the input index bit was a 1
+           Operation = (input&(1<<n))!=0
+     */
+    void getNthBit(){
+        int input = 44; //0010110
+        int targetIndex = 2;
+        int mask = 1 << targetIndex;
+        boolean isNthBit1 = (input&(mask))!=0;
+    }
+
+    /*Setting nth bit
+        1. Take input number
+        2. Create a mask with a 1 at index n
+        3. or the input and the mask
+        Result = the same number as input, but with nth index definitely being 1
+     */
+    void setNthBit(){
+        int input = 44;  //0010110
+        int targetIndex = 1;
+        int mask = (1<<targetIndex);
+        boolean setNthBitTo1 = (input|mask)!=0;
+    }
+
+    /*
+    clearing nth bit
+        1. Take input number
+        2. Create a mask with a 1 every index except the one to clear, and do an &
+            create by taking the mask from the get/set and invert it with ~
+     */
+    void clearNthBit(){
+        int input = 7; //00000111
+        int targetIndex = 3;
+        int mask = (1 << targetIndex);
+        boolean clearNthBit = (input & (~mask)) != 0;
+    }
+
+    int modifyBit(int input, int targetIndex, int bitValue) {
+        int mask = 1 << targetIndex;  //mask only has a value at the index to modify
+        return (input & ~mask) | ((bitValue << targetIndex) & mask);  //1st part changes original index bit to 0. 2nd part changes it to the bitValue passed in
+    }
+
+}
+
 
 
 

@@ -136,6 +136,14 @@ public class MultiThreadingTelusko {
 }
 
 class SynchronizedClass {
+    /*
+    USE: when multiple processors might try to update variable at same time
+    Provides visibility & mutual exclusion
+        tells compiler that only 1 thread is permitted to enter the code block at a time
+            all variables in the block are to be flushed and updated directly on main memory
+        both reads & writes will be performed directly from and to main memory, encompassing all variables in the block
+    can use on methods, or code blocks
+     */
     int counter;
     public synchronized void synchronizedMethod() {   //synchronized keyword means method will only allow 1 thread access at a time
         counter++;
@@ -154,6 +162,8 @@ class SynchronizedClass {
     public void atomicWrapperMethod(){
         atom.incrementAndGet();
     }
+
+
 }
 
 

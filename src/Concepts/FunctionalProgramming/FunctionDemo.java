@@ -15,12 +15,16 @@ import static utils.Weapon.TYPE.*;
 import static utils.Weapon.generateWeaponsList;
 import static utils.Weapon.generateWeaponsMap;
 
+//Function interface
 //a type of Functional Interface that receives a single argument, and returns a value after processing
 //the lambda / MR you provide is used to define its SAM apply(), which applies the given function to the argument
-//SAM = apply()
-//also has andThen() to chain functions together; 1st function is called, then the parameterized one
+//SAM = apply() -> accepts a type, returns any type
+//Default methods of Function interface, with defined implementation
+    //andThen() = to chain functions together; 1st function is called, then the parameterized one
+    //compose() = reverse order of andThen, calls the parameterized function, then the caller
 public class FunctionDemo {
     static Function<Integer, Integer> squaringFunction = x -> x*x;     //can pass the function object into a method
+
 
     static int doubling(int x){
         return x * 2;
@@ -108,7 +112,8 @@ public class FunctionDemo {
 
 }
 
-//as primitives cannot be used as the real type for generics, the most common primitives have their own versions of Functions
+//as primitives cannot be used as the real type for generics (which Functions' apply() accepts), the most common primitives have their own versions of Functions
+    //specialized functions accept/return specific primitive types
 class SpecializedFunctions {
     //Specified argument: they dont require boxing of the argument, just the return type
     IntFunction<String> intFunction = n-> String.valueOf(n) + ".... ";
@@ -124,7 +129,7 @@ class SpecializedFunctions {
     ToLongFunction<Long> toLongFunction = l -> l*3;
 
     //Specified argument and return; don't need to box any types
-    IntToDoubleFunction intToDoubleFunction;
+    IntToDoubleFunction intToDoubleFunction = t -> t / 3.0;
     IntToLongFunction intToLongFunction;
     DoubleToIntFunction doubleToIntFunction;
     DoubleToLongFunction doubleToLongFunction;
@@ -214,7 +219,10 @@ class FunctionWithComparator {
     }
 }
 
-//accepts 2 arguments
+//Same as Function interface
+// but accepts 2 arguments, returns 1 result
+//andThen() accepts a Function
+//does not have compose() because the function provided to the methods must be executed, to have a result to process
 class BiFunctionDemo {
     static Map<String, Integer> map = new HashMap<>() {{
         put("womble", 10);
@@ -344,6 +352,9 @@ class BiFunctionFiltering {
 //Unary Operator extends the Function interface
 //accepts one 1 argument, produces 1 value
 //Difference to Function -> with Unary Operator, both the argument and return must be of the same value, so only give 1 type parameter in <>
+//used in list.replaceAll(); does in-place replacement of values with some computed value of the same type
+//SAM = apply()
+//As extension of Function, it also has andThen() and compose()
 class UnaryOperatorDemo {
 
     public static void main(String[] args) {
@@ -357,11 +368,9 @@ class UnaryOperatorDemo {
 
         //replace elements in a list with upperCase
         List<Weapon> weapons = generateWeaponsList();
-        List<String> weaponNames = new ArrayList<>();
-        for (Weapon weapon : weapons) {
-            String name = weapon.getName();
-            weaponNames.add(name);
-        }
+        List<String> weaponNames = weapons.stream()
+                .map(Weapon::getName)
+                .toList();
         weaponNames.replaceAll(String::toUpperCase);  //replaceAll returns void as it updates all elements in place; thus the unary operator
                                                         //returns the same type as it receives
     }
@@ -370,12 +379,21 @@ class UnaryOperatorDemo {
     IntUnaryOperator intUnaryOperator;
     DoubleUnaryOperator doubleUnaryOperator;
     LongUnaryOperator longUnaryOperator;
+    void specializedUnaryOperators(){
+        intUnaryOperator.applyAsInt(4);
+        doubleUnaryOperator.applyAsDouble(2);
+        longUnaryOperator.applyAsLong(99);
+    }
 
 
 }
 
 //extends BiFunction interface
 //accepts 2 arguments, produces 1 value, but these must all be of the same type
+//used in streams.reduce(); takes initial accumulator value and binary operator function (value pair of same type)
+    //and joins them using a function into a single value of that type
+//SAM = apply()
+//As extension of BiFunction, it also has andThen() and compose()
 class BinaryOperatorDemo {
     BinaryOperator<Character> binaryOperator = (c,d) -> (char) (d-c);
 
@@ -391,6 +409,11 @@ class BinaryOperatorDemo {
     IntBinaryOperator intBinaryOperator;
     DoubleBinaryOperator doubleBinaryOperator;
     LongBinaryOperator longBinaryOperator;
+    void specializedBinaryOperators(){
+        intBinaryOperator.applyAsInt(5,6);
+        doubleBinaryOperator.applyAsDouble(2,3);
+        longBinaryOperator.applyAsLong(3,8);
+    }
 }
 
 

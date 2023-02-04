@@ -1,15 +1,23 @@
 package Concepts.Basics;
+
+
 //POJO = plain old java object. is just a regular java class/interface
 public class Keywords {
 
-    //cannot use 'this' in static methods or for static variables
-
     //STATIC
+    //declares a field, method or inner class as a class property, so it belongs to the class, not an instance of the class
+        //still accessible without objects of the class
+        //classes have only 1 copy of static members
+    //static methods and attributes can only operate on static attributes, not anything bound to an object
     String differentForEachObject;
     static String sharedForAllObjects;    //mean the variable is not specific to the specific object, but is true for all objects of the class. all objects share the same value
-    static String assignOnceViaStaticBlock;
-    //static methods cannot access non-static members (as these can only exist within association to an instance)
-    //getters for static variables must also be static
+    static String assignOnceViaStaticBlock;       //getters for static variables must also be static
+
+    static void staticMethod(){
+        System.out.println(sharedForAllObjects);
+        //System.out.println(differentForEachObject);       //static methods cannot access non-static members (as these can only exist within association to an instance)
+        //this.differentForEachObject = "womble";          //cannot use 'this' in static methods or for static variables
+    }
 
 
     public Keywords(){}
@@ -44,9 +52,11 @@ public class Keywords {
 
     //FINAL
     //applicable for variables, methods, classes
-    final double PI = 3.141;   //constant, cannot be changed. can also just declare in class and assign in constructor call
-    //final class cannot be extended; see InheritanceDemo class demo
-    //final method cannot be overridden; see InheritanceDemo class demo
+    final double PI = 3.141;   //constant, cannot be initialized more than once, cannot be changed
+                            // can also just declare in class and assign in constructor call
+                            //cannot assign a new class instance to same variable name
+    final void finalMethod(){}   //final method cannot be overridden e.g by subclass; see InheritanceDemo class demo
+    final class FinalClass{}   //final classes cannot be extended; see InheritanceDemo class demo
 
 
     //INSTANCEOF
@@ -63,6 +73,37 @@ public class Keywords {
             //different to default/none which cannot be inherited by subclass children
             //so subclasses only inherit public & protected fields; not private or unspecified
     private String mungo; //subclasses will not inherit this
+
+
+    //ABSTRACT
+    //classes cannot be final & abstract, as these clash
+    //cannot have abstract variables
+    abstract class AbstractClass {   //cannot be instantiated into an object
+        void concreteMethod() {    //Abstract class can contain concrete methods
+            System.out.println("this is a concrete method");
+        }
+
+        abstract void abstractMethod();           //inheriting class must implement all abstract methods.
+    }                                      //only abstract classes can contain abstract methods
+
+
+    //VAR
+    //causes type inference to auto detect the variable datatype based on surrounding context
+    //can use to declare any local variable
+    //cannot use without explicit initialization, with lambda or method reference, or return type
+    //var varString = "womble";        //cannot use to declare instance/global variable, or as Generic type
+    void varMethod(){
+        var varString = "kato";   //var doesn't make the variable final, so can be reinitialized/reassigned
+        varString = "sita";
+        var varInt = 8;
+        var varBoolean = true;
+        var varByte = (byte) 4;
+    }
+
+
+
+
+
 
 
 
@@ -147,6 +188,19 @@ class SuperDemoParent{
         System.out.println("private method so sub cannot call super on this");
     }
 }
+
+class AccessModifiers {
+
+    public int i1;  //any class or package can use the method/field
+    private int i2;  //only containing class can use the method/fields
+    protected int i3;  //only same package or any subsiding class that extends/implements
+    int i4;  //default: package protected. difference vs protected; protected can be accessed outside the package by extending/implementing classes.
+        // so unless otherwise specified, class/variable/method cannot be accessed outside the package
+    private class PrivateClass{}  //only inner classes can be private, as containing class can still access
+    protected class ProtectedClass{}  //only inner classes can be protected
+}
+
+
 
 
 

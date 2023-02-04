@@ -1,6 +1,7 @@
 package DataStructures.Collections;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -11,6 +12,8 @@ public class MapDemo {
     public static void main(String[] args) {
 
         //Map is an interface, HashMap is the implementation
+            //allows 1 null key, many null values
+            //not thread safe
         HashMap<Integer, String> myMap = new HashMap<>();   //type cannot be primitives
         myMap.put(5, "streams"); myMap.put(9, "java"); myMap.put(3, "Servlet");
         System.out.println(myMap);
@@ -67,6 +70,9 @@ public class MapDemo {
         map.entrySet().stream().forEach(System.out::println);
 
 
+        //HASHTABLE disallows any null keys
+            //is thread safe
+        Map<Double,Character> hashTableMap = new Hashtable<>();
 
 
 

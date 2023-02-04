@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import utils.Pekingese;
+import utils.Weapon;
 
+import javax.management.InstanceNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -16,23 +18,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.*;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.maxBy;
 import static org.junit.Assert.assertEquals;
+import static utils.Weapon.generateWeaponsList;
 
 /*
-Streams are to process large collections/sets of objects
+Streams are to process large collections/sets of objects -> wrappers for the data passed into them, permitting data processing
 has methods to pipeline the data as desired
 so developers can write declarative code like in SQL
 Streams cannot store data, so is not a data structure -> just conveys data through a pipeline of operations
 does not modify the data source, each operation just produces new streams
-intermediate operations are lazy & return a new stream
-    lazy evaluation = computations only occur when terminal operation is initiated, so data source elements are only consumed when required, so is optimized
-    Intermediate operations only invoked if needed by a terminal operation
-    e.g. if terminal is findFirst(), then the intermediates will only run until the required first has been found
-terminal operations end a stream and return a result
+2 Operation types:
+    intermediate operations are lazy & return a new stream. can chain them
+        lazy evaluation = computations only occur when terminal operation is initiated, so data source elements are only consumed when required, so is optimized
+        Intermediate operations only invoked if needed by a terminal operation
+        e.g. if terminal is findFirst(), then the intermediates will only run until the required first has been found
+    terminal operations end a stream and return a result
 dy default, stream operations are sequential - but can be parallelized
 auto-iterate over elements; you dont have to specify this
 Standard streams contain objects
-
+Nothing to do with I/O streams e.g. FileInputStream
  */
 public class StreamDemo {
     public static void main(String[] args) {
@@ -47,17 +54,44 @@ public class StreamDemo {
         lazyExecution();
         peekStream();
 
+        //creating stream from scratch
+        Stream<Integer> integerStream = Stream.of(5,2,8,9,8,9,5,8,3);  //for primitives its better to use the specialized Stream class e.g. IntStream
+            //Stream.of() just calls Arrays.stream() for non-primitive types
+        Stream<Integer> streamedIntegers = new ArrayList<>(List.of(6,2,7,6,8,1,2,9,5,1)).stream();
+        //Array.stream() vs Stream.of()
+            //1. for primitive arrays, Array.stream() returns an Int/Double/LongStream, while Stream.of() returns a Stream of the array
+            //2. hence Stream.of() with primitive must be flattened into a stream of the actual primitives of the array before consuming it
+            //Stream.of() is generic - can be used for any type of array, Array.stream() is not (cannot be used for primitives except int, double, long)
+                //so Array.stream() only works for primitive arrays of int, double, long as it returns IntStream, DoubleStream, LongStream
+                    //it still works fine for object arrays
+            int[] myInts = {4,2,5,1,7,4,9,0,2,7,4,8};
+            IntStream arrayIntStream = Arrays.stream(myInts);
+            Stream<int[]> arrayStream = Stream.of(myInts);
+            IntStream flattenedArrayStream = arrayStream.flatMapToInt(Arrays::stream);
 
-        //obtaining a stream from an array
+            Weapon[] weapons = (Weapon[]) generateWeaponsList().toArray();
+            Stream<Weapon> weaponStream = Arrays.stream(weapons);  //Arrays.stream still works for object arrays,
+
+            char[] myChars = {'d','o','n','i','r','e','v','s'};   //Arrays.stream() fails fr char[[
+            //Arrays.stream(myChars);  //compile error; Arrays.stream() only works for ints, double, long
+            Stream<char[]> characterArrayStream = Stream.of(myChars);   //Stream.of() works for char[], but must be flattened to character stream
+              //converting char[] stream to character stream
+            Stream<Character> characterStream = new String(myChars).chars().mapToObj(i -> (char) i);  //String.chars() returns an IntStream, each element of which is cast to a char
+
+
+
+        //creating stream from an array
         Pekingese[] pekingeseArray = {
                 new Pekingese("womble", 12, 10f), new Pekingese("mungo", 14, 8f),
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f)};
+        List<Pekingese> pekingeseList = Arrays.asList(pekingeseArray);
         Stream.of(pekingeseArray);   //inbuilt stream method
         Stream.of(pekingeseArray,2,3,4,5);  //specify the indices of the array to stream
         Stream.of(5,2,8,6,9,0,9,3);
-        Arrays.stream(pekingeseArray);   //inbuilt array method
+        Stream<Pekingese> pekingeseStreamArray = Arrays.stream(pekingeseArray);   //inbuilt array method
         Stream.of(pekingeseArray[0], pekingeseArray[1], pekingeseArray[2]);  //create stream of individual objects
+        Stream<Pekingese> pekingeseStreamList = pekingeseList.stream();
 
         //StreamBuilder
         Stream.Builder<Pekingese> pekingeseBuilder = Stream.builder();//via StreamBuilder
@@ -66,12 +100,14 @@ public class StreamDemo {
         Stream<String> streamBuilder = Stream.<String>builder().add("womble").add("mungo").build();
 
 
-        //generate() creates an infinite stream of integers from 1, limited to 100
+
+        //generate() creates an infinite stream
         //Stream.generate useful to define logic for stream elements
         AtomicInteger atomicInteger = new AtomicInteger(0);
-        Stream<Integer> integerStream = Stream.generate(() -> atomicInteger.incrementAndGet()).limit(100);
+        Stream<Integer> integerStreamGenerated = Stream.generate(() -> atomicInteger.incrementAndGet()).limit(100);
         DoubleStream doubleStream = IntStream.range(12,39).asDoubleStream();
         Stream<String> generatedStrings = Stream.generate(() -> "womble").limit(10);  //gives 10 wombles
+        List<Double> randomNumbers = Stream.generate(Math::random).limit(10).toList();
 
         Stream<String> stringStream = Stream.of("womble", "mungo", "sita", "kato", "jambo")
                 .skip(3)  //which index to start from, aka how many elements to skip
@@ -87,7 +123,7 @@ public class StreamDemo {
         System.out.println(stringList);
 
         Stream<Boolean> booleanStream = Stream.of(true, false, true, true, true, false, true, true, true, true, false, true, false, false, false, true);
-        Optional<Boolean> options = booleanStream.findAny();   //once the stream has been consumed, it cannot be reused;
+        Optional<Boolean> options = booleanStream.findAny();   //once the stream has been consumed, it cannot be reused; findAny retrieves an element regardless of its position
         //Optional<Boolean> lastElement = booleanStream.findFirst(); /attempt  to reuse triggers IllegalStateException
 
         CustomClassWithStream<Integer> ccws = new CustomClassWithStream(4,7,0);
@@ -99,6 +135,8 @@ public class StreamDemo {
     }
 
     //sorted() will sort the list. can pass in a comparator, or a class that implements Comparable
+        //or call Comparator.comparing and specify the comparison
+        //can chain with multiple thenComparing()
     private static void sortedDemo() {
         List<Integer> list = List.of(3, 8, 7, 1, 0, 7, 9, 7, 4, 5, 1, 3, 8, 4, 7, 2);
         List<Integer> sortedList = list.stream().sorted().toList();
@@ -112,9 +150,13 @@ public class StreamDemo {
                 .toList();
         pekingese.forEach(System.out::println);
 
+        Stream<Weapon> sortedWeapons = generateWeaponsList().stream()
+                .sorted(Comparator.comparing(Weapon::getDifficulty)  //pass in the comparison metric to comparing()
+                        .thenComparing(Weapon::getName));        //chaining comparisons to sort by
+
         //reducing to product of all odd numbers
         Integer oddsProduct = list.stream()
-                .filter(n -> n%2!=0)
+                .filter(n -> n % 2 != 0)
                 .reduce(1, (sum, n) -> sum * n);   //starting from 1, times values so far with next value. accummulator is the entire lambda expression
         System.out.println("Product of all odd numbers = " + oddsProduct);
 
@@ -125,7 +167,7 @@ public class StreamDemo {
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f)));
         Float pekingeseWeights = pekingese.stream()
-                .map(Pekingese::getWeight)
+                .map(Pekingese::getWeight)   //map returns a new stream after applying a function to each element
                 .filter(weight -> weight > 20)
                 .reduce(0.0f, Float::sum);    //returns the sum of all weights above 20. alternative BinaryOperator accumulator is lambda: (sum, element) -> sum + element
         System.out.println("The sum of all weights below 20 = " + pekingeseWeights);
@@ -140,18 +182,23 @@ public class StreamDemo {
     }
 
     //iterate generates ininite values, up to the limit specified. 1st value is the seed, each subsequent value is generated based on prior value
+        //takes a seed and operator, which feeds the seed
     private static void iteratingDemo() {  //iterate will generate up to infinite values
         Set<Integer> iteratedValues = Stream.iterate(1, n -> n * 2)   //iterates values from 1, doubling each time
                 .limit(20)
                 .collect(Collectors.toSet());
         System.out.println("Doubling sequence from 1 to 20th number = " + iteratedValues);
+
+        Set<Integer> oddNumbers = Stream.iterate(1, n -> n+2).limit(15).collect(Collectors.toSet());
+
+        Stream<Integer> forloopedIteration = Stream.iterate(1, i -> i < 20, i -> i * i);
     }
 
      private static void generatingSequentialList() {
-            Object[] sqrtValues = Stream.iterate(34, n->n+1)  //iterates incremental values starting at 34
+            Double[] sqrtValues = Stream.iterate(34, n->n+1)  //iterates incremental values starting at 34
                     .map(Math::sqrt)
                     .limit(10)
-                    .toArray();
+                    .toArray(Double[]::new);  //toArray by default returns Object[] unless otherwise specified
          System.out.println("Sqrts of 10 increments from 34 = " + Arrays.stream(sqrtValues).toList());
     }
 
@@ -161,6 +208,12 @@ public class StreamDemo {
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f)));
         Pekingese heaviest = pekingese.stream().max((p1, p2) -> Float.compare(p1.getWeight(), p2.getWeight())).get();
         System.out.println("Heaviest weight = " + heaviest.getWeight());
+    }
+
+    private static Optional<Weapon> gettingMinValue() throws InstanceNotFoundException {  //most terminal operations return Optionals
+        Optional<Weapon> minLethality = Optional.ofNullable(generateWeaponsList().stream().min(comparing(Weapon::getLethality))
+                .orElseThrow(InstanceNotFoundException::new));
+        return minLethality;
     }
 
     private static void countOfPredicate() {
@@ -210,14 +263,14 @@ public class StreamDemo {
         Stream<ArrayList<String>> stringListStream = Stream.generate(() -> new ArrayList<>(List.of("womble", "mungo", "kato", "sita", "jambo", "kosie")));
     }
 
-    private static void matchingStreams() {
+    private static void matchingStreams() {  //input = predicate, checks that predicate against elements of the stream
         List<String> strings = Arrays.asList("womble", "mungo", "kato", "sita", "jambo", "kosie");
-        Boolean containsMungo = strings.stream()
-                .anyMatch(s -> s.equals("mungo"));
+        Boolean containsMungo = strings.stream().limit(5)   //will limit stream to the first 5 elements
+                .anyMatch(s -> s.equals("mungo"));   //returns true if the predicate is true for any element
         boolean noneAreEmpty = strings.stream()
-                .noneMatch(s -> s.equals(""));
+                .noneMatch(s -> s.equals(""));   //returns true if the predicate is false for all elements
         boolean allLessThan10Characters = strings.stream()
-                .allMatch(s -> s.length()<10);
+                .allMatch(s -> s.length()<10);  //returns true if all the elements meet the predicate
         System.out.printf("The list contains mungo = %b \nThe list does not contain any empty strings = %b \nAll strings are less than 10 chars = %b"
                 ,containsMungo, noneAreEmpty, allLessThan10Characters);
     }
@@ -253,6 +306,9 @@ public class StreamDemo {
         }
     }
 
+    //Collection.forEach uses the objects iterator, whereas stream.forEach takes elements from collection 1-by-1, ignoring iterator
+    //Collections should not be structurally modified during iteration -> throws ConcurrentModificationException
+        // but java explicitly allows iterator to modify elements, whereas stream forEach should be non-modifying
     private static void forEachStream() {
         List<Pekingese> pekingese = new ArrayList<>(List.of(new Pekingese("womble", 12, 10f), new Pekingese("mungo", 14, 8f),
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
@@ -261,17 +317,21 @@ public class StreamDemo {
                 .forEach(Pekingese::incrementAge);   //this will modify the input data source
         System.out.println(pekingese.stream().map(Pekingese::getAge).collect(Collectors.toList()));
             //collect performs multiple fold operations, repacking elements to data structures and applying extra logic (e.g. removing duplicates for sets, concatenating items)
+                //puts elements into a collection; list, set, vector, LL
 
         Optional<Pekingese> firstUnder30 = pekingese.stream()
                 .filter(p -> p.getWeight()<30f)
                 .findFirst();   //returns optional (which could be empty)
 
-        //ParallelStreams to utilize multi-core processing
+        //ParallelStreams to utilize multi-core processing - order of iteration is random, e.g. list iteration
         pekingese.parallelStream() //parallelStream() is for Collections and Arrays
                 .collect(Collectors.toList());
         IntStream intStream = IntStream.iterate(1, n -> n*n).parallel()       //parallel() used for other data sources
                 .limit(10);
         boolean isParallel = intStream.isParallel();
+
+
+        intStream.parallel().forEach(System.out::println);       //execute stream operations in parallel, order not guaranteed
 
         Vector<Integer> iteratedList = Stream.iterate(5, n->n*2)
                 .skip(4)   //skips first 4 elements
@@ -306,7 +366,8 @@ public class StreamDemo {
         Map<Integer, List<Pekingese>> map = pekingese.stream()
                 .collect(Collectors.groupingBy(Pekingese::getAge));
 
-        //joining inserts the specified string between the elements of the stream
+        //joining = joins a list of objects into a single string
+            // optional delimiter inserts the specified string between the elements of the stream
         String pekingeseNames = pekingese.stream()
                 .map(Pekingese::getName)
                 .collect(Collectors.joining(", and the next dog is: "));
@@ -333,13 +394,14 @@ public class StreamDemo {
                 {"jambo", "sita"},
                 {"kato", "kosie"}
         };
-        Object[] stringArray1D = Arrays.stream(stringArray2D)
+        String[] stringArray1D = Arrays.stream(stringArray2D)
                 .flatMap(Arrays::stream)
-                .toArray();
+                .toArray(String[]::new);   //pass in array initializer to make array return a specific type
     }
 
     //peek is like forEach, but not terminal - useful to perform specified operation on each element, and then returning a new stream
     //The toList call sends the result of each peek() to modify the input data source
+    //advised to only use for logging, not actual operations
     private static void peekStream(){
         List<Pekingese> pekingese = new ArrayList<>(List.of(new Pekingese("womble", 12, 10f), new Pekingese("mungo", 14, 8f),
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
@@ -355,6 +417,47 @@ public class StreamDemo {
         while (piterator.hasNext()){
             System.out.println(piterator.next());
         }
+    }
+
+    private static void reduceStrings(){
+        List<String> weaponNames = generateWeaponsList().stream()
+                .map(Weapon::getName)
+                .toList();
+        String concantenatedStrings = weaponNames.stream()
+                .reduce("", (partialString, element) -> partialString + element);
+     }
+
+     //divides stream into 2 categories and puts into a map; 1 stream has key 'true', 1 stream has key 'false'
+     private static void partitioningByDemo(){
+        Stream<Weapon> weaponStream = generateWeaponsList().stream();
+        Map<Boolean, List<Weapon>> partitionMap = weaponStream.collect(Collectors.partitioningBy(weapon -> weapon.getDifficulty()>5));
+        List<Weapon> difficultWeapons = partitionMap.get(true);
+
+        Map<Boolean, List<Weapon>> alphabeticallyTop = weaponStream.collect(Collectors.partitioningBy(weapon -> weapon.getName().charAt(0) < 'm'));
+        List<Weapon> alphabeticallyLow = alphabeticallyTop.get(false);
+     }
+
+     private static void groupingByDemo(){   //to group elements by more than 2 categories
+        Stream<Weapon> weaponStream = generateWeaponsList().stream();
+        Map<Weapon.TYPE, List<Weapon>> groupedMap = weaponStream.collect(Collectors.groupingBy(Weapon::getTYPE));
+
+        Map<Weapon.TYPE, List<Integer>> typeToReliabilityMap = weaponStream.collect(
+                Collectors.groupingBy(
+                        Weapon::getTYPE,
+                        Collectors.mapping(Weapon::getSelfSustainability, Collectors.toList())  //use with mapping to map 2 categories (fields) against each other
+                ));
+    }
+
+    //similar to filter;
+        //takeWhile will accept elements until the predicate is false, and then it totally drops the remaining list elements, aka breaks
+        //dropWhile drops elements as long as the condition is true, and when hits false it returns the remaining items
+    private void TakeAndDropWhile(){
+        Stream<Integer> integerStream = Stream.of(25,15,75,40,5,10,55,60);
+        List<Integer> takeWhile = integerStream.takeWhile(number -> number < 30).toList(); //returns 25, 15
+        List<Integer> dropWhile = integerStream.dropWhile(number -> number < 30).toList();  //returns 75,40,5,10,55,60
+
+
+
     }
 
 
@@ -383,7 +486,8 @@ class CustomClassWithStream<T> {
 //don't require auto-boxing
 class PrimitiveStreams {
     public static void main(String[] args) {
-        IntStream intStream = IntStream.range(1,10);  //exlusive end
+        IntStream intStream = IntStream.range(1,10);  //exclusive end
+        IntStream rangedIntStream = IntStream.rangeClosed(1,10);   //inclusive end
         IntStream intStreamOf = IntStream.of(6,6,6);  //  Stream.of(6,6,6) returns a Stream<Integer>, not IntStream
         IntStream chars = "womble".chars();
         Stream<String> streamString = Pattern.compile(" ").splitAsStream("womble is a fluffy dog");
@@ -417,6 +521,9 @@ class SpecializedStreams {
         OptionalInt min = nums.stream()   //max and min are forms of reduce()
                 .mapToInt(Integer::parseInt)
                 .min();
+
+        Stream<Weapon> weaponStream = generateWeaponsList().stream();
+        IntSummaryStatistics intSummaryStatistics = weaponStream.collect(Collectors.summarizingInt(Weapon::getDifficulty));
     }
 }
 

@@ -87,10 +87,13 @@ Inheritance: sub class extends super class
 Package names should be reverse of your domain
 Access Modifies
 	Types;
-		public: any class or package
-		private: specific class
+		public: any class or package can use the method
+		private: only containing class can use the method/fields
+		        private class = cannot be used anywhere else
+		            do if class is inner class, as containing class can still access
 		protected: only same package or any subsiding class; extends/implements
-		default: specific package
+		    only internal classes can be protected
+		default: package protected
 			difference vs protected; protected can be accessed outside the package by extending/implementing classes
 	classes can be abstract, final, or public, or with nothing at all (will leave it with default))
 		cannot be private or protected
@@ -123,9 +126,43 @@ Java is only pass by value
 Call Stack:
     bottom up ordering of a series of methods in chronological order of invokation
         as methods complete, they pop off the stack revealing the info needed by its caller
+    stores info about active sub routines
+    different to stack memory
+    call added with every call to a new class or method invokation
+        each time, a new memory block is allocated in stack memory
+        stores variable values from the method, and references to objects stored in Heap
 
 Portable: write-once, read anywhere as platform independent
 
+Uses both a compiler and interpreter; src compiled into bytecode that the interpreter interprets at runtime, making it platform independent.
+Only call by value. no call by reference
+Dynamic language as supports dynamic loading of classes, loaded on demand
+
+Memory
+    JVM allocates memory for operations either in stack or heap memory
+    Heap Memory:
+        stores data for objects created
+        String pool = stores strings referenced in stack memory by all strings in the program
+            JVM keeps strings in this pool because as objects they are costly to create in space & time
+        Used by entire application during runtime
+        Allocated when new objects created, deallocated by garbage collector when objects no longer referenced
+        Disadvantage: No enforced patten for allocation/deallocation of blocks (as blocks can be allocated/deallocated at any time), so its hard to
+        track which parts are available, so it is much slower to access data in heap
+        Advantage: no size limit, so more space
+    Stack Memory:
+        Stores value for primitives and references to objects in heap
+        auto allocated and deallocated when methods are called and returned via LIFO
+        Used in parts, 1 at a time, during threads running
+        shorter lifetime than heap
+        Advantages: provides high speed access to all contents
+            space managed efficiently, so memory never fragmented
+        Disadvantage: size limited by OS and fixed, so cannot increase
+
+Method vs Function vs Procedure:
+    Procedure = subroutine operated just for its side effects, with no return. e.g. printing. return type is void
+    Function = subroutine that always returns same value given same inputs, with no side effects. has a return type.
+    Method = procedure or function associated with a class or object. Java only has methods, no functions, as any subroutine must be associated with
+        either an object or class. Methods are in OOP
 
 
 

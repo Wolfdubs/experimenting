@@ -7,10 +7,11 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.Stream;
 
-//takes no arguments, but returns a single value
-//used for lazy generation of values, and define logic for generating sequences
-//SAM is get()
-//useful for deferred execution; only happens when it is needed, e.g. See Optional & doubleSupplier example
+/*takes no arguments, but returns a single value
+used for lazy generation of values, and define logic for generating sequences
+SAM is get()
+useful for deferred execution; only happens when it is needed, e.g. See Optional & doubleSupplier example
+ */
 
 public class SupplierDemo {
     public static void main(String[] args) {
@@ -54,6 +55,11 @@ public class SupplierDemo {
             return result;
         });
 
+        //can create a Supplier object and use get() to return the value of whatever was used to create it
+        //e.g. stream.generate() accepts a Supplier to generate whatever the supplier object was created with
+        Supplier<Double> randomSupplier2 = Math::random;
+        List<Double> randoms = Stream.generate(randomSupplier2)
+                .limit(11).toList();
 
 
 

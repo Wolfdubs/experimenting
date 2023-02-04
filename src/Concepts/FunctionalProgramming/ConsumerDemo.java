@@ -11,7 +11,7 @@ Consumer interface accepts only 1 / gentrified argument
 no return value
 so it represents a side effect
 Functional variants; IntConsumer, DoubleConsumer, LongConsumer, accepting primitives as arguments
-SAM is accept()
+SAM = accept()
 also have andThen()
  */
 public class ConsumerDemo {
@@ -24,7 +24,7 @@ public class ConsumerDemo {
         Consumer<String> printConsumer = System.out::println;
         dogs.forEach(printConsumer);
 
-        //chaining consumers with andThen
+        //chaining consumers with andThen; applies the calling consumer, then the parameterized consumer
         Consumer<List<String>> capitalize = list -> {
             for (int i = 0; i < list.size(); i++) {
                 list.set(i, list.get(i).toUpperCase());
@@ -37,8 +37,17 @@ public class ConsumerDemo {
 
         capitalize.andThen(printList).accept(dogs);
 
+        Consumer c1 = s1 -> System.out.println(s1 + "womble");
+        Consumer c2 = s2 -> System.out.println(s2 + "mungo");
+        c1.andThen(c2).accept("Pekingese = ");  //prints: Pekingese womble Pekingese mungo
+
 
     }
+
+    //Specialized Consumers
+    IntConsumer intConsumer;
+    DoubleConsumer doubleConsumer;
+    LongConsumer longConsumer;
 }
 
 //Bi-Consumer accepts 2 arguments
