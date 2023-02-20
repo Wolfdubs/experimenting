@@ -32,6 +32,9 @@ Parallelism:
             better memory management and optimization for current activities, so higher performance & less glitches
         multi-threaded = if 1 thread crashes, the whole program crashes
 
+Concurrency: improves program performance, as it is faster.
+    challenging as all simultaneously executing functions are all accessing same shared memory and reading/writing variables & objects
+        can cause devlock, livelock and resource starvation problems
 
 
 

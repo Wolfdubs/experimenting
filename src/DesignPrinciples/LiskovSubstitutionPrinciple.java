@@ -13,7 +13,7 @@ public class LiskovSubstitutionPrinciple {
 Makes you think 2x before using inheritance, as classes shouldn't be extended just for sharing some common features - base class may have methods
     unsuited for the child and overriding the method to throw an exception could cause program to crash if running the method in a loop for all super
     class objects that includes some child class elements
-    e.g. Video class has playAd() but PremiumVideo hould not
+    e.g. Video class has playAd() but PremiumVideo should not
     So ensures class hierarchies are following good design
 refers to ability to substitute the objects instantiated type with its declared type, and have methods that accept a broader supertype type
     so you can pass in subtypes

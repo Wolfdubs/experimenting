@@ -1,0 +1,640 @@
+Unit Testing
+Focuses on smallest unit of program.
+test individual units or groups of interrelated units
+Done via sample input, then observe output
+-----------------------------------------------------------------------------------------------------------------
+testing of each file, class, or even groups of classes, or just mere methods
+performed whenever a unit has been implemented/updated
+-----------------------------------------------------------------------------------------------------------------
+test units of code e.g. modules, components
+identifies bugs early in development process
+a kind of white box testing
+won't catch system-wide errors
+doesn't verify that code works with external dependencies
+-----------------------------------------------------------------------------------------------------------------
+narrow scope, easy to write and execute
+tests have no dependencies outside the system, testing only internal consistency rather than interaction with outside systems
+-----------------------------------------------------------------------------------------------------------------
+1st stage of testing
+check functionality of specific units
+can be run every time code is changed, so issues resolved quickly
+-----------------------------------------------------------------------------------------------------------------
+1st level of testing, done by developers
+where modules/components are tested in isolation
+advantage - early detection of errors
+limits - integration issues not found; could be interfacing issues between modules
+
+
+
+Integration Testing
+Testing groups of components
+4 types;
+	top-down
+	bottom-up
+	sandwich
+	big-bang
+Black Box: ignore internal mechanisms, just check output for validation
+White Box: focus on internal mechanisms for verification
+-----------------------------------------------------------------------------------------------------------------
+when putting multiple units that interact together you must ensure that integrating them together doesn’t introduce any errors
+when it fails, it tells you the pieces of the application are not working together as expected
+tests how well units interact. run whenever a new unit is added to the system or is updated
+-----------------------------------------------------------------------------------------------------------------
+tests integration between software modules
+2 approaches;
+	top-down
+	bottom-up
+is a kind of black box testing
+verifies that code works with external dependencies
+-----------------------------------------------------------------------------------------------------------------
+ensure code works when put together, including dependencies, libraries and databases
+demonstrate different pieces of the system work together
+cover whole applications
+Can require database instances and hardware
+-----------------------------------------------------------------------------------------------------------------
+2nd stage of testing
+combine all the units of a program and test as a group
+find interface defects between modules/functions
+-----------------------------------------------------------------------------------------------------------------
+2nd level of testing, test groups of related modules
+aims to find interfacing issues between modules - ie if individual units can be correctly integrated into a sub system
+4 types;
+	big bang - all modules are first completed, and then integrated, after which testing is done on the integrated unit as a whole
+	top-down - testing flow starts from top-level modules that are higher in the hierarchy, moving down to lower-level modules
+			possible that lower level modules havent been developed while beginning with top level modules
+				here, stubs would be used as dummy modules/functions that simulate the functioning of a module by accepting the parameters received and giving an acceptable result
+	bottom-up - another incremental approach, starting from lower-level modules moving up to the higher level ones
+			higher level modules may not have been developed at time of testing lower levels
+				here, use drivers to simulate functionality of higher level modules
+	hybrid - sandwich integration approach
+		    combines top-down with bottom-up
+		    starts from middle layer and moves in both directions using stubs and drivers where needed
+
+
+
+
+
+
+Regression Testing
+Checks program functionality after adding new modules
+-----------------------------------------------------------------------------------------------------------------
+re-running unit tests after integrating units into the program, to ensure further changes from integration testing having broken units
+when it fails, it tells you the application is not performing as it used to
+run whenever anything has changed in the system to check no new bugs have been introduced - so after patches, bug fixes, upgrades
+any change requires re-run of all tests and functionality
+re-running unit & integration tests with every new commit (often automated process)
+-----------------------------------------------------------------------------------------------------------------
+after integrating code and required fixes, re-run unit tests to ensure further changes havent effected unit tests
+performed anytime a change is made to ensure no new bugs
+	aka re-run unit & integration tests after all patches, upgrades and bug fixes
+like combined unit & integration tests
+
+
+
+
+Acceptance Testing
+when user/customer receives the functionality, they test that it meets their requirements
+checks an entire subsystem/full system fulfils entire specifications
+is final check to make sure application does what it should
+-----------------------------------------------------------------------------------------------------------------
+tests an application runs how the customer wants
+ensure features/use case is correctly implemented from user perspective
+can use automated testing tools e.g. Selenium
+is final verification emulating real-world conditions
+-----------------------------------------------------------------------------------------------------------------
+4th stage of testing
+determines if system is ready for release
+once passed, program will be deployed into production
+-----------------------------------------------------------------------------------------------------------------
+final level of testing
+once successful, application is released to production
+ensures app meets business requirements within the quality specifications
+2 types;
+	alpha-testing: when conducted by testers / internal employees. A type of UAT
+	best-testing: when testing done by end-users
+
+
+
+System Testing
+3rd stage of testing
+tests the complete application as a whole
+completed by independent testers in prod-like environment
+verifies application meets requirements
+-----------------------------------------------------------------------------------------------------------------
+3rd level of testing
+tests the complete integrated application as a whole
+determines if application meets business requirements
+conducted in an environment very similar to production
+
+
+
+Smoke Testing
+Initial test to ensure readiness for more in-depth testing
+-----------------------------------------------------------------------------------------------------------------
+Execution of most crucial tests to ensure readiness for further testing, check bare minimum functionality
+aka 'build verification testing'
+checks the build is stable and core functionalities work; then can move onto exhaustive training
+Features;
+	- Build verification testing
+	- Shallow & wide: cover wide functionality but only basic use cases
+	- Documented: often also automated
+Benefits;
+	- Quick identification of issues in critical functionality
+	- If it fails, then saved lots of time as testing team doesn’t try to test a faulty build
+	- Integration issues quickly identified
+Check bare minimum features, if they are working then build is stable enough for thorough testing
+Shallow and wide approach
+done to ensure that the build is good enough to be considered for carrying on full-fledged testing, testing overall system components
+Usually automated
+
+
+
+Sanity Testing
+Run subset of regression tests to check a new fix hasn’t affected already working functionality, but taking less time to run that regression test
+Ensure new code changes working fine
+Like regression tests, but with less tests in less time focused on critical components
+	e.g. only test directly affected modules after a code change
+Narrow and deep approach
+Done manually
+Applies regression testing to a specific functionality
+done to ensure that after a new fix a particular component or feature of the application is working fine
+
+
+
+
+Monkey Testing
+Passing random input into app without following any predefined flow or test cases, without any app knowledge
+intent to crash  break the system
+Can automate by scripting random app flows with random data
+
+
+
+Performance Testing
+Test runtime performance - speed and effectiveness
+performance under a given load
+e.g. checking number of processor cycles
+-----------------------------------------------------------------------------------------------------------------
+Identifies performance bottlenecks
+Measure response time, stability, reliability, robustness, scalability, resource utilization
+JMeter = performance testing tool; create virtual users that perform different operations on the app
+Types:
+	Load Testing = App performance evaluated under expected load. Evaluate response time, server load (throughput, error rate)
+	Stress Testing = App performance evaluated under much higher than expected load. Measures app breaking point
+	Endurance Testing = App subjected to continuous load for several days, to uncover memory leakage
+	Spike Testing = subject app to sudden burst of users. Checks app recovery
+	Volume Testing = Feed mass data into app
+Benefits:
+	- Check app reliability
+	- Identify performance bottlenecks, which can thus be optimized
+	- Evaluate app scalability, find optimal infrastructure
+	- Check robustness
+
+
+Stress Testing
+Test system performance under unfavorable conditions
+e.g. maximum memory required, cause thrashing in virtual env, excessive disk requirements
+-----------------------------------------------------------------------------------------------------------------
+app performance under extreme load to test robustness; ability to not crash and to recover post load
+aim to find;
+	breaking point
+	error rate
+	crashing
+	crash recovery time
+	memory leaks (memory not released even after no longer required) = "a failure to release memory by objects that are no longer used", so available memory decreases, slowing down system until it stops working
+Use JMeter to simulate users by scripting user flow
+Finds security vulnerabilities that might sneak in during peak load
+
+Load Testing
+A type of performance testing
+Evaluate app under real-world load
+Create virtual users via JMeter to simulate concurrent users, measure performance attributes and bottlenecks
+JMeter can create scripts to make different server requests
+	use env mirroring prod
+Advantages:
+	- Identify performance bottlenecks
+	- Help config optimal infrastructure
+	- Minimize downtime risk by identifying areas to improve
+
+
+Endurance Testing
+Check system performance under specific load over extended period
+Find system memory leaks
+
+
+Volume Testing
+Checks app performance under high data volumes
+Checks performance when DB size increases, by running volumous queries simultaneously to see how well system can manage data
+2 data types;
+	System DB: If system frequently deals with large data, must test via increasing DB size to that required and run multiple queries
+	Interface File: If system interacts with file then must create one and check system performance upon interaction with file
+Goals
+	- verify no data loss
+	- check system response time
+	- check data integrity
+	- verify if crashes
+Indicates ability of the app to scale
+
+Security Testing
+Testing systems security against attacks
+Ensures only authorized and authenticated users can access software and data
+
+Usability Testing
+How easily a user can use the system; speed and effort of learning how to use and to run it
+
+Compatibility Testing
+Checks different devices, OSs, browsers,
+
+Scalability Testing
+How well system works with increased data volume, user count
+
+Recovery Testing
+Checks system performance if any failure/crash, ability to recover without losing data
+
+
+Functional Testing:
+Tests the application functionalities
+aka what the system does in its modules and function, which it validates by passing test data and comparing output to expected result
+Types = unit, integration, system, acceptance, smoke, regression, sanity
+
+
+Non Functional Testing
+Tests applications non-functional requirements - response times, browser/device compatibility, security vulnerabilities, load capacity
+Tests how well the system operates
+Tests load handling, performance, recovery, scalability, usability, stress handling, security, compatibility, reliability, recovery, portability
+Tools:
+	JMeter = a Java performance testing tool. Integrates with Selenium for unit testing
+	LoadRunner = performance testing tool, also for unit and integration testing. Supports JMeter and Selenium scripts by declaring an interface library
+Sub-types:
+	Performance (load, stress, volume), security, usability, compatibility, scalability, recovery)
+
+
+Negative vs Positive Testing
+Positive = happy path testing; providing valid correct data. Errors are undesired
+Negative = error path testing; ensures system operates when invalid/unexpected data entered
+		checks app robustness e.g. numerical field accepts only numbers
+		Good for security tests as minimizes risk of scripts/commands being able to be passed in by users, cannot upload corrupt files
+		Test there are no invalid navigations in app, e.g. bypassing authentication by directly opening a link
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+TESTS UBC
+Tests should be;
+    fast
+    reliable
+    isolate failures
+    simulate user behavior
+Test types
+    Unit Tests = fast, isolated (can see exactly what caused the test to fail), reliable, doesn't simulate users
+        execute single methods to test specific aspects
+        focus on small parts of the system at a time
+        Disadvantages:
+            doesn't test how different parts of the system work with each other; integration between components
+            doesn't simulate user interaction
+            doesn't simulate how system works in real conditions
+
+    Acceptance test = slow and broad
+        user walking through service at the end to check it fits requirements, using their own servers and data
+            not automated
+    Integration test = medium speed, medium isolation
+        test that different aspects of the system can work together
+        Smoke test = sub-set of Integration tests
+            is a sanity check
+    System Tests = execute broad parts of the system at once, usually with synthetic data and dev servers
+        run by dev team on more frequent basis than acceptance
+        slow, medium-reliable (as many external dependencies on DBs, web services, network, other applications)
+            not-isolated -> test failure could come from anywhere. does simulate users
+
+Red-Green Refactor
+    process of iterative testing
+    Tests initially written to fail (red) as have no code implementation written
+    Write code to make test pass (green)
+    Refactor
+        extending tests (red)
+        then extend code to make tests pass (green
+    Repeat
+
+    Goals:
+       Code implements the specification
+       Find defects
+       Understand where defects could have been expected
+    Coverage = a % that represents the % of the code that is executed by the test suite
+        Flow-independent coverage =  executes each piece of the system , makes sure it executes successfully 
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+TESTING GENERAL
+
+SHIFT LEFT -> MAKE TESTING FAST AND RELIABLE
+
+Teams invest a lot of time and effort in building tests. They help ensure that code performs as expected, but also take valuable time away from other tasks, such as feature development. At such a steep cost, it's important to make sure that teams squeeze them for every ounce of possible value.
+
+Testing challenges are common
+Many teams find that their test take too long to run. As projects scale, the number and nature of tests will grow substantially. When test suites grow to the point where they take hours (or days) to complete, they get pushed further and further out until they're run at the last possible moment. This means that all the benefits intended to be gained from building those tests aren't realized until long after the code has been committed.
+
+Another problem with these long-running tests is that they may produce failures that are time-consuming to investigate. Over times, teams build a tolerance for failures, especially early in sprints. This undermines the authority those tests offer as an insight into codebase quality. It also adds a significant amount of unpredictability to the end-of-sprint expectations since an unknown amount of technical debt must be paid to get the code shippable.
+
+Define a quality vision
+As DevOps organizations mature, the opportunity for leadership to improve processes becomes easier. While there may be some general resistance to change, Agile organizations are built to value changes that clearly pay dividends. Selling the vision of faster test runs with fewer failures should be easy because it means more time can be invested in generating new value through feature development.
+
+A quality vision is best articulated of as a series of test principles that help transition from where a test portfolio is today to where it should be in the future. Individual tests should be classified by their dependencies and time to run.
+
+Test Principles
+There are several important principles that DevOps teams should adhere to in the implementation of any quality vision.
+	1. Tests should be written at the lowest level possible
+	2. Write once, run anywhere including production system
+	3. Product is design for testability
+	4. Test code is product code, only reliable tests survive
+	5. Test infrastructure is a shared service
+	6. test ownership follows product ownership
+
+
+
+Sample quality vision
+
+Tests should be written at the lowest level possible
+Favor tests with the fewest external dependencies over all other types of tests. The majority of tests should run as part of the build, so focus on making that as easy as possible. Consider a parallel build system that can run unit tests for an assembly as soon as that assembly and associated test assembly drop. It's not feasible to test every aspect of a service at this level, but the principle to keep in mind is that heavier functional tests should not be used where lighter unit tests could produce the same results.
+
+Write once, run anywhere, including the production system
+A large number of the tests in a test portfolio may use specialized integration points designed specifically to enable testing. There are many reasons for this, including a lack of testability in the product itself. Unfortunately, tests like these usually depend on internal knowledge and are exposed to implementation details that often do not matter from a functional test perspective. It also pins the tests to environments where the secrets and configuration information necessary to run those tests is available. That generally excludes functional tests from being run against production deployments. It's a best practice for functional tests to only use the public API of the product.
+
+Design the product for testability
+One of the key opportunities organizations find in a maturing DevOps process is to do a better job of taking a complete view of what it means to deliver a quality product on a cloud cadence. Shifting the balance strongly in favor of unit testing over functional testing requires teams to make design and implementation choices that support testability. There are different schools of thought about exactly what constitutes well-designed and well-implemented code from a testability perspective, just as there are different perspectives on coding style. The principle to keep clearly in mind is that designing for testability must become a primary part of the discussion about design and code quality.
+
+Test code is product code, and only reliable tests survive
+Teams should treat test code the same way they treat product code. This is similar to the effort to manage configuration and infrastructure as code. Explicitly stating the principle that test code is product code makes it clear that the quality level of this body of code is as important to shipping as product code. Apply the same level of care in the design and implementation of tests and test frameworks. A code review that does not consider the test code or hold it to the same quality bar is not complete.
+
+An unreliable test is an organizationally expensive thing to maintain. It works directly against the engineering efficiency goal by making it hard to make changes with confidence. Work toward a place where engineers can make changes anywhere and quickly gain a high degree of confidence that nothing has been broken. Maintain a very high bar for reliability and discourage the use of UI tests as they tend to be unreliable.
+
+Testing infrastructure is a shared service
+Lower the bar for using test infrastructure to generate quality signals that can be trusted. Unit test code should live alongside product code and should be built with the product. Those tests will ultimately run as part of the build process, so they must also run under development tools, such as the Visual Studio Team Explorer. Testing should be viewed as a shared service for the entire team. If the tests can be run in every environment from local development through production, then they will have the same reliability as the product code.
+
+Test ownership follows product ownership
+Tests should sit right next to the product code in a repo. If there are components to be tested at that component boundary, don't rely on others to test the component. Push the accountability to the person who is writing the code.
+
+Shift left
+Consider another view of the quality vision seen through the pipeline. The goal for shifting left is to move quality upstream by performing testing tasks earlier in the pipeline. Through a combination of test and process improvements, this both reduces the time it takes for tests to be run, as well as the impact of failures later on. Most importantly, it ensures that most of the testing is completed even before a change is merged into main.
+	means pushing quality upstream
+	Changes -> pull request pipeline (unit tests) -> continuous integration (functional against reliable test deployment) -> continuous deployment (functional against production)
+
+
+
+
+
+
+Test taxonomy
+Defining a test taxonomy is an important aspect to DevOps. Developers should understand the right types of tests to use in different scenarios, as well as what tests are required at different parts of the process. The categorization should also take into account the dependencies and time required for tests to run. Consider a system where tests are categorized across four levels:
+
+L0 tests are a broad class of fast in-memory unit tests. An L0 test is a unit test to most people. That is a test that depends on code in the assembly under test and nothing else.
+L1 tests might require the assembly plus SQL or the file system.
+L2 tests are functional tests run against testable service deployments. It is a functional test category that requires a service deployment but may have key service dependencies stubbed out in some way.
+L3 tests are a restricted class of integration tests that run against production. They require a full product deployment.
+While it would be ideal for all tests to run at all times, it's just not feasible at this time. Instead, teams can be more selective about where the line is drawn at which point in the DevOps process where each is run. While the expectation may be that developers always run through L2 before committing, a PR may automatically fail if the L3 test run fails, and the deployment may be blocked if L4 tests fail. The specific rules may vary from organization to organization, but enforcing the expectations for all teams within a given organization will move everyone toward the same quality vision goals.
+
+Unit test characteristics
+Set strict guidelines for L0 and L1 unit tests. These tests need to be very fast and reliable. For example, Average execution time per L0 test in an assembly should be less than 60 milliseconds. The average execution time per L1 test in an assembly should be less than 400 milliseconds. No test at this level should exceed 2 seconds. One team at Microsoft runs over 60,000 unit tests in parallel in less than 6 minutes with a goal of getting this down to less than a minute. Track unit test execution time using charts like below and file bugs against tests that exceed the allowed thresholds.
+
+continuous focus on test execution time
+
+Functional tests must be independent
+The key concept for the L2s is test isolation. Properly isolated tests can be run in any sequence. Teams should be able to run a properly isolated test in any sequence reliably because it has a complete control over the environment it is being run on. Have a well-known state at the beginning of the test. If one test creates some data in the database and leaves it lying around, it will corrupt the run of another test that relies on a different database state.
+
+Legacy tests that need a user identity may have previously called external authentication providers to get one. This introduces several challenges. First, there is an external dependency that could be flaky or unavailable momentarily, breaking the test. It also violates that test isolation principle because the state of an identity (e.g. permission) could be changed by a test, resulting in an unexpected default state for other tests. Consider working around this by investing in identity support within the test framework.
+
+A case study in shifting left
+A team at Microsoft tracked progress across triweekly sprints as shown in the graph below. The graph covers sprints 78-120, which represents 42 sprints over 126 weeks. That's about two and half years' worth of effort.
+
+They started at 27K legacy tests (in orange) in sprint 78. The legacy tests are at 0 at S120. Most of the old functional tests were replaced with a set of unit tests (L0/L1s). Some were replaced with the new L2 tests. Many were simply deleted.
+
+Sample test portfolio balance
+
+The process
+Any software journey that takes over two years to complete has a lot of lessons to learn. Most of them have been covered earlier in this article, but there is also a lot to learn from the process, itself.
+
+To begin with, the team left the old functional tests ("TRA tests") alone when they started. They wanted to get the developers to buy into the idea of writing unit tests, particularly for the new features. It was important to build momentum, which can be very challenging at first. The focus was on making it as easy as possible to author the L0 and L1 tests. The team needed to build that muscle first.
+
+The graph shows unit test count starting to build up early on. The team started to see the benefit of authoring unit tests. They were easier to maintain, faster to run, and had fewer failures. It was easy to gain support for running all unit tests in the pull request flow.
+
+The team did not focus on writing new L2 tests until sprint 101. In the meantime, the TRA test count went down from 27,000 to 14,000 from Sprint 78 to Sprint 101. Some of the TRA tests were replaced by the new unit tests, but many were simply deleted based on team's analysis of their usefulness. Notice how the TRA tests jumped from 2100 to 3800 in sprint 110. This wasn't because the team wrote new TRA tests, but rather that more of them were discovered in the source tree and added to the graph. It turns out that the tests had always been running, but just weren't being tracked properly. It wasn't a big deal. Teams run into this kind of oversight all the time. It's important to be honest and reassess as needed.
+
+Overall, this effort to completely redo the test system over two years was a massive investment. Every single sprint, many feature teams across the organization invested time. In some sprints it was most of what a feature team did. Not every team did the work at the same time. It's difficult to measure exactly what the cost of the shift was, but it was a non-negotiable requirement for where the team wanted to go.
+
+Getting fast
+Once the team had a continuous integration signal that was extremely fast and reliable, it became a trusted indicator for product quality. The screenshot below shows the PR and CI pipeline in action and the time it takes to go through various phases. It takes around 30 minutes to go from pull request to merge, and that includes running 60,000 unit tests. From code merge to CI build is about 22 minutes. The first quality signal from CI (SelfTest) is about an hour, after which most of the product is tested with the proposed change. Within 2 hours (Merge to SelfHost), the entire product is tested and the change is ready to go into production.
+
+PR and Rolling CI pipeline in action
+
+DevOps metrics in use
+The team tracks a scorecard like the one shown below. At a high level, it tracks two types of metrics: live site and engineering health (or debt), and engineering velocity.
+
+What we track
+
+In case of live site, the team is interested in the time to detect, time to mitigate, and how many repair items a team is carrying. A repair item is the work the team identifies as part of live site retrospective to prevent similar class of incidents from happening again. It also tracks that the teams are closing those repair items within a reasonable amount of time.
+
+For engineering health, the team caps active bugs per engineer. If a team has more than 5 bugs per engineer, they need to prioritize fixing those bugs ahead of new feature development. They also track aging bugs in special categories like security.
+
+For engineering velocity, speed is measured in different parts of the CI/CD pipeline, with the overall goal of increasing the velocity of starting from an idea to getting the code out into production and getting data back from the customers.
+
+
+
+
+SHIFT RIGHT -> TEST IN PRODUCTION
+
+
+One of the most effective ways DevOps teams can improve velocity is by shifting their quality goals left. In this sense, they are pushing aspects of testing earlier in the pipeline in order to ultimately reduce the amount of time it takes for new code investments to reach production and operate reliably.
+
+There's no place like production
+While there are many kinds of tests that can be easily shifted left, such as unit tests, there are a whole class of tests that simply cannot happen without part or all of a solution being deployed. While deploying to a QA or staging service can simulate an environment comparable to production, there really is no substitute.
+
+The full breadth and diversity of the production environment is hard to replicate in a lab. The real workload of customer traffic is also hard to simulate. And even if tests are built and optimized, it becomes a significant responsibility to maintain those profiles and behaviors as the production demand evolves over time.
+
+Moreover, the production environment keeps changing. It's never constant and, even if your app doesn't change, everything underneath it is constantly changing. The infrastructure it relies on keeps changing. So over a period of time, teams find that certain types of testing just needs to happen in production.
+
+What is Testing in Production?
+Testing in production is the practice of using real deployments to validate and measure an application's behavior and performance in the production environment. It serves two important purposes:
+
+It validates the quality of a given production deployment.
+It validates the health and quality of the constantly changing production environment.
+Validating a deployment
+To safeguard the production environment, it's necessary to roll out changes in a progressive and controlled manner. This is typically done via the ring model of deployments and with feature flags.
+
+The first ring should be the smallest size necessary to run the standard integration suite. These tests may be similar to those already run earlier in the pipeline against other environments, but it's important to run them again here to validate that the behavior in the production environment isn't different from the others. This is where obvious errors, such as misconfigurations, will be discovered before any customers are impacted.
+
+Once the initial ring is validated, the next ring can broaden to include a subset of real users. The usage of the new production services by real customers becomes the test run. When balanced properly, the value of detected failures exceeds the net losses of those failures, which will need to be measured in a way meaningful to a given business. For example, a bug that prevents a shopper from completing their purchase is very bad, so it would always be better to catch that issue when less than 1% of customers are on that ring, as opposed to a different model where all customers were switched at once.
+
+If everything looks good so far, the deployment can progress through further rings and tests until it's used by everyone. However, full deployment doesn't mean that testing is over; tracking telemetry is crticially important for testing in production. It's arguably the highest quality test data because it's literally the test results of the real customer workload. It tracks failures, exceptions, performance metrics, security events, etc. The telemetry also helps detect anomalies.
+
+Fault injection and chaos engineering
+Teams often employ fault injection and chaos engineering to see how a system behaves under failure conditions. This helps to validate that the resiliency mechanisms implemented actually work. It also helps to validate that a failure starting in one subsystem is contained within that subsystem and doesn't cascade to produce a major outage for the entire product. Without fault injection, it is difficult to prove that repair work implemented from a prior incident would have the intended effect until another incident occurs. Fault injection also helps create more realistic training drills for live site engineers so that they can be better prepared to deal with real incidents.
+
+Fault testing with a circuit breaker
+A circuit breaker is a mechanism that cuts off a given component from a larger system. It's usually employed to avoid having failures in that component spread outside its boundaries. However, circuit breakers can be intentionally triggered in order to test how the system responds.
+
+Circuit breakers can be intentionally triggered to evaluate two important scenarios:
+
+When the circuit breaker opens, does the fallback work? It may work with unit tests, but there's no way to know for sure that it will behave as expected in production without injecting a fault to trigger it.
+
+Does the circuit breaker open when it needs to? Does it have the right sensitivity threshold configured? Fault injection may force latency and/or disconnect dependencies in order to observe breaker responsiveness. In addition to evaluating that the right behavior is occurring, it's important to determine whether it happens quickly enough.
+
+Example: Testing a circuit breaker around Redis Cache
+Consider a scenario that take a non-critical dependency on Redis. It's a distributed cache, which means that it's really just intended to improve product performance by speeding up access to commonly used data. If it goes down, the system should continue to work as designed because it can fall back to using the original data source for all requests.
+
+To confirm that a Redis failure will trigger the circuit breaker in production, the team should occassionally test the hypothesis by running tests against it.
+
+
+In the picture above there are three ATs, with the breaker in front of the call to Redis. The goal here is to make sure that when the breaker opens, calls ultimately go to SQL. The test forces the circuit breaker to open through a config change and then observe whether the calls go to SQL. Another test then checks the opposite config change by closing the circuit breaker to confirm that calls return back to Redis.
+
+This test validates that fallback behavior works when the breaker opens but doesn't validate the configuration of the circuit breaker settings. Will the breaker open when it needs to? To test that question there is a need to simulate actual failures.
+
+
+
+This is where the fault injection comes into play. A fault agent can introduce faults in calls going to Redis. In this case, the fault injector blocks Redis requests, so the circuit breaker opens. The test can then observe that fallback works like earlier. When the fault is removed, the circuit breaker sends a test request to Redis. If that passes, the call reverts back to Redis. The next step would be to test the sensitivity of the breaker, whether the threshold is too high or too low, whether there are other system timeouts that interfere with the circuit breaker behavior, and so on.
+
+In this example, if the breaker did not open or close as expected, it may result in a live site incident. Without the fault injection testing, the circuit breaker would remain untested as it's hard to do this type of testing in a lab environment.
+
+Fault injection tips
+Chaos engineering can be an effective tool, but it should be limited to canary environments. For example, it should only be used against environments that have little or no customer impact.
+
+It's a good practice to automate fault injection experiments because they are expensive tests and the system is always changing.
+
+Business Continuity and Disaster Recovery (BCDR)
+The other form of fault testing is failover testing. Teams should have failover plans for all services as well as subsystems. The plan includes should cover several topics:
+
+A clear explanation of the business impact of the service going down.
+A map all the dependencies in terms of platform, tech, and people devising the BCDR plans.
+Formal documentation of the disaster recovery procedures.
+A cadence to regularly execute the DR drills.
+Microservice compatibility
+As projects grow, they may find themselves with a large number of microservices that are deployed and managed independently. Shifting right is really important here as there are many ways different versions and configurations will find their way to production. Regardless of how many pre-production test layers are in place, testing compatibility in production becomes a necessity.
+
+
+
+
+
+
+TEST DESIGN TECHNIQUES
+	Static Test Designs:
+	Testing without code/app execution, so is QA on code audits and design docs
+		Manual Static Testing
+			- Walkthroughs: step-by-step presentation of requirements and their docs to find defects / missing docs
+			- Informal reviews: done by individual without process/docs
+			- Technical reviews: reviews technical approach used in dev process. Is an informal peer review
+			- Audit: formal evaluation of compliance of processes and artifacts by external team
+			- Inspection: formal documented review process
+		Static Testing with Tools
+			- Static Code Analysis
+				i. Control Flow Analysis: Checks all possible control flows in code
+				ii. Data Flow Analysis: Checks data in the app and its different states
+			- Coding Standards Compliance
+			- Code Metrics Analysis: e.g. code coverage, complexity, volume
+
+	Dynamic Test Designs:
+	Test via running the system - tester provides input to app and executes it
+		- Specification-based: black-box testing; tests on system specification without knowing internal architecture
+		- Structure-based: white-box testing; e.g. statement-testing, decision/branch testing, condition testing,
+		- Experience-based: based on tester intuition
+
+
+AUTOMATION TESTING
+Write test scripts once and repeat infinitely on demand/schedule
+Tests to Automate:
+	- Critical Functionality Tests
+	- Tests requiring repeated execution with large data
+	- Time Consuming Tests
+	- Tests requiring parallel execution e.g. concurrent access to app
+Do Not Automate:
+	- UI tests; better with human validation
+	- Usability tests; ease-of-use by different user types best done manually
+	- Rarely used functionalities: not worth effort to script
+	- Exploratory testing; this requires learning the app on the fly and simultaneous testing
+	- When app is frequently changing as would have to re-write scripts
+When to Automate:
+	- When app is stable and less frequent changes being done, as then worth investing in script writing
+Benefits:
+	Reduces overall test execution time
+	Works with large input sets
+	Helping create continuous integration pipelines; after each commit, auto test suite executes with new build. Jenkins creates jobs to auto execute tests after build deployment
+Selenium
+	Is open-source web application automation testing tool,
+	Supports different browsers, platforms, programming languages, OSs
+	Can automate the functional tests and integrate with Maven, Jenkins, and other build automation and continuous integration tools
+	Components
+		1. IDE: a record and playback automation tool using which we can automate the web applications. It comes in the form of a Chrome and Firefox browser extension
+		2. Remote Control: officially deprecated by Selenium. It used to inject the javascript code in the browser for automation and required an additional server for running the automation scripts.
+		Apart from this, it had many limitations like – it was slow, it didn’t had a headless browser like HtmlUnitDriver and before executing the test scripts the server was required to be started
+		3. WebDriver: By far the most important component of Selenium Suite. It provides different drivers for different browsers and supports multiple programming languages.
+		It is purely object-oriented and supports all the major browsers – Chrome, Firefox, IE, Safari, etc and scripting can be done in most of the popular languages
+		One of the most widely used tools for automating web applications. It automates the browsers by calling their native method directly unlike Selenium RC which injects javascript in browsers for automation. Hence, Webdriver is much faster than Selenium RC.
+		Apart from this, Selenium WebDriver can also handle scenarios like alerts, pop-ups, ajax requests, keyboard, and mouse actions easily.
+		Since Webdriver directly calls the methods of different browsers hence we have a separate driver for each browser
+		4. Grid: helps in the distributed running of Selenium tests in parallel across multiple remote machines.
+		It has a hub and multiple nodes. The nodes run the Selenium instances on which the test cases are executed. These nodes are connected to a central hub which acts as a server and controls the whole test execution
+	Limitations:
+		- No desktop application automation support
+		- Cannot automate web servers e.g. REST / SOAP
+		- need programming for script creation
+		- must use external libraries for logging, read-writing to files
+
+
+Verification = static process of analyzing documents, not actual end product
+	evaluate artifacts of software dev to ensure product will comply to standards
+	via doc review, walk-throughs, test reviews
+Validation = dynamic testing of software product by running it
+	via software testing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

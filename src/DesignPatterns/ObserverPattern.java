@@ -26,9 +26,10 @@ Have Observer and Observable classes, extended/implemented by concrete classes
 
 
  */
+//CUSTOM IMPLEMENTATION OF OBSERVER & OBSERVABLE
 public class ObserverPattern {
 
-    abstract class Subject{
+    abstract class Subject{   //the custom Observable
         public List<Observer> observers = new ArrayList<>();
         public void addObserver(Observer observer) {
             if (!observers.contains(observer))

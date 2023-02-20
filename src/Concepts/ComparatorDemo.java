@@ -26,7 +26,7 @@ public class ComparatorDemo {
         Comparator<Chocolate> chocolateComparator = (Chocolate c1, Chocolate c2) -> Integer.compare(c1.getWeight(), c2.getWeight());
         chocolates.sort(chocolateComparator);
         System.out.println(chocolates);
-        //define comparator with lambda
+        //define comparator with MR
         Comparator<Chocolate> chocolateComparatorComparingInt = Comparator.comparingInt(Chocolate::getWeight);
         chocolates.sort(chocolateComparatorComparingInt);
         System.out.println(chocolates);

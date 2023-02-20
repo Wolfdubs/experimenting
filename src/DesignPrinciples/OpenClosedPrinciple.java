@@ -8,8 +8,8 @@ public class OpenClosedPrinciple {
     /*
     "A class should be open for extension, but closed for modification"
     so can extend a classes behavior without modifying it
-    e.g. create an interface that ach class implements and override the abstract method with each class' implementation
-        so now if a new category arises, only have t create a new class implementing the interface, not amending many different files
+    e.g. create an interface that each class implements and override the abstract method with each class' implementation
+        so now if a new category arises, only have to create a new class implementing the interface, not amending many different files
      */
 
     private interface WeaponRatingCalculator {

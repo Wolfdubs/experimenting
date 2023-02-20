@@ -53,3 +53,19 @@ class Runner{
         kitchen.cookFood();   //the Observable extending class thus cals notify observers, which inside the observers calls update()
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

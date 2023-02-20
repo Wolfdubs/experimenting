@@ -1,5 +1,8 @@
 package DesignPrinciples;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DependencyInversionPrinciple {
     /*
     "We must depend on abstractions, not concrete classes"
@@ -11,6 +14,12 @@ public class DependencyInversionPrinciple {
     Module 2: classes that depend on Module 1 interfaces
 
      */
-
+    //design principle whereby you declare objects of the higher supertype, and instantiate with the actual implementation you want e.g.
+    List<Integer> myList = new ArrayList<>();
 
 }
+
+//DAO
+//DTO - Data Transfer Object classes
+
+
