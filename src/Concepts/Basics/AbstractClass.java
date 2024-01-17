@@ -27,6 +27,7 @@ abstract class Animal {
 
     int weight;
     String name;
+    String species = "TBD";
 
     //abstract methods can just be declared - don't need implementation {}
     //can only do this in abstract classes
@@ -38,7 +39,7 @@ abstract class Animal {
     }
     public Animal(){
         System.out.println("inside abstract class constructor");
-    }
+    }  //constructor cannot be abstract
 
 }
 
@@ -55,11 +56,15 @@ class Whale extends Animal{     //concrete class = not abstract
 
 class Dolphin extends Animal{
 
+    public Dolphin(){
+        super.name = "squeaky";
+    }
+
     @Override
     public void eat() {}
     @Override
     public String sleep() {
-        System.out.println("Dolphin is sleeping");
+        System.out.println(this.name + " is sleeping");
         return "Dolphin is sleeping";}
 }
 
@@ -80,6 +85,7 @@ public class AbstractClass {
     public static void main(String[] args) {
         Animal baloo = new Whale();     //can create object of child with reference to abstract super
         Animal squeaky = new Dolphin();
+        Dolphin diddy = new Dolphin();
 
         //calling a method that accepts an abstract super class, so you can pass in any concrete subclass
         Printer printer = new Printer();
@@ -89,6 +95,7 @@ public class AbstractClass {
         printer.show(999999999999999999L);
         printer.animalSleep(baloo);     //pass in concrete object with abstract reference, into method accepting abstract reference,
         printer.animalSleep(squeaky);   // which will call the specific implementation for the actual concrete object
+        printer.animalSleep(diddy);
     }
 }
 

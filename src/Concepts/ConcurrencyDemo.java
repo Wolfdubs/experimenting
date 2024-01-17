@@ -11,14 +11,22 @@ import java.util.concurrent.*;
 
  */
 public class ConcurrencyDemo {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        executorServiceDemo();
+        futureDemo();
+    }
 
     private static void executorDemo() {
     //    Executor executor = new Caller();
     //    executor.execute(() -> System.out.println("executor demo"));
     }
-    private static void executorServiceDemo() {
+    private static void executorServiceDemo() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
-        executorService.submit(() -> System.out.println("executor service demo"));
+        Future<?> future = executorService.submit(() -> System.out.println("executor service demo"));
+        Future.State state = future.state();
+        var myVar = future.get();
+        Boolean bool = future.isDone();
+        System.out.println(state + "\t" + state.toString() + "\t" + myVar +  "\t" + bool);
     }
     private static void futureDemo(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();  //initialize a single-threaded executorService, uses a single worker thread in an unbounded queue. so if the thread terminates prematurely, a new thread will replace it
@@ -41,3 +49,20 @@ public class ConcurrencyDemo {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

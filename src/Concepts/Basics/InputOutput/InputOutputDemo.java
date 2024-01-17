@@ -36,21 +36,14 @@ class ByteStreamDemo {
 
 class characterStreamDemo {
     public static void main(String[] args) throws IOException {
-        FileReader fileReader = null;
-        FileWriter fileWriter = null;
-        try {
-            fileReader = new FileReader("dummySource.txt");
-            fileWriter = new FileWriter("dummyDestination.txt");
-
+        try(FileReader fileReader = new FileReader("dummySource.txt");
+            FileWriter fileWriter = new FileWriter("dummyDestination.txt")) {
             int currentCharacter;
             while ((currentCharacter = fileReader.read()) != -1) {
                 fileWriter.write((char) currentCharacter);   //writing content char by char
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
-        } finally {
-            if (fileReader != null) fileReader.close();
-            if (fileWriter != null) fileWriter.close();
         }
     }
 }

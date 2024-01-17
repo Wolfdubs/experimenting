@@ -4,6 +4,7 @@ package Concepts.FunctionalProgramming;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import utils.Gun;
 import utils.Weapon;
 import utils.Weapon.*;
 
@@ -53,27 +54,38 @@ public class FunctionDemo {
         for (Integer i : squaredList) {
             halvingFunction.apply(i);
         }
+        System.out.println(squaredList);  //doesn't actually modify the list at all
+
+
+        BiFunction<Function<Integer,Double>, Integer, Integer> convertDoubleFunctionToInteger = (fid, i) -> (int) Math.abs(fid.apply(i));
+        for (int i = 0; i < doubledListViaMethodReference.size(); i++){
+            Integer halvedInt = convertDoubleFunctionToInteger.apply(halvingFunction, doubledListViaMethodReference.get(i));
+            doubledListViaMethodReference.set(i,halvedInt);
+        }
+        System.out.println("myList post halving " + doubledListViaMethodReference);
 
 
 
-        myList.forEach(FunctionDemo::doubling);   //doesn't return a doubled list, printing myList shows ti is unchanged
+
+        myList.forEach(FunctionDemo::doubling);   //doesn't return a doubled list, printing myList shows it is unchanged, because forEach takes a Consumer, and forEach has void return
 
         List<String> languages = Arrays.asList("java", "python", "golang", "ruby", "javascript", "php", "swift", "perl", "groovy", "c", "shell");
         languages.forEach(language -> language.toUpperCase());
         languages.forEach(String::toUpperCase);   //alternative to the lambda above
+        System.out.println(languages);  //still lower case, as forEach will not modify the Iterable, as it only works with a Consumer
 
 
         Function<String, String> printRepeat = str -> {      //function to print the number and each char of a string, as 1 big string
             String returnString = "";
             for (int i = 0; i <= str.length()-1; i++) {
-                returnString = returnString.concat(i+1 + "." + String.valueOf(str.charAt(i)) + " ");
+                returnString = returnString.concat(i+1 + "." + (str.charAt(i)) + " ");
             }
             System.out.println(returnString);
             return returnString;
         };
         printRepeat.apply("womble");
 
-        //andThen() to chain functions
+        //andThen() to chain functions -> You CAN mix if the output type of the 1st matches the input type of the 2nd
         Double output = squaringFunction.andThen(halvingFunction).apply(10);  //squares it, then halves it
         System.out.println(output);
         halvingFunction = halvingFunction.andThen(n -> n+1);
@@ -87,7 +99,12 @@ public class FunctionDemo {
 
         //identity() returns a function that returns its only argument; so just echoes the parameter passed
         Function<String,String> identityFunction = Function.identity();
+        Function<Boolean,Boolean> identityFunction2 = Function.identity();
+        Function if3 = Function.identity();
         System.out.println(identityFunction.apply("womble"));
+        System.out.println(identityFunction2.apply(true));
+        System.out.println(if3.apply(17));
+
 
 
         List<String> weapons = Arrays.asList("knife", "gun", "axe", "club", "grenade");
@@ -116,12 +133,12 @@ public class FunctionDemo {
     //specialized functions accept/return specific primitive types
 class SpecializedFunctions {
     //Specified argument: they dont require boxing of the argument, just the return type
-    IntFunction<String> intFunction = n-> String.valueOf(n) + ".... ";
+    IntFunction<String> intFunction = n -> n + ".... ";   //always accepts an int
     DoubleFunction<Double> doubleFunction = d -> d/(d-1);
     LongFunction<Integer> longFunction = l -> ((int) l) + 7;
 
     //Specified return: don't require boxing of the return, just the argument type
-    ToIntFunction<Boolean> toIntFunction = b -> {
+    ToIntFunction<Boolean> toIntFunction = b -> {       //always produces an int
         if (b) return 44;
         else return 0;
     };
@@ -137,13 +154,13 @@ class SpecializedFunctions {
     LongToIntFunction longToIntFunction;
 
     //primitive BiFunctions - just specify the 2 arguments
-    ToDoubleBiFunction<Integer, String> toDoubleBiFunction = (a,b) -> Double.parseDouble(b) + ((double) a);
+    ToDoubleBiFunction<Integer, String> toDoubleBiFunction = (a,b) -> Double.parseDouble(b) + ((double) a);  //always returns a double
     ToIntBiFunction<String, Boolean> toIntBiFunction;
     ToLongBiFunction<Character, Float> toLongBiFunction;
 
     private void replaceAllDemo() {
         Map<String,Integer> map = generateWeaponsMap();
-        map.replaceAll((key, oldValue) -> key.equals("nuke") ? oldValue : oldValue-1 );
+        map.replaceAll((key, oldValue) -> !key.equals("nuke") ? oldValue : oldValue-1 );
     }
 
     //can write custom specializations e.g. for short to byte
@@ -207,15 +224,18 @@ class FunctionWithComparator {
         List<Language> languages = List.of(new Language("java", 50), new Language("python", 80),
                 new Language("ruby", 20), new Language("javascript", 100), new Language("c", 30),
                 new Language("swift", 5), new Language("shell", 10), new Language("golang", 1));
-        languages.stream().sorted((a, b) -> languageComparator.compare(a, b));
+        languages.stream().sorted((a, b) -> languageComparator.compareByNameLength(a, b));
         languages.stream().sorted(languageComparator::compare);  //method reference way of calling the compare method of the custom comparator
+        languages.stream().sorted(languageComparator); // or just pas comparator in directly since compare() is the SAM
         languages.stream().map(Language::getName).forEach(System.out::println);  //maps each element to results of MR to getName()
 
         Collections.sort(languages, FunctionWithComparator::compareByName);   //using static method reference, rather than comparator object, to sort
         Collections.sort(languages, languageComparator::compareByNameLength); //using MR on particular object instance
+        languages.sort(languageComparator);  //to use default SAM compare()
+        languages.sort(languageComparator::compareByNameLength);
 
 
-        languages.stream().toArray(Language[]::new);
+        languages.toArray(Language[]::new);
     }
 }
 
@@ -234,7 +254,7 @@ class BiFunctionDemo {
     }};
 
     public static void main(String[] args) {
-        map.replaceAll((k, v) -> v + 1);    //replaceAll is a inbuilt BiFunction; accepting 2 arguments, 1 return value
+        map.replaceAll((k, v) -> v + 1);    //replaceAll is an inbuilt BiFunction; accepting 2 arguments, 1 return value
         BiFunction<Integer, Integer, Integer> product = (a,b) -> a*b;   //in the <> define the 2 argument types, and return type
         int productInt = product.apply(4,5);
         System.out.println(productInt);
@@ -253,10 +273,11 @@ class BiFunctionDemo {
         double powered = power.apply(4,6);
         System.out.println(powered);
 
+
         BiFunction<Short, Short, List<Short>> shortList = Arrays::asList;       //(a,b) -> Arrays.asList(a,b);
         shortList.apply((short) 3, (short) 9);
 
-        //andThen can only accept a function
+        //andThen can only accept a function, because the calling function only produces 1 output that it can send to the parameterized function
         Function<Double,String> intToString = Object::toString;
         power.andThen(intToString).apply(3,7);
 
@@ -265,7 +286,7 @@ class BiFunctionDemo {
         String multipliedByGeneric = genericBiFunctionThenFunction(9,5, (a,b) -> a*b, c -> "Multiplied = " + c.toString());
         String poweredByGeneric = genericBiFunctionThenFunction(9,5, (a,b) -> Math.pow(a,b), c -> "Powered = " + c.toString());
         String concatenatedByGeneric = genericBiFunctionThenFunction("womble", "mungo", String::concat, String::toUpperCase);
-        Integer concatenatedIntoInteger = genericBiFunctionThenFunction("18","72", (a,b) -> a+b, c -> Integer.valueOf(c));
+        Integer concatenatedIntoInteger = genericBiFunctionThenFunction("18","72", (a,b) -> a+b, Integer::valueOf);
 
 
     }
@@ -291,6 +312,7 @@ class BiFunctionDemo {
 class BiFunctionFactory {
     public static void main(String[] args) {
         Weapon bowieKnife = biFunctionFactory("bowie knife", BLADED, Weapon::new);  //the BiFunction is a call to the Weapon constructor, and passes in the 2 prior parameters
+        Gun pistol = (Gun) biFunctionFactory("Glock", FIREARM, Weapon::new);
     }
 
     private static <R extends Weapon> R biFunctionFactory(String name, Weapon.TYPE type, BiFunction<String, Weapon.TYPE, R> biFunction) {
@@ -351,7 +373,7 @@ class BiFunctionFiltering {
 //UnaryOperator & BinaryOperators are both functions that just accept and produce only 1 type for everything
 //Unary Operator extends the Function interface
 //accepts one 1 argument, produces 1 value
-//Difference to Function -> with Unary Operator, both the argument and return must be of the same value, so only give 1 type parameter in <>
+//Difference to Function -> with Unary Operator, both the argument and return must be of the same type, so only give 1 type parameter in <>
 //used in list.replaceAll(); does in-place replacement of values with some computed value of the same type
 //SAM = apply()
 //As extension of Function, it also has andThen() and compose()
@@ -365,12 +387,13 @@ class UnaryOperatorDemo {
         UnaryOperator<String> replaceDashes = str -> str.replace("/", "-");
         dates.replaceAll(replaceDashes);
         System.out.println(dates);
+        dates.replaceAll(str -> str.replace("/","-"));  //passing in UnaryOperator on the fly
 
         //replace elements in a list with upperCase
         List<Weapon> weapons = generateWeaponsList();
-        List<String> weaponNames = weapons.stream()
+        List<String> weaponNames = new ArrayList<>(weapons.stream()  //wrapped with ArrayList to make it mutable with the below replaceAll()
                 .map(Weapon::getName)
-                .toList();
+                .toList());
         weaponNames.replaceAll(String::toUpperCase);  //replaceAll returns void as it updates all elements in place; thus the unary operator
                                                         //returns the same type as it receives
     }
@@ -378,11 +401,12 @@ class UnaryOperatorDemo {
     //Specialized UnaryOperators, for use with primitives. dont need to box the type
     IntUnaryOperator intUnaryOperator;
     DoubleUnaryOperator doubleUnaryOperator;
-    LongUnaryOperator longUnaryOperator;
+    LongUnaryOperator longUnaryOperator = l -> l%5;
     void specializedUnaryOperators(){
         intUnaryOperator.applyAsInt(4);
         doubleUnaryOperator.applyAsDouble(2);
         longUnaryOperator.applyAsLong(99);
+        longUnaryOperator.compose(l -> (long) Math.log(l)).applyAsLong(33434L);
     }
 
 
@@ -400,9 +424,10 @@ class BinaryOperatorDemo {
     //useful for reducing
     public static void main(String[] args) {
         List<Integer> weaponDifficulties = generateWeaponsList().stream()
-                .map(Weapon::getDifficulty).toList();
-        weaponDifficulties.stream()
-                .reduce(0,(a,b) -> a+b);  //pass reduce an initial accumulator value, then the binaryOperator as the accummulator
+                .map(Weapon::getDifficulty)
+                .toList();
+        Integer totalDifficulty = weaponDifficulties.stream()
+                .reduce(0, Integer::sum);  //pass reduce an initial accumulator value, then the binaryOperator as the accummulator
     }
 
     //Specialized BinaryOperators

@@ -7,7 +7,7 @@ public class FileHandling {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
     //Write data to a file
-    File f = new File("myFile.txt");
+    File f = new File("src\\Concepts\\Basics\\InputOutput\\Files\\myFile.txt");
     FileOutputStream fos = new FileOutputStream(f) ;
     DataOutputStream dos = new DataOutputStream(fos);
     dos.writeUTF("Lines to write to my file");

@@ -19,7 +19,7 @@ public class InterfacesClass implements myInterface {
 //
 //    }
 
-    public static void methodThatTakesInterfaceImplementingObject(myInterface ds){       //takes any object that implements DoStuff interface
+    public static void methodThatTakesInterfaceImplementingObject(myInterface ds){       //takes any object that implements myInterface interface
         ds.methodThatAllImplementingClassesMustAlsoImplement();               // because the method knows the argument implements the interface, it knows the object can perform all its methods
     }
 

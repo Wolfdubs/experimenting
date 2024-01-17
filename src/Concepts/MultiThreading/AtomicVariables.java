@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.LongBinaryOperator;
 
 public class AtomicVariables {
     /*
@@ -18,7 +19,7 @@ public class AtomicVariables {
     protected class Pekingese{
         private static volatile int idCounter = 0;  //volatile, so value is shared across all threads
         private int id;
-        public Pekingese(int id){
+        public Pekingese(){
             this.id = getAndIncrementID();   //every new object gets an incremented id
         }
         private synchronized int getAndIncrementID(){  //also need this to be synchronized because every processor creating objects, must both read and write its values
@@ -40,7 +41,8 @@ public class AtomicVariables {
         AtomicReference<String> atomicReference = new AtomicReference<>("womble");
         atomicReference.compareAndSet("womble", "alive");  //will just return "womble"
         atomicReference.compareAndSet("mungo", "dead");  //checks if the atomic reference value equals the 1st parameter. if not, it changes the object value to be the 2nf parameter //updates value to "dead"
-        AtomicLong atomicLong;
+        AtomicLong atomicLong = new AtomicLong(0L);
+        atomicLong.accumulateAndGet(7L, (left, right) -> left * right);
         AtomicBoolean atomicBoolean;
     }
 

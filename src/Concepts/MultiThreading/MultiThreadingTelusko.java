@@ -11,6 +11,7 @@ Utility:
 Extends vs Implements
     Extends better if want to use inbuilt Thread methods, as Runnable interface has only SAM
     Implements better if want class to be able to extend a different class; avoids multiple inheritance problem
+    But you can make a class implement Runnable and pass it to constructor of new Thread() to have best of both
 
 */
 
@@ -28,22 +29,22 @@ Use:
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-class ThreadExtends extends Thread{  //means objects of this class with be Threads
+class ThreadExtends extends Thread{  //means objects of this class will be Threads
     int[] myArray = {2,4,6,8,10};
     public void run(){         //every thread needs a run() method to define code for the thread to execute
         for (int i=0; i<myArray.length; i++){
-            System.out.println("Thread 1");
-            try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}   //can even call thread.sleep on normal classes to main the main() thread sleep
+            System.out.println("Thread class 1 " + i);
+            try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}   //can even call thread.sleep on normal classes to make the main() thread sleep
             myArray[i] = myArray[i]*2;
         }
     }
 }
 
-class ThreadExtends2 extends Thread{  //means objects of this class with be Threads
+class ThreadExtends2 extends Thread{
     int[] myArray = {2,4,6,8,10};
     public void run(){         //every thread needs a run() method to define code for the thread to execute
         for (int i=0; i<myArray.length; i++){
-            System.out.println("Thread 2");
+            System.out.println("Thread class 2 " + i);
             try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
         }
     }

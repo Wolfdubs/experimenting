@@ -29,9 +29,8 @@ public class OptionalsDemo {
         optionalEmployee.orElseThrow();  //if Optional is empty, it throws an Exception (just like get())
 
         //Can transform the Option from 1 type to another, e.g. from Employee to Partner
-        optionalEmployee.map(Employee::getJobTitle)   //Transforms the Optional<Employee> into an Optional containing that employees JobTitle field
-                .orElse("N/A");      //retrieve the value from the .map() call (if the optionalEmployee has a value, and its jobTitle does too,
-                                        // (if no value in either of those then return N/A)
+        Optional<String> jobTitleOptional = optionalEmployee.map(Employee::getJobTitle);   //Transforms the Optional<Employee> into an Optional containing that employees JobTitle field
+                          //retrieve the value from the .map() call (if the optionalEmployee has a value, and its jobTitle does too,
 
 
         Optional.empty();   //creates an empty optional

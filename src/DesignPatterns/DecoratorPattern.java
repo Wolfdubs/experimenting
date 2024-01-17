@@ -24,7 +24,7 @@ public class DecoratorPattern {
      */
 }
 
-interface Component{  //as the ConcreteComponent and Decorator both implement Component, client needent concern with what wrapping has occurred
+interface Component{  //as the ConcreteComponent and Decorator both implement Component, client needn't concern with what wrapping has occurred
     void action();
 }
 

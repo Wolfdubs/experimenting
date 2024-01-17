@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,7 +28,15 @@ public class Weapon {
     int selfSustainability;
     int difficulty;
     double antiqueValue;
+    static Pekingese regulatingPekingese;
 
+    static {
+        regulatingPekingese = new Pekingese("Mr. Womble The Regulator of All Weapons", 15, 9);
+    }
+
+    {
+        System.out.println("You done just gone and made a weapon, son");
+    }
 
     public Weapon(String name, Weapon.TYPE type) {
         this.name = name;
@@ -80,6 +89,10 @@ public class Weapon {
 
     public void useWeapon(){
         System.out.println("weapon was just used");
+    }
+
+    public static int sortByLethality(Weapon w1, Weapon w2){
+        return Integer.compare(w1.getLethality(),w2.getLethality());
     }
 
 

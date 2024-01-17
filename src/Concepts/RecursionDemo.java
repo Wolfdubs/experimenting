@@ -17,6 +17,7 @@ package Concepts;
 public class RecursionDemo {
     public static void main(String[] args) {
         printHowdy(5);
+        System.out.println(factorial(7));
     }
 
     private static void printHowdy(int count){

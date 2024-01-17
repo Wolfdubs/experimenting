@@ -1,5 +1,7 @@
 package Concepts.FunctionalProgramming;
 
+import Concepts.Lambdas.myInterface;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +19,8 @@ public class SupplierDemo {
     public static void main(String[] args) {
         String product = "Programming";
         Supplier<String> stringSupplier = product::toUpperCase;
+        Supplier<String> googoo = () -> product.toUpperCase();
+        //Supplier<String> gg = product.toUpperCase();   //now allowed as returns string only
         Supplier<Integer> integerSupplier = () -> product.length()-3;
         Supplier<Boolean> booleanSupplier = () -> product.contains("ram");
         System.out.println(stringSupplier.get() + "\n" + integerSupplier.get() + "\n" + booleanSupplier.get() );
@@ -27,11 +31,11 @@ public class SupplierDemo {
         Supplier<LocalDate> dateSupplier = LocalDate::now;
         System.out.println(dateSupplier.get());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Supplier<LocalDateTime> localDateTimeSupplier = () -> LocalDateTime.now();
         LocalDateTime time = localDateTimeSupplier.get();
         System.out.println(time);
-        Supplier<String> formattedDate = () -> formatter.format(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Supplier<String> formattedDate = () -> formatter.format(time);
         System.out.println(formattedDate.get());
 
 
@@ -71,7 +75,7 @@ public class SupplierDemo {
     }
 
     private static Supplier<List<String>> generateSupplier(){
-        return () -> new ArrayList<>();
+        return ArrayList::new;
         //or return ArrayList::new;
     }
 

@@ -17,7 +17,7 @@ JPA = java persistence API
 Microservices = application designed as a collection of loosely-coupled, maintainable, testable, independently deployable services organized around functionality
 */
 /* INVERSION OF CONTROL
-design principle of inverting the control flow of a program. almost all frameworks use IoC as i is a defining characteristic for them
+design principle of inverting the control flow of a program. almost all frameworks use IoC as it is a defining characteristic for them
 increases modularity of a program, more extensible
 Problem solved = complexity of binding together many components from different layers -> frameworks support this wiring
 Providing a callback that implements and/or controls a reaction, instead of acting ourselves directly it hands control to the external handler/controller
@@ -75,7 +75,7 @@ Implementations
     OOP implementations:
         service locator pattern strategy design pattern, dependency injection, contextualized lookup, template method pattern
 
-For lose coupling of application components
+For loose coupling of application components
 The control refers to any extra responsibilities the class has beyond its main one e.g. control of program flow, or over dependent object creation and binding
 TTD not possible without IoC
 
@@ -83,7 +83,8 @@ IoC is a principle, DI is a pattern, IoC container is a framework
 
 
  */
-    class ServerFacade {   //has many assumptions about the data returned by the DAO, so couples ServerFaced implementation to DAO implementation
+    /*
+    class ServerFacade {   //has many assumptions about the data returned by the DAO, so couples ServerFacade implementation to DAO implementation
         public <K, V> V respondToRequest(K request) {
             if (businessLayer.validateRequest(request)) {
                 Data data = DAO.getData(request);
@@ -131,6 +132,7 @@ Helps achieve loose coupling between classes, where high-level modules don't dep
     }
     //in Spring, would use a metadata annotation, that the Spring IoC container will read and use to assemble beans at runtime
 /*
+TODO:
     https://www.baeldung.com/inversion-control-and-dependency-injection-in-spring
     https://www.geeksforgeeks.org/spring-understanding-inversion-of-control-with-example/
     https://www.tutorialsteacher.com/ioc/inversion-of-control

@@ -57,6 +57,8 @@ class SimpleDateFormatDemo {
 
                 } catch (ParseException pe) {
                     pe.printStackTrace();
+                } finally{
+                    executorService.close();
                 }
             };
         for (int i=0; i<10; i++){

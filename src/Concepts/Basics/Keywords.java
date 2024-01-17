@@ -61,13 +61,15 @@ public class Keywords {
 
     //INSTANCEOF
     //boolean that returns if the thing on the left is an instance of whatever is on the right //can use for classes & interfaces
-    Keywords k = new Keywords();
-    boolean isKeyword = k instanceof Keywords;
-    boolean isString = "ssdsd" instanceof String;
-    boolean isInt = (Integer)6 instanceof Integer;
-    //using with sub&super classes
-    SuperDemo sd = new SuperDemo("a", 1, 2);
-    boolean isSubOfSuper = sd instanceof SuperDemoParent;
+    void instanceOfTesting() {
+        Keywords k = new Keywords();
+        boolean isKeyword = k instanceof Keywords;
+        boolean isString = "ssdsd" instanceof String;
+        boolean isInt = (Integer) 6 instanceof Integer;
+        //using with sub&super classes
+        SuperDemo sd = new SuperDemo("a", 1, 2);
+        boolean isSubOfSuper = sd instanceof SuperDemoParent;
+    }
 
     protected String womble;  //only accessible by members of package, and by subclass children
             //different to default/none which cannot be inherited by subclass children
@@ -98,6 +100,7 @@ public class Keywords {
         var varInt = 8;
         var varBoolean = true;
         var varByte = (byte) 4;
+
     }
 
 
@@ -118,7 +121,7 @@ public class Keywords {
         Keywords kw1 = new Keywords();   //create empty object with no values
         Keywords kw2 = new Keywords("hello", "goodbye");   //create object with values
         System.out.println(kw1.sharedForAllObjects);  //despite kw1 not being assigned any values directly, its value for shared comes from kw2, as its a static variable
-        System.out.println(Keywords.sharedForAllObjects); //because it is the same for all objects, you can retrive the static value directly from the class
+        System.out.println(Keywords.sharedForAllObjects); //because it is the same for all objects, you can retrieve the static value directly from the class
         Keywords.sharedForAllObjects = "thanks";  //as its a static variable, you can set it directly on the class
         System.out.println(kw2.sharedForAllObjects);
         System.out.println(kw1.assignOnceViaStaticBlock);
@@ -141,7 +144,7 @@ public class Keywords {
 /*
 Calling just super() calls the constructor in the superclass
 Calling super.someMethod() calls the superclass's implementation of someMethod
-use calls to super from within the subclass's implementation of a method to extend the behaviour of the superclass's method without
+use calls to super from within the subclass's implementation of a method to extend the behavior of the superclass's method without
 overwriting it completely.  So subclass.someMethod could, at some point, call super.someMethod() which would mean that someMethod
 was augmenting the implementation of someMethod as opposed to replacing it entirely
  */

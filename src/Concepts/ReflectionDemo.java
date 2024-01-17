@@ -20,7 +20,7 @@ public class ReflectionDemo {
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
         //can create an object using reference to the class "Class" (not related to reflection though)
-        Class c = Class.forName("Concepts.Chemistry"); //put fully qualified package directory for class
+        Class<?> c = Class.forName("Concepts.Chemistry"); //put fully qualified package directory for class
         Chemistry chemistry = (Chemistry) c.newInstance();
 
         //create object of Method in order to call a private method from the Chemistry object
@@ -90,7 +90,7 @@ class Reflection{
             }
         }
 
-        Class myClass = Class.forName("Concepts.Employee");
+        Class<?> myClass = Class.forName("Concepts.Employee");
         Method method = myClass.getDeclaredMethod("changeJobs");
         method.isAnnotationPresent(Override.class);
         Class[] parameters = method.getParameterTypes();

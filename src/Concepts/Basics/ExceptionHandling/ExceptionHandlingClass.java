@@ -8,11 +8,13 @@ import java.util.Scanner;
 
 //2 Exception types
 // - Checked exception: checked for at compile time; compiler throws error before it compiles it. so cannot even compile the code.
-// - Unchecked exception: compiler has not checked it, could throw error while running; compiler won't prompt you. Only exception subclasses of RunTime exception are unchecked
+// - Unchecked exception: compiler has not checked it, could throw error while running; compiler won't prompt you. Only exception subclasses
+//   of RunTime exception are unchecked
 //Exception extends Throwable (exceptions & errors).
     //As a Throwable, the exception is an object that is thrown down the call stack to the method that called it
         //the exception object contains info that helps handle it
-    //throwing an exception doesn't resolve it, it just passes it down the call stack to the method that caused it, until main, where if not caught, the program will fail
+    //throwing an exception doesn't resolve it, it just passes it down the call stack to the method that caused it, until main, where if not
+//    caught, the program will fail
             // so somewhere in the course of throwing exceptions, you want some logic to catch it
     // Never try to catch errors; they generally refer to unrecoverable problems e.g. OutOfMemory, StackOverflow
 
@@ -38,6 +40,7 @@ public class ExceptionHandlingClass {
         finally {       //finally block will order to execute some code irrespective of an exception occurs or not, so always executes, even if the try contains a return;
             System.out.println("will execute regardless of exception or not");  //finally is mainly used to close resources/connections. cleanup code
         }
+        exceptionWhileLoop();
         useBufferedReader();
         tryWithResources();
         System.out.println(printInt());
@@ -92,7 +95,7 @@ public class ExceptionHandlingClass {
         } catch (Exception e){
             return 4;
         } finally {
-            return 5;    //this method will return 5, even though there is nothing wrong with the try. so returns in finally will always override a return in try/catc
+            return 5;    //this method will return 5, even though there is nothing wrong with the try. so returns in finally will always override a return in try/catch
         }
     }
 
@@ -114,8 +117,11 @@ public class ExceptionHandlingClass {
 
         //alternative is to do to check scanner has an int to parse
         while(!scanner.hasNextInt()) {
-            System.out.println("enter an int");
-            int inty = scanner.nextInt();
+            try {
+                scanner.nextLine();
+                System.out.println("enter an int");
+                int inty = scanner.nextInt();
+            } catch (InputMismatchException ie) {}
         }
     }
 }

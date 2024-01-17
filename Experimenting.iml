@@ -21,5 +21,14 @@
     <orderEntry type="library" name="lombok" level="project" />
     <orderEntry type="library" name="gson-2.10" level="project" />
     <orderEntry type="library" name="okhttp-5.0.0-alpha.11" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/23.0.0/annotations-23.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

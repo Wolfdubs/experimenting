@@ -48,7 +48,7 @@ public class BinarySearchTree {
     }
 
     static void preOrderPrint(TreeNode root) {
-        System.out.println(root.data + " ");
+        System.out.print(root.data + " ");
         preOrderPrint(root.left);
         preOrderPrint(root.right);
     }
@@ -65,7 +65,7 @@ public class BinarySearchTree {
 
     static void inOrderPrint(TreeNode root){
         inOrderPrint(root.left);
-        System.out.println(root.data + " ");
+        System.out.print(root.data + " ");
         inOrderPrint(root.right);
     }
 
@@ -82,7 +82,7 @@ public class BinarySearchTree {
     static void postOrderPrint(TreeNode root){
         postOrderPrint(root.left);
         postOrderPrint(root.right);
-        System.out.println(root.data + " ");
+        System.out.print(root.data + " ");
     }
 
 
@@ -120,13 +120,15 @@ public class BinarySearchTree {
         //creating a tree with all the nodes, using an arrayList
         System.out.println("Pre-order traversal:");
         preOrderTraversal();
-        for (int i : integerList) System.out.println(i + " ");
-        System.out.println("In-order traversal:");
+        for (int i : integerList) System.out.print(i + " ");
+        integerList.clear();
+        System.out.println("\nIn-order traversal:");
         inOrderTraversal();
-        for (int i : integerList) System.out.println(i + " ");
-        System.out.println("Post-order traversal:");
+        for (int i : integerList) System.out.print(i + " ");
+        integerList.clear();
+        System.out.println("\nPost-order traversal:");
         postOrderTraversal();
-        for (int i : integerList) System.out.println(i + " ");
+        for (int i : integerList) System.out.print(i + " ");
 
         //simple prints
         preOrderPrint(root);

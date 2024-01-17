@@ -1,5 +1,7 @@
 package Concepts.Basics.Variables;
 
+import org.junit.Assert;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.*;
@@ -44,6 +46,7 @@ public class Variables {
     }
 
     public static void main(String[] args) {
+
 
 
         System.out.println(incrementChar('x'));
@@ -99,7 +102,7 @@ public class Variables {
 
         name.indexOf("dy");
         name.indexOf('y',3);
-        float floater = 1403.11339f;
+        float floater = 1403.19f;
 
         //formatting strings
         String formatterString = String.format("namePrePadding: %10s, float %.1f, namePostPadding: %-10s, 1000s commas separator %,.3d", name, floater, thirdName, floater);
@@ -131,7 +134,7 @@ public class Variables {
         name.substring(2,4);
         name.length();
         name.split(", ");
-        String.format("%s is a %d years old %f lbs fluffy pekingese %b", "womble", 13, 10.0, true);
+        String.format("%s is a %d years old %f lbs fluffy pekingese %b", "womble", 13, 10.0f, true);
 
 
 
@@ -148,9 +151,11 @@ public class Variables {
     public static void intIncrements() {
         int n = 2, o = 4, p = 1;
         int q = n++;     //first assigns the value to q, then increments the value of n. post increment
-        int r = ++n;     //first increments the value of n, then assigns value to r. pre increment
         System.out.println(q);
+        System.out.println(n);
+        int r = ++n;     //first increments the value of n, then assigns value to r. pre increment
         System.out.println(r);
+        System.out.println(n);
     }
 
     public static int casting(double n) {

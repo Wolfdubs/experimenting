@@ -15,7 +15,7 @@ public class LocalVariableTypeInference {
         var obj = new LocalVariableTypeInference();
         String var = "howdy";   //can still use var as variable name. but not as a class name
 
-       // new enhancedSwitch();
+        new enhancedSwitch().enhancedSwitch();
 
     }
 
@@ -48,16 +48,16 @@ class enhancedSwitch {
         String sport = "Swimming";
         String myResult = "";
         myResult = switch (sport) {
-            case "Hockey" -> "Buy stick";    //directly returns the value "Buy stock" to myResult
+            case "Hockey" -> "Buy stick";    //directly returns the value "Buy stick" to myResult
             case "Swimming" -> "Buy goggles";
             case "Climbing" -> "Buy chalk";
             default -> "Buy shoes";
         };
+        System.out.println(myResult);
 
         //Usage 4 = just like Usage 3, but replace -> with : yield
-        String sports = "Swimming";
-        String myResult2 = "";
-        myResult2 = switch (sport) {
+        String sports = "Soccer";
+        String myResult2 = switch (sports) {
             case "Hockey":
                 yield "Buy stick";    //directly returns the value "Buy stock" to myResult
             case "Swimming":
@@ -67,6 +67,7 @@ class enhancedSwitch {
             default:
                 yield "Buy shoes";
         };
+        System.out.println(myResult2);
 
     }
 }

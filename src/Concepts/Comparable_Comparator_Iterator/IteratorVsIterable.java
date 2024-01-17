@@ -1,8 +1,8 @@
 package Concepts.Comparable_Comparator_Iterator;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 /*
 both are interfaces
@@ -17,7 +17,7 @@ public class IteratorVsIterable {
         IterableDemo<String> iterableDemo = new IterableDemo<>();
         iterableDemo.add("womble"); iterableDemo.add("mungo"); iterableDemo.add("pekingese"); iterableDemo.add("sita");
         for (String s : iterableDemo){   //can loop over custom class because it implements Iterable
-            System.out.println(s);   //under the hood, this ehanced loop calls hasNext, and then class next and puts the value in s
+            System.out.println(s);   //under the hood, this enhanced loop calls hasNext, and then calls next and puts the value in s
         }
 
     }
@@ -37,7 +37,7 @@ class IterableDemo<T> implements Iterable<T> {
         return new customIterator<T>(demoList);
     }
 
-    //create a custom iterator to iterate over te demoList
+    //create a custom iterator to iterate over the demoList
     public class customIterator<E> implements Iterator<E>{
 
         int indexPosition = 0;  //to give the Iterator a state, for tracking position in loops
@@ -49,10 +49,7 @@ class IterableDemo<T> implements Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            if (internalList.size() <= indexPosition + 1){   //if the next index position is beyond the size limit of the list; checks not OOB
-                return false;
-            }
-            return true;
+            return internalList.size() > indexPosition+1;   //if the next index position is beyond the size limit of the list; checks not OOB
         }
 
         @Override
@@ -62,4 +59,30 @@ class IterableDemo<T> implements Iterable<T> {
             return value;
         }
     }
+}
+
+
+class IterableAndIteratorDemo<T> implements Iterable<T>{
+
+    private Queue<T> myQ = new ArrayDeque<>();
+    protected void add(T element){myQ.add(element);}
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            Queue<T> internalSet;
+            @Override
+            public boolean hasNext() {
+                return internalSet.size() > 0;
+            }
+
+            @Override
+            public T next() {
+                return myQ.poll();
+            }
+        };
+    }
+
+
 }

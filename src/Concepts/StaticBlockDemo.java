@@ -33,3 +33,11 @@ class StaticMethodDemo{
         out.println("inside static method to show simplified calling of a static method, without needing classname too");
     }
 }
+
+/*
+Instance initializer vs Constructor:
+	instance initializer useful to remove duplicated code if multiple constructors with common code (though code just write own initialize())
+	useful for anonymous inner classes
+	for final static blocks; use static block
+static block is thread safe, unlike constructor that must use synchronized block to check initialization status
+ */

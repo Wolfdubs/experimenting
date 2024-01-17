@@ -1,8 +1,6 @@
 package Concepts.Streams;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import Concepts.Comparable_Comparator_Iterator.CarComparable;
 import utils.Pekingese;
 import utils.Weapon;
 
@@ -15,13 +13,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.*;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.maxBy;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static utils.Weapon.generateWeaponsList;
 
 /*
@@ -56,6 +54,7 @@ public class StreamDemo {
 
         //creating stream from scratch
         Stream<Integer> integerStream = Stream.of(5,2,8,9,8,9,5,8,3);  //for primitives its better to use the specialized Stream class e.g. IntStream
+        IntStream intystreamy = IntStream.of(4,6,3,8,9,0,2,7,3,1);
             //Stream.of() just calls Arrays.stream() for non-primitive types
         Stream<Integer> streamedIntegers = new ArrayList<>(List.of(6,2,7,6,8,1,2,9,5,1)).stream();
         //Array.stream() vs Stream.of()
@@ -69,12 +68,13 @@ public class StreamDemo {
             Stream<int[]> arrayStream = Stream.of(myInts);
             IntStream flattenedArrayStream = arrayStream.flatMapToInt(Arrays::stream);
 
-            Weapon[] weapons = (Weapon[]) generateWeaponsList().toArray();
+            Weapon[] weapons = generateWeaponsList().toArray(Weapon[]::new);
             Stream<Weapon> weaponStream = Arrays.stream(weapons);  //Arrays.stream still works for object arrays,
 
-            char[] myChars = {'d','o','n','i','r','e','v','s'};   //Arrays.stream() fails fr char[[
+            char[] myChars = {'d','o','n','i','r','e','v','s'};   //Arrays.stream() fails for char[]
             //Arrays.stream(myChars);  //compile error; Arrays.stream() only works for ints, double, long
             Stream<char[]> characterArrayStream = Stream.of(myChars);   //Stream.of() works for char[], but must be flattened to character stream
+            Stream<String> stringStreamFromCharArray = characterArrayStream.flatMap(array -> Stream.of(Arrays.toString(array)));
               //converting char[] stream to character stream
             Stream<Character> characterStream = new String(myChars).chars().mapToObj(i -> (char) i);  //String.chars() returns an IntStream, each element of which is cast to a char
 
@@ -104,7 +104,7 @@ public class StreamDemo {
         //generate() creates an infinite stream
         //Stream.generate useful to define logic for stream elements
         AtomicInteger atomicInteger = new AtomicInteger(0);
-        Stream<Integer> integerStreamGenerated = Stream.generate(() -> atomicInteger.incrementAndGet()).limit(100);
+        Stream<Integer> integerStreamGenerated = Stream.generate(atomicInteger::incrementAndGet).limit(100);
         DoubleStream doubleStream = IntStream.range(12,39).asDoubleStream();
         Stream<String> generatedStrings = Stream.generate(() -> "womble").limit(10);  //gives 10 wombles
         List<Double> randomNumbers = Stream.generate(Math::random).limit(10).toList();
@@ -126,7 +126,7 @@ public class StreamDemo {
         Optional<Boolean> options = booleanStream.findAny();   //once the stream has been consumed, it cannot be reused; findAny retrieves an element regardless of its position
         //Optional<Boolean> lastElement = booleanStream.findFirst(); /attempt  to reuse triggers IllegalStateException
 
-        CustomClassWithStream<Integer> ccws = new CustomClassWithStream(4,7,0);
+        CustomClassWithStream<Integer> ccws = new CustomClassWithStream<>(4,7,0);
         ccws.stream();
 
         Stream<String> dogs = Stream.of("womble", "mungo", "kato", "sita");
@@ -140,15 +140,29 @@ public class StreamDemo {
     private static void sortedDemo() {
         List<Integer> list = List.of(3, 8, 7, 1, 0, 7, 9, 7, 4, 5, 1, 3, 8, 4, 7, 2);
         List<Integer> sortedList = list.stream().sorted().toList();
-        System.out.println("Sorted list " + sortedList);
+        list.stream().sorted((a,b) -> Integer.compare(a,b));
+        list.stream().sorted(Integer::compare);
+        list.stream().sorted((o1, o2) -> {   //passing in custom comparator via lambda
+            return (o1 % o2 != 0) ?  -1 : (o1 % o2 == 0) ? 0 : 1;
+        });
+        list.stream().sorted(Comparator.comparing(Math::abs));
+        List<CarComparable> carComparables = Arrays.asList(new CarComparable("Ford",15000, 100),
+                new CarComparable("Tesla", 40000,130), new CarComparable("Chrysler",30000, 110),
+                new CarComparable("Rolls Royce",300000,120), new CarComparable("Prius", 20000,90));
+        List<CarComparable> sortedCarsPrice = carComparables.stream().sorted().toList();  //uses the comparable-implementing classes own compareTo()
+        List<CarComparable> sortedCarsSpeed = carComparables.stream().sorted(Comparator.comparingInt(CarComparable::getMaxSpeed)).toList();
+        System.out.println("Sorted cars by price= " + sortedCarsPrice);
+        System.out.println("Sorted cars by speed= " + sortedCarsSpeed);
+        System.out.println("Sorted list = " + sortedList);
+
 
         List<Pekingese> pekingese = new ArrayList<>(List.of(new Pekingese("womble", 12, 10f), new Pekingese("mungo", 14, 8f),
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f)));
-        pekingese.stream()
+        List<Pekingese> sortedPekingese = pekingese.stream()
                 .sorted(Comparator.comparingInt(Pekingese::getAge))
                 .toList();
-        pekingese.forEach(System.out::println);
+        sortedPekingese.forEach(System.out::println);
 
         Stream<Weapon> sortedWeapons = generateWeaponsList().stream()
                 .sorted(Comparator.comparing(Weapon::getDifficulty)  //pass in the comparison metric to comparing()
@@ -170,7 +184,7 @@ public class StreamDemo {
                 .map(Pekingese::getWeight)   //map returns a new stream after applying a function to each element
                 .filter(weight -> weight > 20)
                 .reduce(0.0f, Float::sum);    //returns the sum of all weights above 20. alternative BinaryOperator accumulator is lambda: (sum, element) -> sum + element
-        System.out.println("The sum of all weights below 20 = " + pekingeseWeights);
+        System.out.println("The sum of all weights above 20 = " + pekingeseWeights);
     }
 
     private static void mappingMethod() {
@@ -178,10 +192,13 @@ public class StreamDemo {
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f)));
         int ageSum = pekingese.stream().mapToInt(Pekingese::getAge).sum();
+        Optional<Integer> ageSumOptional = pekingese.stream().map(p -> Math.round(p.getWeight())).reduce(Integer::sum);
+        int ageSum2 = ageSumOptional.isPresent() ? ageSumOptional.get() : -1;
+        int ageSum3 = ageSumOptional.orElse(-1);
         System.out.println("The sum of all the pekinese ages = " + ageSum);
     }
 
-    //iterate generates ininite values, up to the limit specified. 1st value is the seed, each subsequent value is generated based on prior value
+    //iterate generates infinite values, up to the limit specified. 1st value is the seed, each subsequent value is generated based on prior value
         //takes a seed and operator, which feeds the seed
     private static void iteratingDemo() {  //iterate will generate up to infinite values
         Set<Integer> iteratedValues = Stream.iterate(1, n -> n * 2)   //iterates values from 1, doubling each time
@@ -189,7 +206,9 @@ public class StreamDemo {
                 .collect(Collectors.toSet());
         System.out.println("Doubling sequence from 1 to 20th number = " + iteratedValues);
 
-        Set<Integer> oddNumbers = Stream.iterate(1, n -> n+2).limit(15).collect(Collectors.toSet());
+        int[] oddNumbers = Stream.iterate(1, n -> n+2).limit(15).mapToInt(Integer::intValue).toArray();
+        Integer[] oddNumbers2 = Stream.iterate(1, i -> i+2).limit(15).toArray(Integer[]::new);
+        System.out.println("odd numbers = " + Arrays.toString(oddNumbers));
 
         Stream<Integer> forloopedIteration = Stream.iterate(1, i -> i < 20, i -> i * i);
     }
@@ -257,7 +276,7 @@ public class StreamDemo {
                 new Pekingese("default",1,1f), new Pekingese("default",1,1f), new Pekingese("default",1,1f),
                 new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f))));
-        long distinctPekinese = pekingeseLL.distinct()  //stream of only the unique items (removes duplicates)
+        long distinctPekingese = pekingeseLL.distinct()  //stream of only the unique items (removes duplicates)
                 .count();
 
         Stream<ArrayList<String>> stringListStream = Stream.generate(() -> new ArrayList<>(List.of("womble", "mungo", "kato", "sita", "jambo", "kosie")));
@@ -290,7 +309,7 @@ public class StreamDemo {
             Stream<String> stream = Files.lines(Paths.get("dummyFile.txt"));
             List<String> palindromes = stream
                     .filter(word -> word.compareToIgnoreCase(new StringBuilder(word).reverse()   //using filter to find palindromes
-                    .toString())==0)
+                        .toString()) == 0)
                     .toList();
             stream.close();
         } catch (IOException ioe) {
@@ -313,11 +332,10 @@ public class StreamDemo {
         List<Pekingese> pekingese = new ArrayList<>(List.of(new Pekingese("womble", 12, 10f), new Pekingese("mungo", 14, 8f),
                 new Pekingese("default",1,1f), new Pekingese("sita",14,45f), new Pekingese("kato",24,22f),
                 new Pekingese("jambo",27,40f), new Pekingese("kosie",7,18f)));
-        pekingese.stream()
-                .forEach(Pekingese::incrementAge);   //this will modify the input data source
+        pekingese.forEach(Pekingese::incrementAge);   //this will modify the input data source
         System.out.println(pekingese.stream().map(Pekingese::getAge).collect(Collectors.toList()));
             //collect performs multiple fold operations, repacking elements to data structures and applying extra logic (e.g. removing duplicates for sets, concatenating items)
-                //puts elements into a collection; list, set, vector, LL
+                //puts elements into a collection; list, set, vector, LL, map
 
         Optional<Pekingese> firstUnder30 = pekingese.stream()
                 .filter(p -> p.getWeight()<30f)
@@ -348,7 +366,7 @@ public class StreamDemo {
                 .filter(n -> {
                     if (n <= 1) return false;
                     double squareRoot = Math.sqrt(n);
-                    long precisionCorrector = (long) (squareRoot + 0.5);
+                    long precisionCorrector = (long) (squareRoot + 0.5); //long casting truncates decimals
                     return precisionCorrector * precisionCorrector == n;
                 })
                 .findFirst();
@@ -412,6 +430,7 @@ public class StreamDemo {
                 .peek(System.out::println)
                 .peek(p -> p.setName(p.getName() + "!"))
                 .toList();
+
         System.out.println("List after using peek = ");
         Iterator<Pekingese> piterator = pekingese.iterator();
         while (piterator.hasNext()){
@@ -435,6 +454,9 @@ public class StreamDemo {
 
         Map<Boolean, List<Weapon>> alphabeticallyTop = weaponStream.collect(Collectors.partitioningBy(weapon -> weapon.getName().charAt(0) < 'm'));
         List<Weapon> alphabeticallyLow = alphabeticallyTop.get(false);
+
+         Map<Boolean, List<Weapon>> partitionMap2 = weaponStream.collect(Collectors.partitioningBy(weapon -> weapon.getTYPE().equals(Weapon.TYPE.GASPOWERED)));
+
      }
 
      private static void groupingByDemo(){   //to group elements by more than 2 categories
@@ -459,6 +481,8 @@ public class StreamDemo {
 
 
     }
+
+
 
 
 
@@ -505,6 +529,7 @@ class PrimitiveStreams {
         IntSummaryStatistics summaryStatistics = pekingese.stream()
                 .mapToInt(Pekingese::getAge)   //generates an IntStream
                 .summaryStatistics();
+        summaryStatistics.getAverage(); summaryStatistics.getSum(); summaryStatistics.getCount(); summaryStatistics.getMin(); summaryStatistics.getMax();
     }
 }
 
@@ -518,12 +543,97 @@ class SpecializedStreams {
         OptionalDouble average = nums.stream()
                 .mapToDouble(Double::parseDouble)
                 .average();
-        OptionalInt min = nums.stream()   //max and min are forms of reduce()
+        OptionalInt min = nums.stream()   //max and min and average and sum and count are forms of reduce()
                 .mapToInt(Integer::parseInt)
                 .min();
 
         Stream<Weapon> weaponStream = generateWeaponsList().stream();
         IntSummaryStatistics intSummaryStatistics = weaponStream.collect(Collectors.summarizingInt(Weapon::getDifficulty));
+        IntSummaryStatistics stats = weaponStream.mapToInt(Weapon::getLethality).
+                                        collect(IntSummaryStatistics::new,
+                                        IntSummaryStatistics::accept,
+                                        IntSummaryStatistics::combine);
+    }
+}
+
+class StreamReduction {
+    /*3 components:
+        Identity – an element that is the initial value of the reduction operation and the default result if the stream is empty
+        Accumulator – a function that takes two parameters: a partial result of the reduction operation and the next element of the stream
+        Combiner – a function used to combine the partial result of the reduction operation when the reduction is parallelized or when
+            there’s a mismatch between the types of the accumulator arguments and the types of the accumulator implementation
+    */
+
+    public static void main(String[] args) {
+        List<Integer> integerList = List.of(1,2,3,4,5,6);
+        int result = integerList
+                .stream()
+                .reduce(0, (identity, element) -> identity + element);
+
+        int resultMR = integerList
+                .stream()
+                .reduce(0, Integer::sum);
+
+        List<String> stringList = Arrays.asList("a","b","c","d","e");
+        String combined = stringList
+                .stream()
+                .reduce("", String::concat);
+
+        String upperCombined = stringList
+                .stream()
+                .reduce("", (identity, character) -> identity.toUpperCase() + character.toUpperCase());
+
+        //using parallel stream
+        int resultParallel = integerList
+                .parallelStream()
+                .reduce(0, (a,b) -> a+b, Integer::sum);
+        /*When a stream executes in parallel, the Java runtime splits the stream into multiple substreams.
+        // In such cases, we need to use a function to combine the results of the substreams into a single one.
+        // This is the role of the combiner — in the above snippet, it’s the Integer::sum method reference.
+
+        When we use parallelized streams, we should make sure that reduce() or any other aggregate operations executed on the streams are:
+        associative: the result is not affected by the order of the operands
+        non-interfering: the operation doesn’t affect the data source
+        stateless and deterministic: the operation doesn’t have state and produces the same output for a given input*/
+
+        final List<Weapon> weapons = generateWeaponsList();
+        int netLethalityResult = weapons.parallelStream()
+                .reduce(0, (partialLethalityResult, weapon) -> partialLethalityResult + weapon.getLethality(), Integer::sum);
+
+
+        //handling errors while reducing
+        class ErrorHandlingInReducing{
+            public static int divideListElements(List<Integer> integers, int divider){   //this pollutes the clean lambda with all the try/catch block
+                return integers.stream()
+                    .reduce(0, (a,b) -> {
+                        try {
+                            return a/divider + b/divider;
+                        } catch (ArithmeticException ae){
+                            Logger.getAnonymousLogger().config("Divide by zero error");
+                        }
+                        return -1;
+                });
+            }
+
+            public static int divideListElementsClean(List<Integer> integers, int divider){
+                return integers.stream()
+                        .reduce(0, (a,b) -> divide(a, divider) + divide(b,divider));
+            }
+
+            private static int divide(int myInt, int divider){
+                int result = 0;
+                try {
+                    result =  myInt/divider;
+                } catch (ArithmeticException ae){
+                    Logger.getAnonymousLogger().config("divide by zero error");
+                }
+                return result;
+            }
+
+
+
+        }
+
     }
 }
 

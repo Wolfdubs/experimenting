@@ -4,9 +4,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-public class CustomGrep {
+//The Linux grep command is a string and pattern matching utility that displays matching lines from multiple files
+public class CustomGrep {  //With grep, you can perform simple searches, recursive searches, search for whole words, use multiple
+                        // search terms, count matches, add context, and even pipe the output to other commands for further manipulation
 
     static Scanner scanner = new Scanner(System.in);
 
@@ -29,7 +33,9 @@ public class CustomGrep {
 
         String line = br.readLine();
         while (line!=null) {
-
+            if (line.equals(grep)){
+                bw.write(line);
+            }
         }
 
         br.close(); bw.close(); scanner.close();

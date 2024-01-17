@@ -17,7 +17,7 @@ public class ScabbleSolver {
         Scanner scanner = new Scanner(System.in);
         String userLetters = scanner.nextLine().toUpperCase();
 
-        //iterate through the list and count the occurrence of every character
+        //iterate through the string and count the occurrence of every character
         Map<Character, Integer> userLetterIntegerMap = getCharacterIntegerMap(userLetters);
 
         //iterate through the dictionary word list, and for each word, see if the hashmap contains enough of the letters in each word to create it
@@ -65,7 +65,7 @@ public class ScabbleSolver {
             }
             //Alternative to above if else
             //int count = characterIntegerMap.getOrDefault(letter, 0);
-            //characterIntegerMap.put(letter, count);
+            //characterIntegerMap.put(letter, ++count);
         }
         return characterIntegerMap;
     }

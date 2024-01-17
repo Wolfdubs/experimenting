@@ -1,4 +1,4 @@
-package Concepts;
+package Concepts.Streams;
 
 import utils.Weapon;
 
@@ -50,12 +50,14 @@ public class CollectorDemo {
 
 
         //joining joins stream elements into 1 element
-        givenList.stream()
+        String joined = givenList.stream()
                         .collect(joining());  //no separation between elements
         givenList.stream()
                         .collect(joining(" ---"));  //inserts the delimited between elements
         givenList.stream()
                         .collect(joining(" ", "PRE:", " -POST"));  //adds a delimiter between elements, and a prefix and suffix
+
+        String joinedString = String.join("", givenList);
 
         //counting to count elements
         long elementCount = givenList.stream()

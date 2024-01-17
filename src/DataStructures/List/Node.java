@@ -1,11 +1,11 @@
 package DataStructures.List;
 
-public class Node {
+public class Node<T> {
 
-    int data;
-    Node next;
+    T data;
+    Node<T> next;
 
-    public Node (int data, Node next) {
+    public Node (T data, Node<T> next) {
         this.data = data;
         this.next = next;
     }

@@ -12,8 +12,9 @@ public class DateTimeDemo {
         System.out.println(localDate);
         LocalDate d = LocalDate.of(1994, 03, 22);
         System.out.println(d);
-        LocalDate d1 = LocalDate.of(1932, Month.JULY, 03);
+        LocalDate d1 = LocalDate.of(1932, Month.JULY, 3);
         System.out.println(d1);
+
 
         LocalTime localTime = LocalTime.now();
         System.out.println(localTime);    //output includes nanoseconds
@@ -29,5 +30,8 @@ public class DateTimeDemo {
 
         LocalDateTime ldt = LocalDateTime.now();
         System.out.println(ldt);
+
+        LocalDateTime ldtOf = LocalDateTime.of(2018,Month.DECEMBER,11, 8, 47,30,9303);
+        System.out.println(ldtOf);
     }
 }

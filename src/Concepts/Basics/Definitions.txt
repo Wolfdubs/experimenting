@@ -12,8 +12,9 @@ public static void main(String[] args)
 
 Constructors
 method used to created new objects of a class
-java creates by default an invisible no-args constructor when you create a class, to create new empty objects, so don't need to type a new one unless need to change it to include arguments and set values on the object
-	if you specify your own custom constructors, java won't provide to default no-args anymore
+java creates by default an invisible no-args constructor when you create a class, to create new empty objects, so don't need to type a new one
+    unless need to change it to include arguments and set values on the object
+if you specify your own custom constructors, java won't provide to default no-args anymore
 method name must match class, and have no return type
 this.field specifies that it is the field of the specific object, being assigned to the argument passed in
 can have many constructors just with different parameter types

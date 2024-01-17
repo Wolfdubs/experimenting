@@ -13,7 +13,7 @@ public class ReadCSVDemo {
         Path path = Paths.get(System.getProperty("user.dir"))  //gets pwd of running program
                 .resolve("C:/Users/ashmc/OneDrive/Documents/Learning/JavaFiles/symbols_valid_meta.csv");
     //    String path = "C:/Users/ashmc/OneDrive/Documents/Learning/JavaFiles/symbols_valid_meta.csv";
-        String currentLine = "";
+        String currentLine;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path.toFile()));
             while ((currentLine = br.readLine()) != null ){

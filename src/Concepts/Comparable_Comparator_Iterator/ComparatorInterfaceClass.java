@@ -31,13 +31,25 @@ public class ComparatorInterfaceClass {
             System.out.println(i);}
 
         //Lambda Comparator implementation
-        Comparator<Integer> myLambdaComparator = (i, j) -> i%10 < j%10 ? 1 : -1;  //in lambda, don't have to specify type of object, and 'return' is assumed from the ->
-        Collections.sort(threeDigitsList, myLambdaComparator);   //this is sorting descending
+        Comparator<Integer> myLambdaComparator = (i, j) -> i%10 < j%10 ? 1 : -1;  //in lambda, don't have to specify type of subjects being compared, and 'return' is assumed from the ->
+        threeDigitsList.sort(myLambdaComparator);   //this is sorting descending
         for (Integer i : threeDigitsList) {
             System.out.println(i);}
 
         //Lambda Comparator implementation directly in the sort() method, rather than passing in Comparator object
         Collections.sort(threeDigitsList, (i, j) -> i%10 >j%10 ? 1 : -1);
+        for (Integer i : threeDigitsList) {
+            System.out.println(i);}
+
+        threeDigitsList.sort(Integer::compareTo);  //just sorts the list using the simple pre-defined compareTo for Integers
+        for (Integer i : threeDigitsList) {
+            System.out.println(i);}
+
+        threeDigitsList.sort((i,j) -> Integer.compare(i%10, j%10));
+        for (Integer i : threeDigitsList) {
+            System.out.println(i);}
+
+        threeDigitsList.sort(Comparator.comparingInt(i -> i%10));
         for (Integer i : threeDigitsList) {
             System.out.println(i);}
 

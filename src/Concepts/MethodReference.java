@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-//Passing a method as a parameter into another method
+/*Passing a method as a parameter into another method
 // after the :: specify the method, before the :: specify the class the method belongs to = methodClass::methodName
 //4 types of methods it can be used for:
 //   static
@@ -17,6 +17,11 @@ import java.util.stream.Stream;
 //   instance of arbitrary object of particular type
 //   constructor
 //is just the shorthand syntax for a lambda expression with 1 method call
+Static vs Instance method
+    Call a static method via ClassName::MethodName
+    Call an instance method via ObjectName::MethodName
+*/
+
 public class MethodReference {
 
     public static void main(String[] args) {
@@ -103,14 +108,14 @@ public class MethodReference {
 class StringReverser {
     public String reverseString(String inputString, MyParser myParser){
         inputString = myParser.parse(inputString);
-        String outputStr ="";
+        StringBuilder outputStr = new StringBuilder();
         char c;
 
         for (int i=0; i<inputString.length(); i++){
             c = inputString.charAt(i);
-            outputStr = c + outputStr;   //adds the next letter from input to be in front of previous letters iterated so far
+            outputStr.insert(0, c);   //adds the next letter from input to be in front of previous letters iterated so far
         }
-        return outputStr;
+        return outputStr.toString();
     }
 
     //have to also pass in the data for the method to operate on
@@ -150,7 +155,7 @@ class DoubleInput{
 
 
 
-
+@FunctionalInterface
 interface Walkable {
     default void walk(String distance){
         System.out.println("Interface walked so far - " + distance);

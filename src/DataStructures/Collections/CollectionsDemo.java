@@ -1,6 +1,9 @@
 package DataStructures.Collections;
 
 import Concepts.Basics.Variables.EnumDemo;
+import org.junit.Assert;
+import utils.Pekingese;
+import utils.Weapon;
 
 import java.util.*;
 import java.util.Collections;
@@ -28,7 +31,7 @@ public class CollectionsDemo {
         collectionValues.add(2);  //no way to add elements in middle due to no indices
 
         //Iterate over Collection via Iterator interface. cannot use for loop as Collection doesn't have indices
-        Iterator it = collectionValues.iterator();   //returns an Iterator object to iterate over the values collection, loading its elements into the iterator
+        Iterator<?> it = collectionValues.iterator();   //returns an Iterator object to iterate over the values collection, loading its elements into the iterator
         while (it.hasNext()) {  //checks if there is a next value
             System.out.println(it.next());  //fetches the next value
         }
@@ -37,7 +40,7 @@ public class CollectionsDemo {
         //Collection reference doesn't support indexing, so cannot get/add/remove values at specific index.
         // Must use reference to List interface (which extends Collection interface)
         List listValues = new ArrayList<>();   //creates a mutable object whose values can be changed
-        listValues.add(7);
+        boolean added = listValues.add(7);
         listValues.add("ee3ed3");
         listValues.add(true); //can add any type of object if List <> not specified, using wrapper classes
         listValues.add(1, 3);  //can add elements to List at specific index. shifts later indices along by 1
@@ -81,12 +84,25 @@ public class CollectionsDemo {
 
         Set<Integer> uniqueValues = new HashSet<>();   //HashSet is class that implements the Set interface we referenced
         uniqueValues.add(2);uniqueValues.add(18);uniqueValues.add(70); uniqueValues.add(6);
-        uniqueValues.add(6);   //the 2nd time adding 6, it won't actually add it, that add() will return false
+        Assert.assertFalse(uniqueValues.add(6));   //the 2nd time adding 6, it won't actually add it, that add() will return false
         for (int i : uniqueValues) {            System.out.print(i + " ");        }
 
         Set<Integer> linkedHashSet = new LinkedHashSet<>();
 
-        Set<Integer> treeValues = new TreeSet<>();  //TreeSet sorts the elements inside by ascending order
+        Comparator<String> comparator = Comparator.comparingInt(String::length);
+
+        SortedSet<Integer> treeValues = new TreeSet<>();  //TreeSet sorts the elements inside by ascending order
+        SortedSet<String> sortedSet = new TreeSet<>(comparator); //specify the comparator to use
+        Set<String> myStrings = new TreeSet<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // Define comparing logic here
+                return o1.compareTo(o2);
+            }
+        });
+        Set<String> myStringsSet = new TreeSet<>((o1, o2) -> o1.compareTo(o2));
+        Set<Weapon> stringSet = new TreeSet<>(Weapon::sortByLethality);
+
 
 
         /*MAP INTERFACE
@@ -121,9 +137,19 @@ public class CollectionsDemo {
         Set<String> myKeySet = mapValues.keySet();  //extract all the keys and save in a set
         System.out.println(myKeySet);
 
+        Set<Map.Entry<String, String>> mapEntries = mapValues.entrySet();
+        for (Map.Entry<String,String> entry : mapEntries){
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (key.equals("womble")) mapEntries.remove(value);
+        }
+
+        Collection<String> stringValues = mapValues.values();
+
         Map<Integer, String> hashtableValues = new Hashtable<>();          //HashTable: thread safe/synchronized, and disallows any null keys
 
         Map<String, Float> treeMap = new TreeMap<>();
+        SortedMap<Pekingese,Weapon> weaponizedPekingese = new TreeMap<>();
         Map<EnumDemo, Integer> enumMap = new EnumMap<>(EnumDemo.class);
         enumMap.put(EnumDemo.HORSE, 3);
         Map<EnumDemo, Integer> threadSafeEnumMap = Collections.synchronizedMap(enumMap);     //create thread safe reference of the enumMap
@@ -141,21 +167,31 @@ public class CollectionsDemo {
 
         /*QUEUE inbuilt interface
             4 implementations:
-                ArrayDequeue = standard queue implementation using array. not synchronized
+                ArrayDeque = standard queue implementation using array. not synchronized
                 Priority Queue = dequeues items by priority rather than insertion order
                 LinkedList = uses LL as underlying implementation, but must declare as Queue type. able to use as LL implements Deque interface
                 Deque = double ended queue so accessible from both ends
                     offers LIFO by default but also gives access to FIFO
-                    Can instantiate via LL or ArrayDequeue implementation
+                    Can instantiate via LL or ArrayDeque implementation
                     Better than Stack because:
                         flexibility of LL & AD implementations
                         consistent - only allows access to top items as defined in Stack abstract data type (cannot do a get of a random index)
                         not synchronized; but can be made thread safe */
-        Queue<String> arrayDequeue = new ArrayDeque<>();
+        Queue<String> arrayDeque = new ArrayDeque<>();
+        arrayDeque.add("hi");
+        arrayDeque.remove();
+        arrayDeque.peek();
+        arrayDeque.poll();
+        arrayDeque.element();
+        arrayDeque.offer("werd");
         Queue<String> priorityQueue = new PriorityQueue<>();
         Queue<String> linkedlistQueue = new LinkedList<>();
         Deque<String> dequeQueue = new ArrayDeque<>();
-        Deque<String> linkedDequeQueue = new LinkedList<>();
+        dequeQueue.push("holla");
+        dequeQueue.pop();
+        dequeQueue.poll();
+        dequeQueue.peek();
+        Deque<String> linkedDequeQueue = new LinkedList<>();   //USE THIS AS A STACK, as best for LIFO operations
         linkedDequeQueue.push("womble");
         // linkedDequeQueue.get(3);   //attempting to access a random index throws compile error; can only access 1st or last indices
 
@@ -202,7 +238,7 @@ class GuideLeader{
 
 class GuidesRunner {
     public static void main(String[] args) {
-        HashMap<GuideLeader, ArrayList<GirlGuide>> troops = new HashMap<>();
+        Map<GuideLeader, ArrayList<GirlGuide>> troops = new HashMap<>();
 
         //set up guiders
         GuideLeader vanessa = new GuideLeader("Vanessa");

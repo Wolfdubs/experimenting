@@ -19,7 +19,7 @@ public class FileReaderWriter {
     public static void main(String[] args) throws IOException {
 
 
-        File file = new File("dummyFile.txt");
+        File file = new File("src\\Concepts\\Basics\\InputOutput\\Files\\dummyFile.txt");
         try (FileWriter fileWriter = new FileWriter(file, true)) {
             fileWriter.write("womble");
         }
@@ -60,10 +60,11 @@ public class FileReaderWriter {
         //alt way to read/write files
         //useful for reading/writing small files into string object directly, and vice versa
         public static void main(String[] args) throws IOException {
-            String file = "dummyFile.txt";
+            String file = "src\\Concepts\\Basics\\InputOutput\\Files\\readWriteStringFile.txt";
             Files.writeString(Paths.get(file), "womble", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             String content = Files.readString(Paths.get(file));
-                    }
+            System.out.println(content);
+        }
     }
 
 }

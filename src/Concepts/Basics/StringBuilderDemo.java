@@ -14,7 +14,7 @@ public class StringBuilderDemo {
 
     //O(n); as just pasting the strings together
     public static String stringBuilderAppend(String[] arr){
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder();
         for (String s : arr){
             stringBuilder.append(s);
         }
@@ -30,10 +30,10 @@ public class StringBuilderDemo {
         long startStringAppend = System.currentTimeMillis();
         String output = stringAppend(strings);
         long timeTakenStringAppend = System.currentTimeMillis() - startStringAppend;
-        System.out.println(timeTakenStringAppend);
+        System.out.println(String.valueOf(timeTakenStringAppend));
 
         long startStringbuilderAppend = System.currentTimeMillis();
-        String output2 = stringAppend(strings);
+        String output2 = stringBuilderAppend(strings);
         long timeTakenStringbuilderAppend = System.currentTimeMillis() - startStringbuilderAppend;
         System.out.println(timeTakenStringbuilderAppend);
 

@@ -1,9 +1,8 @@
 package DataStructures;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
+import static org.junit.Assert.assertTrue;
 
 /*
 USING CUSTOM CLASSES WITH COLLECTIONS REQUIRES OVERRIDING THAT CLASSES EQUALS() AND HASHCODE()
@@ -23,21 +22,21 @@ when we decide on the criteria for two objects to be equal, we can use that info
 public class CollectionOfCustomClass {
 
 
-    private Map<Treatment, ArrayList<String>> treatments = new HashMap<>();
+    private final HashMap<Treatment, ArrayList<String>> treatments = new HashMap<>();
     public CollectionOfCustomClass() {
         Treatment cut = new Treatment("cut", 1);
-        Treatment colour = new Treatment("colour", 2);
+        Treatment color = new Treatment("color", 2);
         Treatment condition = new Treatment("condition", 3);
 
         addTreatment(cut);
-        addTreatment(colour);
+        addTreatment(color);
         addTreatment(condition);
 
         addTreatmentSpecialist(cut, "Navin");
         addTreatmentSpecialist(cut, "Mishal");
         addTreatmentSpecialist(cut, "Balaji");
-        addTreatmentSpecialist(colour, "Prashant");
-        addTreatmentSpecialist(colour, "Sonali");
+        addTreatmentSpecialist(color, "Prashant");
+        addTreatmentSpecialist(color, "Sonali");
     }
 
     static class Treatment {
@@ -77,13 +76,15 @@ public class CollectionOfCustomClass {
         //with overriden equals, it returns true, because it checks for value equality
         System.out.println(hswcc.treatments.containsKey(new Treatment("cut", 1)));
         System.out.println(hswcc.treatments.containsKey(new Treatment("shave", 99)));
+        assertTrue(hswcc.treatments.containsValue(new ArrayList<>(Arrays.asList("Navin", "Mishal", "Balaji"))));
+        hswcc.suggestConsultant(new Treatment("color",2));
     }
 
     public void suggestConsultant(Treatment treatment) {
         System.out.print("May we suggest you work with: \n");
         ArrayList<String> consultants = treatments.get(treatment);
         for (String consultant : consultants){
-            System.out.println(consultant + "?");
+            System.out.println("/t" + consultant + "?");
         }
     }
 

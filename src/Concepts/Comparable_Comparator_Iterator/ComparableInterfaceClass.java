@@ -21,9 +21,8 @@ class Student implements Comparable<Student>{   //to be able to compare any cust
     }
 
     @Override
-    public int compareTo(Student s){
-        return marks>s.marks ? 1 : -1;     //sort()'s own logic will swap if return is 1
-    }
+    public int compareTo(Student s){return marks>s.marks ? 1 : marks<s.marks ? -1 : 0;}     //sort()'s own logic will swap if return is 1
+
 
     @Override  //not due to Comparable, is overriding built in toString for Object class
     public String toString() {   //useful because when you just print the object, it will auto call the toString()
@@ -47,7 +46,7 @@ public class ComparableInterfaceClass {
             System.out.println(s);}  //calls the overridden toString
 
         //can pass comparable implementation directly into sort()
-        Collections.sort(studentsList, (i,j) -> i.name.length() > j.name.length() ? 1 : -1 );
+        studentsList.sort((i, j) -> Integer.compare(i.name.length(),j.name.length()));
         for (Student s : studentsList) {
             System.out.println(s);}
     }

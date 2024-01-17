@@ -47,6 +47,8 @@ public class HashSetDemo {
         Set<Integer> integerSetConstructor = new HashSet<>(Arrays.asList(1,6,7,4,2,8,9,0,4,9));
         Set<Integer> integerSetStream = Stream.of(4,5,3,8,8,8,8,7,8,7,2,1,3,8,4).collect(Collectors.toSet());
         Set<Integer> integerSetStreamCollection = Stream.of(3,8,8,7,8,3,2,6,4,0,8,1,3,2,7).collect(Collectors.toCollection(HashSet::new));
+
+
     }
 }
 

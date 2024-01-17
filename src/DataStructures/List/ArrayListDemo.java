@@ -7,9 +7,10 @@ public class ArrayListDemo {
 
 
     public static void main(String[] args) {
-        //creating a list via Arrays.asList() makes an immutable list, so must pass into instatniation of new list in order to mutate
+        //creating a list via Arrays.asList() makes an immutable list, so must pass into instantiation of new list in order to mutate
         String[] dogs = {"womble", "mungo", "kato"};
         List<String> dogsList = Arrays.asList(dogs);   //makes an immutable list
+        //dogsList.add("kosie");
         List<String> mutableList = new ArrayList<>(Arrays.asList(dogs));
         mutableList.add("sita");    //can now add elements to the mutable list
 
@@ -27,6 +28,8 @@ public class ArrayListDemo {
         for (final ListIterator<String> iterator = list.listIterator(); iterator.hasNext();){
             final String element = iterator.next();
             list.set(iterator.nextIndex(), element);
+            iterator.previous();
+            iterator.previousIndex();
         }
 
         //Structural modification can throw a ConcurrentModificationException

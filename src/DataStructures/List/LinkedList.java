@@ -1,17 +1,17 @@
 package DataStructures.List;
 
-public class LinkedList {
+public class LinkedList<T> {
 
-    Node head;  //by default this will be null when the default no-args constructor is called
+    Node<T> head;  //by default this will be null when the default no-args constructor is called
 
-    public void insert(int num){
-        Node node = new Node(num, null);
+    public void insert(T num){
+        Node<T> node = new Node<T>(num, null);
 
         if (head == null) {            //checks if there is any nodes inserted yet, if not, then head node becomes the new node
             head = node;
         }
         else {
-            Node n = head;    //create iterating node that will traverse the list, which at the end you can set to the new 'node'
+            Node<T> n = head;    //create iterating node that will traverse the list, which at the end you can set to the new 'node'
             while (n.next != null){
                 n = n.next;
             }
@@ -19,15 +19,15 @@ public class LinkedList {
         }
     }
 
-    public void insertAtStart(int num) {
-        Node node = new Node(num, null);
+    public void insertAtStart(T num) {
+        Node<T> node = new Node<T>(num, null);
         node.next = head;                         //don't need to check if head is currently null, as new node will point to head whether it is null or not
         head = node;
     }
 
-    public void insertAt(int index, int num) {
-        Node node = new Node(num, null);
-        Node n = head;
+    public void insertAt(int index, T num) {
+        Node<T> node = new Node<T>(num, null);
+        Node<T> n = head;
         if (index == 0){           //is same as inserting at the start
             insertAtStart(num);
             return;           // must return here so it doesn't add it again via the for loop. or could wrap rest of method in else block
@@ -42,7 +42,7 @@ public class LinkedList {
     }
 
     public void deleteAt(int index){
-        Node n = head;
+        Node<T> n = head;
 
         if (index == 0){
             head = head.next;
@@ -55,9 +55,9 @@ public class LinkedList {
         n.next = n.next.next;
     }
 
-    public Node deleteValue(int n){
-        Node node = head;
-        Node previousNode = head;
+    public Node<T> deleteValue(T n){
+        Node<T> node = head;
+        Node<T> previousNode = head;
 
         if (head.data==n){
             head=head.next;
@@ -74,8 +74,8 @@ public class LinkedList {
         return node;
     }
 
-    public Node deleteFirst(){
-        Node reference = head;
+    public Node<T> deleteFirst(){
+        Node<T> reference = head;
         if (!isEmpty()){
             head = head.next;
         }
@@ -84,7 +84,7 @@ public class LinkedList {
     }
 
     public void printList(){
-        Node node = head;       // sets node iterator to start at head node
+        Node<T> node = head;       // sets node iterator to start at head node
         System.out.println("\n");  // just for formatting to print blank line
         while (node != null) {           //runs until end of the list. cannot use node.next!=null as it will exit before last node is printed. must only not print when the node itself is null
             System.out.print(node.data + ", ");    // prints out nodes data
@@ -96,8 +96,8 @@ public class LinkedList {
         return (head ==null);
     }
 
-    public Node search(int data){
-        Node node = head;
+    public Node<T> search(T data){
+        Node<T> node = head;
         if (!isEmpty()) {
             while (node != null) {
                 if (node.data == data) {

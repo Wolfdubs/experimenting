@@ -1,22 +1,44 @@
 package Concepts.Interfaces;
 
 interface Writer {
-    void write();  //all methods default is always public abstract, even if not written the keywords.
+    void write();  //all methods by default are always public abstract, even if not written the keywords.
                     // cannot give it a body
 
     default void draw(){   //default keyword is only way to add implementation body to interface method
         System.out.println("I am drawing; interface default implementation");
     }
+
+    private int interfaceIntMethod() {   //private Interface methods must have a body. cannot have protected methods
+        return 0;
+    }
+    String interfaceString = "implementing objects have this";  //but interface objects cannot call this directly, but implementing class can
 }
 
 interface Product {
     int price=0;   //becomes a final constant by default, methods cannot reassign its value
+
+    static void unModifiableMethod(){
+        System.out.println("This method cannot be modified");
+    }
 }
 
-class Pen implements Writer, Product{    //can also still extend a super class at same time
+interface InkBasedWriter extends Writer{
+    @Override
+    default void draw() {
+        System.out.println("I'm an ink using pen");
+    }
+
+}
+
+class Pen implements InkBasedWriter, Product{    //can also still extend a super class at same time
     public void write(){
         System.out.println("Pen class implementation");
     }
+    protected void penClassOnlyMethod(){
+        System.out.println("Interface types cannot call this");
+        String penString = interfaceString + "penny";
+    }
+    protected String penClassOnlyString = "woo hoo";
 }
 
 public class InterfaceClass {
@@ -27,7 +49,7 @@ public class InterfaceClass {
         concrete implementors must implement methods. abstract class implementors don't have to
             superclass implementors mean all subclasses will be implementors too
     Objects that implement the interface are not only of their class type, but also the interface type
-    Interface: can define methods via anonymous classes, lambdas, and default keyword. inside interface can define public & private helper methods
+    Interface: can define methods via anonymous classes, lambdas, MR, and default keyword. inside interface can define public & private helper methods
     to permit concrete classes having more than 1 specification (to extend/implement). as no multiple inheritance of super classes
     note: any variables defined in an interface become a constant
      when you want to ensure classes must have certain methods that they implement
@@ -41,13 +63,25 @@ public class InterfaceClass {
 */
 
     public static void main(String[] args) {
-        Writer pen = new Pen();        // can still create references of the interface, but object must be of implementing class
+        Writer pen = new Pen();        // can still create references of the interface, but object must be of implementing class.
+            //Can only access members of the declared type, but uses the instantiated objects implementation
         //cannot create object of the interface (except via anonymous class & lambda, as they dont have a constructor
         pen.write();
         pen.draw();   //calling the default implementation from the interface. but you can overwrite it in the implementing class
+        //pen.penClassOnlyMethod();  //can only call memebers of the declared type
+        //pen.penClassOnlyString;
         Demo demo = new Demo();
         demo.show();
         StaticDemo.show();    //can directly call static methods from interfaces without needing objects
+
+        Demo1 demo1 = new Demo1() {
+            @Override
+            public void show() {
+                Demo1.super.show();
+                System.out.println("We're also printing this folks");
+            }
+        };
+        demo1.show();
     }
 
 }

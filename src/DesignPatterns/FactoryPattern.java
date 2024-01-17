@@ -16,7 +16,7 @@ public class FactoryPattern {
     }
     private static Dog factory(Supplier<? extends Dog> supplier) {
         Dog dog = supplier.get();
-        if (dog.getName().equals(null) || dog.getName().equals("")){
+        if (dog.getName() == null || dog.getName().equals("")){
             dog.setName("default");
         }
         dog.setCost(BigDecimal.ONE);

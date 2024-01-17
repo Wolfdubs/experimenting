@@ -80,6 +80,11 @@ refers to ability to substitute the objects instantiated type with its declared 
     public static void main(String[] args) {
         acceptList(blah);    //can pass an arraylist in as substitution for the list parameter. Not part of LSP, just demo concept of substitution
         makeFly(new Penguin());   //makeFly() accepts a Bird, so can pass in a Penguin, but Penguins don't actually fly, so is not a good subtype of Bird
+        Specialist specialist = new Specialist();
+        Doctor[] doctors = new Doctor[]{new Doctor(), specialist};
+        for (Doctor doctor : doctors) {
+            doctor.bookAppointment(15);
+        }
     }
 
 

@@ -21,7 +21,7 @@ Parallelism:
         Single threaded process = 1 thread executes all operations
         Multi threaded process = Parallelism; multiple threads execute the operations concurrently
             Multiple threads can can exist in a process and share its resources e.g. stack memory, heap memory, code
-            inter-thread communication within a process is faster than inter-process communication due to resource sharing
+            intra-thread communication within a process is faster than inter-process communication due to resource sharing
             CPU core count defines max number of parallel threads
                 when thread count exceeds cores, processor grants illusion of parallelism by allocating minuscule time slots to each operation
     Drawbacks: threads share resources e.g. access same file, so one idly waits for other to finish, so move from parallel to concurrent
@@ -72,17 +72,19 @@ public class MultiThreadingDemo {
         System.out.println(myThread.isAlive());
 
         //creating threads with ExecutorService
-        ExecutorService executorService = Executors.newFixedThreadPool(10);  //makes a pool of 10 threads
-        Runnable myRunnable = () -> System.out.println("inside a new thread");
-        for (int i=0; i<10; i++) {
-            executorService.submit(printThreadRunning());   //can only submit a synchronized method / runnable object
-            executorService.submit(myRunnable);
-        }
-        executorService.shutdown();
+        try (ExecutorService executorService = Executors.newFixedThreadPool(10)) {
+            Runnable myRunnable = () -> System.out.println("inside a new thread");
+            for (int i = 0; i < 10; i++) {
+                executorService.submit(printThreadRunning());   //can only submit a synchronized method / runnable object
+                executorService.submit(myRunnable);
+            }
+            executorService.shutdown();
+        }  //makes a pool of 10 threads
 
     }
 
     public static Runnable printThreadRunning() {
         return () -> System.out.println("thread is running");
     }
+
 }

@@ -1,6 +1,7 @@
 package Concepts.Serialization;
 
 import java.io.*;
+import java.sql.SQLOutput;
 
 /*
 Serialization = Converting java objects into bytes to transfer over a network (to reach applications deployed on other machines)
@@ -14,7 +15,7 @@ is highly sensitive to class details that may vary depending on compiler impleme
 InvalidClassExceptions during deserialization
 
 Vs Cloning: Object cloning is creating a copy of an object and you don't store it and use right way in the code .
-Object serialisation is copying and also storing object ( may be in a file or database or over a network )
+Object serialization is copying and also storing object ( may be in a file or database or over a network )
     and then you can retrieve at later point of time . It is not possible in case of cloning
 
  */
@@ -49,6 +50,7 @@ public class SerializationDemo {
             FileInputStream fis = new FileInputStream(f);         //retrieve data from file
             ObjectInputStream ois = new ObjectInputStream(fis);
             Demo newDemo = (Demo) ois.readObject();    //readObject returns Object type, so must cast it to specific object subtype
+            newDemo.printValues();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -56,7 +58,7 @@ public class SerializationDemo {
 }
 
 //saving objects is by default not allowed as is insecure, so must explicitly say class implements Serializable
-class Demo implements Serializable {    //Serializable allows class to be saved. Is a market interface, so no empty methods to override. only classes implementing Serializable can be serialized
+class Demo implements Serializable {    //Serializable allows class to be saved. Is a marker interface, so no empty methods to override. only classes implementing Serializable can be serialized
 
     //serialVersionID is so java can uniquely identify the object once deserialized and ensure the same version sent is the one received(secure)
     @Serial            //tracks the object state, as every serialization increments the count by 1
@@ -77,4 +79,8 @@ class Demo implements Serializable {    //Serializable allows class to be saved.
 
     //values written to the file will be: 10, 20, 30, 40, 50
     //values retrieved from the file will be: 10, 20, 0, 40, 50
+
+    void printValues(){
+        System.out.printf("a = %d, b = %d, c = %d, d = %d, e = %d", a,b,c,d,e);;
+    }
 }

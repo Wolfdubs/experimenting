@@ -36,13 +36,14 @@ public class AnonymousClass {
         };
         itf.show();
 
-        Runnable runnableAnonClass = new Runnable(){  //here we are creating an object of an unamed class that implements the interface
+        Runnable runnableAnonClass = new Runnable(){  //here we are creating an object of an unnamed class that implements the interface
             @Override
             public void run() {
                 System.out.println("implementing the interfaces run method");
             }};
 
-
+        myInterface itf2 = () -> System.out.println("howdy ho away we go");
+        itf2.show();
 
 
     }
@@ -50,7 +51,7 @@ public class AnonymousClass {
 
 class Parent{
     public void show(){
-        System.out.println("Inside A class show method");
+        System.out.println("Inside concrete class show method");
     }
 }
 

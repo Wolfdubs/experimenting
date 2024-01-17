@@ -17,7 +17,7 @@ public class ComparatorDemo {
                 (new Chocolate("daim", 6,35)), (new Chocolate("boost", 9,32)), (new Chocolate("lion", 7,38)),
                 (new Chocolate("double decker", 10,45)), (new Chocolate("bounty", 1,31)),
                 (new Chocolate("kinder bueno", 5,15)));
-        Collections.sort(chocolates, new compareChocolate());   //the customized compare() will be called for every iteration of the sort
+        chocolates.sort(new compareChocolate());   //the customized compare() will be called for every iteration of the sort
         for (Chocolate chocolate : chocolates) {
             System.out.println(chocolate);
         }

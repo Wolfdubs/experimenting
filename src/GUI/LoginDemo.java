@@ -39,7 +39,7 @@ public class LoginDemo implements ActionListener {
 
         jButton = new JButton("Login");
         jButton.setBounds(10,80,80,25);
-        jButton.addActionListener(this::actionPerformed);
+        jButton.addActionListener(this);
         jPanel.add(jButton);
         loginSuccess = new JLabel("");
         loginSuccess.setBounds(10, 110, 300, 25);

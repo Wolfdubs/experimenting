@@ -25,8 +25,8 @@ public class EightBallUI extends JFrame{
 
         placeGreeting("Would you like to ask the eight ball any questions?");
         placeButtons();
-      //  EightBallGame myGame = new EightBallGame();
-      //  EightBallGame.playEightBallGame();
+        EightBallGame myGame = new EightBallGame();
+        EightBallGame.playEightBallGame();
         setVisible(true);
     }
 

@@ -5,6 +5,7 @@ import utils.Weapon;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 import static utils.Weapon.generateWeaponsList;
 
@@ -54,10 +55,19 @@ public class PredicateDemo {
         boolean orResult = lessThan10.or(n -> n%3==0).test(18);
         System.out.println("or result = " + orResult);
 
+
         //negate returns a predicate that is the opposite of the one specified
         System.out.println(lessThan10.negate().test(8));
 
-        predicateInFunction(9, n -> Math.sqrt(81)==n);
+        double wholeNumber = predicateDoubleFunction(9.0, n -> n % 1 == 0);
+        double wholeNumberWithMR = predicateDoubleFunction(5.5, PredicateDemo::isWhole);
+
+        List<Double> dubbies = Arrays.asList(3.7,8.9,3.0,1.9,7.0,2.4,1.0);
+        List<Double> wholeDubbies = dubbies.stream()
+                                        .filter(PredicateDemo::isWhole)
+                                        .toList();
+        System.out.println(wholeDubbies);
+
 
         stringLengthAbove5.test("womble");
         stringsPredication();
@@ -85,10 +95,16 @@ public class PredicateDemo {
         System.out.println();
     }
 
-    private static void predicateInFunction(int n, Predicate<Integer> predicate) {
+    private static boolean isWhole(double n){
+        return n % 1 ==0;
+    }
+
+    private static double predicateDoubleFunction(double n, Predicate<Double> predicate) {
         if (predicate.test(n)){
             System.out.println("The number = " + n);
+            return n;
         }
+        return Double.MIN_VALUE;
     }
 
     private static void stringsPredication() {
@@ -135,6 +151,7 @@ class Dog implements Predicate<Dog> {
 
     public static void main(String[] args) {
         Predicate<String> myPredicate = s -> s.equals("pekingese");//defining Predicate via lambda
+        Predicate<Dog> dogNamePredicate = dog -> dog.getSpecies().equals("pekingese");
         Predicate<Dog> myPredicateDogWeight = dog -> dog.getWeight()>10;
     }
 }

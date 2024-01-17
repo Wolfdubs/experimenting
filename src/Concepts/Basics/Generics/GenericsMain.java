@@ -1,8 +1,10 @@
 package Concepts.Basics.Generics;
 
 import DataStructures.List.LinkedList;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -206,6 +208,56 @@ class BoundedGenerics {
     class MultipleBoundsClass<T extends Number & Comparable<T>> {
 
     }
+
+    //further example:
+    abstract class Animal {
+
+        protected final String type;
+        protected final String name;
+
+        protected Animal(String type, String name) {
+            this.type = type;
+            this.name = name;
+        }
+
+        abstract String makeSound();
+    }
+
+    class Dog extends Animal {
+
+        public Dog(String type, String name) {
+            super(type, name);
+        }
+
+        @Override
+        public String makeSound() {
+            return "Wuf";
+        }
+
+    }
+
+    class Cat extends Animal implements Comparable<Cat> {
+        public Cat(String type, String name) {
+            super(type, name);
+        }
+        private String getName(){return this.name;}
+
+        @Override
+        public String makeSound() {
+            return "Meow";
+        }
+
+        @Override
+        public int compareTo(@NotNull Cat cat) {
+            return this.getName().length() - cat.getName().length();
+        }
+    }
+    //list cannot contain elements of the Dog type since the class doesn’t implement a Comparable interface.
+    //the generic here requires the class to fit both criteria
+    public static <T extends Animal & Comparable<T>> void order(List<T> list) {
+        list.sort(Comparable::compareTo);
+    }
 }
+
 
 

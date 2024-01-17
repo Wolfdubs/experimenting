@@ -4,7 +4,7 @@ public class CustomExceptions {
     public static void main(String[] args) throws NegativeIntNotAllowedException {
 
         validateAge(17);
-        validateAge(-5);
+        validateAge(0);
     }
 
     //making a method to use with the custom exception

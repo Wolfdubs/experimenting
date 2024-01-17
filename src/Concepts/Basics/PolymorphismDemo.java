@@ -52,10 +52,11 @@ interface Athlete{
     public void playSport();
     public void promoteSponsor();
     public void train();
+    default void breathe(){System.out.println("breathing");}
 }
 
 interface LandAnimal{
-    public void walk();
+    void walk();
 }
 
 class BaseballPlayer implements Athlete, LandAnimal{
@@ -66,7 +67,7 @@ class BaseballPlayer implements Athlete, LandAnimal{
     @Override
     public void train() {System.out.println("swing and hit");}
     @Override
-    public void walk() {        System.out.println("I'm walkin here");    }
+    public void walk() {        System.out.println("I'm walkin here");  }
 
     public void swingBat(){        System.out.println("I'm gonna hit a homerun");    }
     public void catchBall() {        System.out.println("the ball is mine");    }

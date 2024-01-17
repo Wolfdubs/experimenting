@@ -9,11 +9,11 @@ import java.util.Properties;
 //used for hibernate framework
 public class PropertiesClass {
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws IOException {
 
         Properties p = new Properties();
         /*  have already run this and created the named file
-        //must created file for properties to be saved inside
+        //must create file for properties to be saved inside
         OutputStream os = new FileOutputStream("dataConfig.properties");   //OutputStream is abstract class, FOS is concrete. Output could be .txt too
         p.setProperty("url","localhost:3306/myDb");       //default port number for mySQL
         p.setProperty("username", "Telusko");

@@ -49,7 +49,7 @@ public class ComparableDemo {
             if (this.getSpecies().compareTo(d.getSpecies()) != 0) {
                 return this.getSpecies().compareTo(d.getSpecies());   //first tries to order by species, in descending order
             }
-            else return this.getName().compareTo(d.getName());   //if species are the same, will order by name
+            return this.getName().compareTo(d.getName());   //if species are the same, will order by name
         }
     }
 
@@ -69,7 +69,7 @@ public class ComparableDemo {
             dogList.stream().map(Dog::toString).forEach(System.out::println);
             System.out.println("/////////////");
             dogList.sort(Dog::compareToStrings);
-            dogList.stream().map(d -> d.getName() + " , " + d.getSpecies()).forEach(System.out::println);
+            dogList.stream().map(d -> d.getName() + ", " + d.getSpecies()).forEach(System.out::println);
 
             dogList.sort(Collections.reverseOrder());  //sorts the list in reverse order, using the defined compareTo()
         }
@@ -111,5 +111,8 @@ class Gun implements Comparable<Gun> {
         for (Gun gun : guns) {
             System.out.println(gun);
         }
+
+        Arrays.sort(guns);   //don't have to specify comparator as default will use comparable classes natural ordering via compareTo()
+        Arrays.stream(guns).forEach(System.out::println);
     }
 }

@@ -5,7 +5,7 @@ public class MVCPattern {
     Is a meta-pattern that combines multiple patterns
     Separates the view of an application, from its implementation
         as views are updated the most, so MVC enables updating separate from rest of the system
-        splitting UI from business logic is god for team segregation
+        splitting UI from business logic is good for team segregation
         easier testing if segregated
         same backend logic will be rendered by multiple views e.g. different widget charts representing data, or 2D map vs first-person view in game
         increases re-usability, ease of fixing bugs
@@ -43,7 +43,7 @@ public class MVCPattern {
         5. Each observing View calls back to Model to retrieve state to update their rendering
     Disadvantage:
         Coupling between M & V & C
-            but lose coupling along the notify() path between Model and View; Model doesn't need to know anything about the Views
+            but loose coupling along the notify() path between Model and View; Model doesn't need to know anything about the Views
         Easy to put far too much functionality in Views, which are also hardest part to test
             Try to make sure Controller holds more of this logic, to keep Views lightweight
         Performance is worse if Model has 1000s of objects all firing notify(), it can overwhelm Views

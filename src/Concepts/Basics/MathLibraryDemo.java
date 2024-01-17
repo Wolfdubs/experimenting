@@ -11,6 +11,7 @@ public class MathLibraryDemo {
         System.out.println(Math.cbrt(27));   //returns cube root
         System.out.println(Math.ceil(6.24));  //rounds the double up to ceiling int
         System.out.println(Math.decrementExact(19)); //decrements value by 1
+        Math.incrementExact(4);
         System.out.println(Math.exp(2));  //raising E to the value passed in
         System.out.println(Math.floor(6.24));   //opposite of ceil
         System.out.println(Math.floorDiv(11,3));  //divides x by y, then flooring it

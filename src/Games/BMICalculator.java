@@ -7,7 +7,7 @@ public class BMICalculator {
     // kg / m^2
     // (lb /in^2) * 703
     static double weight;
-    static int height;
+    static double height;
 
     public static void main(String[] args) {
         getUserInput();
@@ -23,7 +23,7 @@ public class BMICalculator {
         System.out.println("Please enter your height (feet only (inches will come next))");
         int heightFeet = scanner.nextInt();
         System.out.println("Please enter your height (additional inches)");
-        int heightInches = scanner.nextInt();
+        double heightInches = scanner.nextDouble();
         height = (heightFeet *12) + heightInches;
         scanner.close();
     }

@@ -23,6 +23,7 @@ public class SerializeXMLClass {
         List<Game> list = new ArrayList<>();
         list.add(g1); list.add(g2); list.add(g3);
 
+
         GamesList gamesList = new GamesList();
         gamesList.setGames(list);
 
@@ -45,7 +46,7 @@ public class SerializeXMLClass {
 }
 
 
-class Game {
+class Game implements Serializable{
     private int players;
     private String name;
 

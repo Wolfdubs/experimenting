@@ -20,7 +20,7 @@ public class HangMan {
         }
         else {
             System.out.println("Player 1, enter your word");   //if not 1 player, let the 1st player enter a word in the console
-            chosenWord.equals(scannerPlay.nextLine());
+            chosenWord = (scannerPlay.nextLine());
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             System.out.println("Player 2, start guessing");
         }

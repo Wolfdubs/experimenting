@@ -32,7 +32,7 @@ public class Lambdas {
         myInterface2 lambdaInterface = (s) -> System.out.println("output" + s);   //dont have to specifying parameter type as java infers it from interface method source
         printSuffix(lambdaInterface);
 
-    // event for interface methods requiring a return type, dont have to specify the return if only 1 line body; java will infer it
+    // even for interface methods requiring a return type, dont have to specify the return if only 1 line body; java will infer it
         myInterface3 lambdaInterface3 = (s) -> "input string: " + s;   //so this is just like (s) -> {return "input string: " + s;   but this wont actually print it, just returns the string value
         lambda3(lambdaInterface3);
         myInterface3 lambdaInterface3Print = ((s) ->

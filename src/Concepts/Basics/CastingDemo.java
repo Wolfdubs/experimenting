@@ -1,5 +1,7 @@
 package Concepts.Basics;
 
+import org.junit.Assert;
+
 /*
 Upcasting = cast object to its superclass type
 Downcasting = cast object to its subclass type
@@ -11,7 +13,9 @@ public class CastingDemo {
                         // java implicitly handles the upcasting because every sub is also a super. never any errors with upcasting
                         //reference type of the super, so can do anything with the variable as you could for once that was created normally
                             //but cannot do things that only apply to the sub
-        //myScience.explode();   //cannot access any of the sub-specific properties
+        //myScience.explode();   //Compilation error; cannot access any of the sub-specific properties
+        myScience.equipment = "testtube";
+        //myScience.explosions = 5;  //also cannot access subclass specific fields
         //USE: if a method access any object of the super type, and calls one of the super's methods, then
             //you can pass in an object of the super, or any sub, and the method wil call the method specific to the object type
         //SO CAN MAKE 1 METHOD THAT OPERATES ON ANY TYPE OF THE SUPERCLASS, RATHER THAN A NEW METHOD TO ACCEPT EACH DIFFERENT SUBTYPE AS A PARAMETER
@@ -34,17 +38,20 @@ public class CastingDemo {
         if (science instanceof Chemistry) {  //must check that the agnostic argument actually is an object of the specific subclass before casting it, else get Exception
             Chemistry myChem = (Chemistry) science;   //now can treat this as a subclass object. But ONLY works if the object passed in actually is a Chemistry object
             myChem.explode(); //now can call subclass specific methods
+            myChem.explosionsCount = 10; //now can access subclass specific fields
                 //block ensures you only call subspecific methods on the agnostic object if you checked the object actually is of that subclass
         }
     }
 }
 
 class Science{
+    String equipment;
     public void show(){
         System.out.println("I'm doing general science");}
 }
 
 class Chemistry extends Science{
+    int explosionsCount;
     @Override
     public void show(){
         System.out.println("I'm doing chemistry");}
@@ -56,3 +63,44 @@ class Chemistry extends Science{
 class Physics extends Science{
 
 }
+
+class PrimitivesCasting {
+    //converting double to long -> it truncates the value
+    public static void main(String[] args) {
+        double dubs = 7.9;
+        double dubsy = 7.5;
+        double dubsius = 7.2;
+        long lons = (long) dubs;
+        long lonsy = (long) dubsy;
+        long lonsius = (long) dubsius;
+        System.out.printf("lons = %d , lonsy = %d , sonsius = %d",lons,lonsy,lonsius);
+
+        Assert.assertEquals(999, (long) 999.999);
+        Assert.assertEquals(999, Double.valueOf(999.999).longValue());
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -111,7 +111,7 @@ class InterfaceLearnings {
     class interfaceImplementor implements myInterface {
         public static void main(String[] args) {
             myInterface.print();  //calling the interface's static method to execute its implementation. doesn't have to be done in an implementing class
-            Consumer<myInterface> printDefault = myInterface::printDefault;
+            Consumer<interfaceImplementor> printDefault = myInterface::printDefault;
         }
 
         public void printDefault() {
@@ -139,7 +139,7 @@ class ListLearning {
 
 
         //Ways to alphabetically sort an arraylist
-        List<String> stringList = new ArrayList<>();
+        List<String> stringList = Arrays.asList("womble","mungo","tuco","jambo","sita","kato","kosie");
         stringList.sort(Comparator.comparing(String::toString));
         Collections.sort(stringList);
         stringList.stream().sorted((s1, s2) -> s1.compareTo(s2)).collect(Collectors.toList());
@@ -161,7 +161,7 @@ class ListLearning {
         }
         listStrings.forEach(System.out::println);
 
-        Iterator it = listStrings.iterator();
+        Iterator<String> it = listStrings.iterator();
         while (it.hasNext()){
             System.out.println(it.next());
         }
@@ -178,7 +178,7 @@ class ListLearning {
         List<String> listOf = List.of("jambo","kosie","kato");    //returns an immutable list that cannot be modified ->
                                 // UnsupportedOperationException. does not permit nulls. changes to input array are not reflected in this list
         List<String> dogList = new ArrayList<>(List.of("womble","mungo","sita","jambo","kato")); //makes a mutable list, despite using List.of()
-        List<String> listAsModifiable = new ArrayList<>(Arrays.asList("pekinese","shitzu","labrador")); //this list is modifiable, as is a standard AL
+        List<String> listAsModifiable = new ArrayList<>(Arrays.asList("pekingese","shitzu","labrador")); //this list is modifiable, as is a standard AL
                     //creates an independent copy of the array input, so modifications are not relfected in input array
         listAsModifiable.add("boo dog");
 
@@ -258,7 +258,9 @@ class ClassFinalMethod {
      }
 
     public static void main(String[] args) {
-
+         ClassFinalMethod cfm = new ClassFinalMethod();
+         ClassChild cc = cfm.new ClassChild();
+        out.println(cc.message());
     }
 }
 
@@ -284,7 +286,6 @@ class ClassRelations {
     Object message() {
         return "Hello";
     }
-
 
     public static void main(String[] args) {
         System.out.print(new ClassRelations().message());   //direct call to super's implementation
@@ -327,8 +328,10 @@ class RecursiveCalls {
     public static void main(String[] args) {
         if (count < 3) {
             count++;
+            out.println("incremented counter");
             main(null);
         } else {
+            out.println("about to return");
             return;
         }
         System.out.println("Hello world");  //this will print 3 times
@@ -450,8 +453,9 @@ class SwapMethods {
 
     private static String swapStringBuilderChars(String s, int a, int b) {
         StringBuilder stringBuilder = new StringBuilder(s);
+        char temp = s.charAt(a);
         stringBuilder.setCharAt(a,s.charAt(b));
-        stringBuilder.setCharAt(b, s.charAt(a));
+        stringBuilder.setCharAt(b, temp);
         return stringBuilder.toString();
     }
 
@@ -490,7 +494,7 @@ class MyPriorityQueue {
     static PriorityQueue<Integer> queue = new PriorityQueue<>();
     static Comparator<String> comparator = (String o1, String o2) -> {
             if (o1.equals(o2)) return 0;
-            return ((int) o1.charAt(o1.length()-1) > (int) o2.charAt(o2.length()-1) ? 1 : -1);   //ascending order
+            return (o1.charAt(o1.length()-1) > o2.charAt(o2.length()-1) ? 1 : -1);   //ascending order
         };
     static Queue<String> queueStrings = new PriorityQueue<>(comparator);   //priority assigned by the comparator; last char in the string
 
@@ -536,9 +540,11 @@ enum Direction {
     SOUTH("S");
 
     private final String shortCode;
+    private int inty;
 
     Direction(String shortCode){   //because the enum expects the 1 string argument
         this.shortCode=shortCode;
+        inty=6;
     }
 
     public String getShortCode(){
@@ -551,7 +557,7 @@ class UnmodifiableMaps {
     public static void main(String[] args) {
 
 
-        //unmodifiableMap operations
+        //below map is perfectly modifiable
         Map<Double, Character> doubleCharacterMap = new HashMap<>() {{
             put(3.4, 'b');
             put(9.0, 'v');
@@ -570,7 +576,10 @@ class UnmodifiableMaps {
         doubleCharacterMap.put(2.22, '£');
         System.out.println(unmodifiableMap);   //changes to the underlying map will feed through to the unmodifiableMap
 
-        //2nd way; create directly
+        //Make unmodifiable map modifiable by wrapping in HashMap
+        Map<Double, Character> modifiableUnmodifiableMap = new HashMap<Double,Character>(Collections.unmodifiableMap(doubleCharacterMap));
+        modifiableUnmodifiableMap.remove(2.22);
+        out.println(modifiableUnmodifiableMap);
 
 
 
@@ -652,6 +661,9 @@ class Lambda {
                     .summaryStatistics();  //produces the count, sum, min, max, average
             out.println(doubleSummaryStatistics);
 
+            DoubleSummaryStatistics ageSum = dogs.stream()
+                    .collect(Collectors.summarizingDouble(Dog::getAge));
+
             List<Dog> dogList = List.copyOf(dogs);
             List<String> dogNames = dogList.stream().map(Dog::getName).toList();
         }
@@ -688,15 +700,14 @@ class Lambda {
 //thus don't need a finally block to ensure resources always closed once block completes
 //can have multiple resources; they are closed from last-to-first
 class TryWithResources {
-    void trying() throws FileNotFoundException {
+    void trying() {
 
-        try{
-            PrintWriter printWriter = new PrintWriter(new File("test.txt"));
+        try(PrintWriter printWriter = new PrintWriter("test.txt"); FileOutputStream fos = new FileOutputStream("womble.txt")){
             printWriter.println("new file content");
             Scanner scanner = new Scanner(new File("test.txt"));
             MyAutoCloseable autoCloseable = new MyAutoCloseable();   //custom AutoCloseable object
 
-            FileOutputStream fos = new FileOutputStream("womble.txt");
+
             String text = "womble is a fluffy but grumpy dog";
             byte[] bytes = text.getBytes();
             fos.write(bytes);
@@ -762,7 +773,7 @@ class MyComparable {
 
         @Override
         public int compareTo(Pekingese o) {
-            return this.getWeight() > o.getWeight() ? 1 : this.getWeight()==o.getWeight() ? 0 : -1;   //ascending order of weight
+            return Double.compare(this.getWeight(), o.getWeight());   //ascending order of weight
         }
     }
 
@@ -772,7 +783,11 @@ class MyComparable {
                 (new Pekingese("Mungo",8)),
                 (new Pekingese("Sita",45)),
                 (new Pekingese("Kato",23)));
-        Collections.sort(pekingeses);  //will sort the elements based on the Comparable the class implements the compareTo() for
+        //Collections.sort(pekingeses);  //will sort the elements based on the Comparable the class implements the compareTo() for
+        pekingeses.sort(null);
+        out.println(pekingeses);
+        pekingeses.sort(Comparator.comparing(Pekingese::getWeight));
+        pekingeses.stream().sorted(Pekingese::compareTo).collect(Collectors.toList());
         out.println(pekingeses);
         }
 }
@@ -885,12 +900,22 @@ class printUnorderedPairsInArrays {
         printing.printUnorderedPairsInArrays(new int[]{1,2,3,4,5}, new int[]{1,2,3,4,5});
 
     }
+
 }
 
 
 
-
+//TODO
 //https://www.benchresources.net/java-8-stream-reduce-method-with-examples/
+//https://www.baeldung.com/java-nested-classes
+//https://www.geeksforgeeks.org/using-instance-blocks-in-java/
+//https://www.geeksforgeeks.org/static-blocks-in-java/
+//https://www.geeksforgeeks.org/the-initializer-block-in-java/?ref=lbp
+//https://howtodoinjava.com/java/basics/what-is-block-statement-in-java/
+//https://www.baeldung.com/java-tuples
+//https://howtodoinjava.com/java/java-tuples/
+//https://www.javatpoint.com/java-tuple
+//https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/
 
 
 

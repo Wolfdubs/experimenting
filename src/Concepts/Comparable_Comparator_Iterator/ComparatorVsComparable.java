@@ -7,25 +7,28 @@ import java.util.List;
 
 public class ComparatorVsComparable {
     public static void main(String[] args) {
-        List<Car> cars = new ArrayList<>();
-        cars.add(new Car("BMW", 25000, 130)); cars.add(new Car("Porsche", 80000, 190));
-        cars.add(new Car("Ford", 10000, 90)); cars.add(new Car("Lambourgini", 150000, 250));
+        List<CarComparable> cars = new ArrayList<>();
+        cars.add(new CarComparable("BMW", 25000, 130)); cars.add(new CarComparable("Porsche", 80000, 190));
+        cars.add(new CarComparable("Ford", 10000, 90)); cars.add(new CarComparable("Lamborghini", 150000, 250));
 
         //use Collections class static method sort() and pass in a list. sort() will then use logic in that lists compareTo()
         Collections.sort(cars);  //sort() only accepts Objects that implement Comparable. Must specify the criteria to sort by
                                 //so to pass in a list, your class must implement Comparable interface and override compareTo()
                                  //sort() swaps based on output of 1 or -1 from compareTo() within your class
-        for (Car c:cars) {System.out.println(c);}
+        for (CarComparable c:cars) {System.out.println(c);}
 
         //Passing Comparator interface object into sort(), so can customize logic for its SAM "compare()" every time
         //create Comparator interface object via anonymous class / lambda
-        Comparator<Car> carComparator = (Car c1, Car c2) -> {   //Comparators' compare() only accepts 2 objects
+        Comparator<CarComparable> carComparator = (CarComparable c1, CarComparable c2) -> {   //Comparators' compare() only accepts 2 objects
             char c1Letter = c1.getBrand().charAt(0);
             char c2Letter = c2.getBrand().charAt(0);
-                return c1Letter>c2Letter ? 1 : -1; };
+                return Character.compare(c1Letter,c2Letter); };
 
         Collections.sort(cars, carComparator);
-        for (Car c:cars) {System.out.println(c);}
+        for (CarComparable c:cars) {System.out.println(c);}
+
+        cars.sort(Comparator.comparingInt(CarComparable::getPrice));   //passing in a comparator object made on the fly
+        for (CarComparable c:cars) {System.out.println(c);}
 
     }
 }
@@ -53,34 +56,3 @@ Comparator:
     2 methods - compare(), equals() (which by default uses Object equals() hence dont need to override yourself)
     only 2 built-in classes implement; Collator & RuleBaseCollator
  */
-
-
-class Car implements Comparable<Car>{
-    private String brand;
-    private int price;
-    private int maxSpeed;
-
-    public Car(String brand, int price, int maxSpeed) {
-        super();
-        this.brand = brand;
-        this.price = price;
-        this.maxSpeed = maxSpeed;
-    }
-
-    public String getBrand() {return brand;}
-    public void setBrand(String brand) {this.brand = brand;}
-    public int getPrice() {return price;}
-    public void setPrice(int price) {this.price = price;}
-    public int getMaxSpeed() {return maxSpeed;}
-    public void setMaxSpeed(int maxSpeed) {this.maxSpeed = maxSpeed;}
-
-    @Override
-    public String toString() {
-        return "car{" + "brand='" + brand + '\'' + ", price=" + price + ", maxSpeed=" + maxSpeed + '}';}
-
-    @Override
-    public int compareTo(Car c){   //must override the SAM compareTo with custom implementation
-        //this.price > c.price
-        return this.getPrice()>=c.getPrice() ? 1 : -1;  //despite passing in only 1 object, it compares the object that calls compareTo against the passed in object
-    }
-}

@@ -1,5 +1,7 @@
 package Concepts.FunctionalProgramming;
 
+import utils.Pekingese;
+
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Stream;
@@ -13,6 +15,7 @@ so it represents a side effect
 Functional variants; IntConsumer, DoubleConsumer, LongConsumer, accepting primitives as arguments
 SAM = accept()
 also have andThen()
+    andThen() only accepts the same Consumer type; cannot mix and match to have a LongConsumer andThen a String Consumer
  */
 public class ConsumerDemo {
     public static void main(String[] args) {
@@ -30,7 +33,7 @@ public class ConsumerDemo {
                 list.set(i, list.get(i).toUpperCase());
             }
             //alt implementation
-            //list.replaceAll(String::toUpperCase);
+            list.replaceAll(String::toUpperCase);
         };
 
         Consumer<List<String>> printList = list -> list.forEach(System.out::println);
@@ -42,12 +45,28 @@ public class ConsumerDemo {
         c1.andThen(c2).accept("Pekingese = ");  //prints: Pekingese womble Pekingese mungo
 
 
+        Pekingese womble = new Pekingese("womble",15,9f);
+        womble.setFavoriteTreats("cheese","chicken","pasta","meat chews","human food","guinea pig poop");
+        Pekingese.getFavoriteTreats(womble);
+        Consumer<Pekingese> printingTreats = (pekingese -> System.out.println(pekingese.getFavoriteTreats()));
+        printingTreats.accept(womble);
+
+
     }
 
     //Specialized Consumers
     IntConsumer intConsumer;
     DoubleConsumer doubleConsumer;
-    LongConsumer longConsumer;
+    LongConsumer longConsumer = String::valueOf;
+    private void demoOfLongConsumer(){
+        long myLong = 2394554958495438L;
+        longConsumer.accept(myLong);
+       // Consumer<String> addToQueue = longy -> new PriorityQueue<String>().add(longy);
+       // longConsumer.andThen(addToQueue).accept(myLong);  NO MIXING TYPES
+    }
+
+
+
 }
 
 //Bi-Consumer accepts 2 arguments
@@ -95,6 +114,7 @@ class BiConsumerDemo{
 
         //andThen() returns a composed BiConsumer where the parameterized BC is executed after the 1st one
         //basically chaining BiConsumers(????), calling the 1st one, then the 2nd one, on the list you pass in
+        //But cannot mix and match BiConsumer types
         customEquals.andThen(customPrint).accept(list1,list2);
         //can even just chain it to itself
         BiConsumer<String,String> chainedBC = (x, y) -> {
@@ -102,6 +122,9 @@ class BiConsumerDemo{
             System.out.println(y);
         };
         chainedBC.andThen(chainedBC).accept("womble","mungo");
+        customEquals.andThen(customPrint).andThen(customPrint).accept(new ArrayList<>(),new LinkedList<>());
+
+
 
 
 

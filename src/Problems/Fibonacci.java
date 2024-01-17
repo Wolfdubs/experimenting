@@ -15,6 +15,7 @@ public class Fibonacci {
 
     //memoization: save results once calculated, so dont need recalculated
     //once the calculation for one recursive call is complete, it saves this value so it doesn't need to be recalculated again
+    //runtime is O(n)
     public static long fibonacciMemoization(int n) {
         long[] fibonacciCache = new long[n + 1];    //because size of array is 1 above the last index. must declare outside function so recursive calls dont erase it every time
         return fibonacciMemoizationCode(n, fibonacciCache);
@@ -36,6 +37,39 @@ public class Fibonacci {
         cache[n] = nthFibonacciNumber;
 
         return nthFibonacciNumber;
+    }
+
+    //but it is a waste of memory space to hold on to the values for every fibonacci element and keep passing it to the calling iteration,
+        //when each call just needs the specific 2 values added to produce the current fibonacci number
+    private int fibonacciTwoVariables(int n){
+        if (n<=1) return n;
+        int first = 0;
+        int second = 1;
+        var result = 0;
+        for (int i = 2; i<=n; i++){
+            result = first + second;
+            first = second;
+            second = result;
+        }
+        return result;
+    }
+
+
+    ///also, an addendum to the DP array building. O(n)
+    //Build it from the Bottom-Up, rather than recursively
+    private int fibonacciBottomUp(int n){
+        if (n==0 || n==1) return 1;
+        int[] fibonacciSequence = new int[n+1];
+        fibonacciSequence[0] = 1;
+        fibonacciSequence[1] = 1;
+        for (int i = 2; i <=n; i++){
+            fibonacciSequence[i] = fibonacciSequence[i-1] + fibonacciSequence[i-2];
+        }
+        return fibonacciSequence[n];
+    }
+
+    private double fibonacciMathematical(int n){
+        return (Math.pow(((1+Math.sqrt(5))/2),n) - Math.pow(((1-Math.sqrt(5))/2),n) / Math.sqrt(5));
     }
 
 

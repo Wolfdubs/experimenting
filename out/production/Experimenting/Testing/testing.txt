@@ -285,7 +285,7 @@ Tests should be;
     isolate failures
     simulate user behavior
 Test types
-    Unit Tests = fast, isolated (can see exactly what caused the test to fail), reliable, doesn't simulate users
+    Unit Tests = fast, isolate failures (can see exactly what caused the test to fail), reliable, doesn't simulate users
         execute single methods to test specific aspects
         focus on small parts of the system at a time
         Disadvantages:
@@ -298,8 +298,13 @@ Test types
             not automated
     Integration test = medium speed, medium isolation
         test that different aspects of the system can work together
+        Integration tests are smaller than System tests and don't take as long to run, so they're faster and performed more frequently.
+            However, System tests are slow because they run tests on the entire system, and test many parts together - they are high-level,
+            whereas Integration tests are more low-level. Integration tests aren't as low-level as unit tests though, as they also validate the
+            interaction between modules. Only Acceptance tests use real client data.
         Smoke test = sub-set of Integration tests
             is a sanity check
+
     System Tests = execute broad parts of the system at once, usually with synthetic data and dev servers
         run by dev team on more frequent basis than acceptance
         slow, medium-reliable (as many external dependencies on DBs, web services, network, other applications)
@@ -319,9 +324,61 @@ Red-Green Refactor
        Find defects
        Understand where defects could have been expected
     Coverage = a % that represents the % of the code that is executed by the test suite
-        Flow-independent coverage =  executes each piece of the system , makes sure it executes successfully 
+        doesn't relate to testing behavior, just execution
+        1. Flow-independent coverage =  executes each piece of the system , makes sure it can execute successfully
+            Block-coverage = % of code blocks executed by the suite
+            Line-coverage = % of lines executed by the suite
+                can achieve full line coverage without full branch coverage
+            Statement-coverage = % of statements executed by suite
+        2. Flow-dependent coverage = ensure different pieces of code can execute together
+            more expensive to compute and less obvious
+            Branch-coverage = covering all branches in a method; must execute both halves of a true/false branch
+                more stringent than line coverage
+            Path-coverage = execute all paths, ie all if statements
+                this is the most stringent; encompasses all possible path flows; aka combinations of paths that can be followed
+            MCC coverage = extension to path coverage; all statements are independently evaluated with respect to the outcome of a function. hard to use
+        Coverage is an imperfect measure of code correctness, because it doesn't actually test the code works as intended e.g. method can still have the wrong output
+            coverage does not test correctness or behaviors
+        difficulty order: line coverage -> statement coverage -> branch coverage -> path coverage
+        Iteration
+            identify uncovered code -> design test case for it -> write & execute test case -> repeat until coverage goal met
 
 
+Partition on inputs & outputs; instead of every single possible value; partition on categories, and pick samples from each
+    check boundaries too, and max, min, 0, null, undefined
+    edge cases could have ambiguous effects
+
+Assertions
+    use to test behavior
+    4-Phase-Test (used by JUNIT)
+        1. Setup tests using @Before /@BeforeEach
+        2. Tests that contain assertions
+        3. @After / @AfterEach to cleanup when done
+
+    Given-When-Then (used by BDD)
+        emphasis on test readability
+        take given state of program  -> apply some test behavior -> assert that behavior is correct
+        capture the expected and actual values (actual is computed by the test running)
+        capture the expected and actual values (actual is computed by the test running)
+            then assert that they should be equal
+                limitation is if the value type is very complicated, not easy to compare
+Good Tests:
+    Controllable: easy to write and test specific code features, avoiding dependencies, fixed states
+        Constructors who set members based on parameters are better for testing as can change parameters as per test requirements
+        avoid requiring document objects, as cannot run tests outside browser environment or having some document object
+    Observable: methods with return values that can be examined, rather than trying to access private fields
+    Isolated: isolate cause of test failure - split up complex methods into smaller units and test separately (will still have to tests together later on)
+        avoid dependencies, external methods
+        if have external dependencies e.g. mouseover events -> can write mocks of external services with predictable results
+    Automated: good for regression testing where run tests after any change
+        ability to programmatically invoke test suites and code. will be able to run tests more frequently
+
+Test Steps:
+    1. Reach (controllability, automatability)  (and test practive that supports the step)
+    2. Trigger (controllability, isolateability, automatability)
+    3. Propagate (observability, automatability)
+    4. Observe (observability, automatability)
+    5. Interpret
 
 
 

@@ -14,7 +14,7 @@ public class WriteToCSV {
         Path fileOut = fileIn.resolveSibling("data.csv");
 
         if (!Files.exists(fileIn)) {
-            throw new FileNotFoundException(fileOut.toAbsolutePath().toString());
+            throw new FileNotFoundException(fileIn.toAbsolutePath().toString());
         }
 
         BufferedReader br = new BufferedReader(new FileReader(fileIn.toFile()));
@@ -22,15 +22,13 @@ public class WriteToCSV {
 
         //read and write file 1 line per loop
         int count = 0;
-        String line = br.readLine();
-        while (line!=null){
+        String line;
+        while ((line = br.readLine()) != null){
             count++;
             line = line.toUpperCase();   //change the content in the output
             //write the file
             bf.write(line + "\n");
             bf.flush();
-
-            line = br.readLine();
 
         }
         br.close();

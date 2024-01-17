@@ -12,8 +12,8 @@ import static utils.Weapon.generateWeaponsList;
 public class CreatingFile {
     public static void main(String[] args) {
         List<Weapon> weapons = generateWeaponsList();
-        File fileOut = new File("Weapons.csv");
-        PrintWriter printWriter = null;
+        File fileOut = new File("src\\Concepts\\Basics\\InputOutput\\Files\\weapons.csv");  //C:\Users\ashmc\OneDrive\Documents\Learning\Experiementing\Weapons.csv
+        PrintWriter printWriter = null;                   //C:\Users\ashmc\OneDrive\Documents\Learning\Experiementing\src\Concepts\Basics\InputOutput\Files\data.csv
         try {
             printWriter = new PrintWriter(fileOut);
             for (Weapon weapon : weapons) {

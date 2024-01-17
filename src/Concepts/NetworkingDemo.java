@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class NetworkingDemo {
 
     public static void main(String[] args) {
-        String url = "www.womble.com";
+        String url = "www.wordpress.com";
         InetAddress inetAddress = null;
         try {
             inetAddress = Inet4Address.getByName(url);

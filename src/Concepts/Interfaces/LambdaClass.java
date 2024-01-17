@@ -1,9 +1,10 @@
 package Concepts.Interfaces;
 
-//Types if Interface
+//Types of Interface
 // 1. Normal - if it has 2+ methods
-// 2. Functional Interface - interface has SAM single abstract method. can have many other default methods though
-// 3. Market interface - has no methods e.g. Java's Serializable interface
+// 2. Functional Interface - interface has SAM single abstract method. can have many other default methods though.
+    //having other members e.g. variables can effect this maybe???
+// 3. Marker interface - has no methods e.g. Java's Serializable interface
 
 //can use lambda expressions for Functional Interfaces
 //simpler way to achieve same thing as anonymous class

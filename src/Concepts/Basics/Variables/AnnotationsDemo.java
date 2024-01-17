@@ -5,7 +5,6 @@ import lombok.experimental.Accessors;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 
-import javax.annotation.processing.Generated;
 import java.io.*;
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
@@ -24,7 +23,7 @@ public class AnnotationsDemo {
         // 1. Create object of annotation implementing class
         Nokia nokia = new Nokia();
         //  2. Create object of the annotation, via creating a class object (aka Reflection API) to get values of the annotation
-        Class c = nokia.getClass();     //creates class object of nokia's class. Because it is the class that has the annotation on it, not the object
+        Class<? extends Nokia> c = nokia.getClass();     //creates class object of nokia's class. Because it is the class that has the annotation on it, not the object
         c.isAnnotationPresent(SmartPhone.class);   //checks if the class has the annotation applied to it. returns boolean
         Annotation an = c.getAnnotation(SmartPhone.class);  //annotation is an interface, get object of it by getting the specified annotation of the input class (nokia)
         SmartPhone smartPhone = (SmartPhone) an;   //must cast the generic Annotation type

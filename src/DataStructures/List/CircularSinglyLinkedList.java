@@ -2,7 +2,7 @@ package DataStructures.List;
 
 public class CircularSinglyLinkedList<T> {
     /*
-    last node's pointer points to the next node
+    last node's pointer points to the head node
     Advantage: can start at any node and still traverse entire list
             maintain 1 pointer 'last' at the last node, and use last.next to get the head
             don't need any null assignment, unless entire list is empty
@@ -99,7 +99,7 @@ public class CircularSinglyLinkedList<T> {
             Node<T> temp = head;
             Node<T> previous = new Node<T>();
             while(temp.data!=data){
-                if (temp==head) {
+                if (temp.next==head) {
                     System.out.println("data not found in the list");
                     break;
                 }
